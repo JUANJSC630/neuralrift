@@ -25,6 +25,13 @@ class SettingsController extends Controller
 
     public function update(Request $request): RedirectResponse
     {
+        foreach (['linkedin', 'website'] as $field) {
+            $value = $request->input($field);
+            if ($value && ! preg_match('#^https?://#i', $value)) {
+                $request->merge([$field => 'https://' . $value]);
+            }
+        }
+
         $request->validate([
             'name'     => 'required|string|max:255',
             'bio'      => 'nullable|string|max:500',

@@ -140,7 +140,7 @@ export default function Settings({ settings, user }: Props) {
                             <button
                                 type="submit"
                                 disabled={processing}
-                                className="glow-accent rounded-xl bg-gradient-to-r from-nr-accent to-[#6d58f0] px-6 py-2.5 text-sm font-semibold text-white transition-all hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-50"
+                                className="glow-accent rounded-xl bg-gradient-to-r from-nr-accent to-nr-accent-dark px-6 py-2.5 text-sm font-semibold text-white transition-all hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-50"
                             >
                                 {processing ? 'Guardando...' : 'Guardar cambios'}
                             </button>
