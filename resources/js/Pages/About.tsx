@@ -66,7 +66,7 @@ export default function About() {
                                 <span className="mb-3 block font-mono text-xs uppercase tracking-widest text-nr-accent">
                                     Hola, soy
                                 </span>
-                                <h1 className="text-gradient mb-2 font-display text-4xl font-black md:text-5xl">
+                                <h1 className="text-gradient mb-2 pb-4 font-display text-4xl font-black md:text-5xl">
                                     Juan Jose
                                 </h1>
                                 <p className="mb-5 text-lg leading-relaxed text-nr-muted">
