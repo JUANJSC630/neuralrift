@@ -91,7 +91,7 @@ export default function CategoriesIndex({ categories }: Props) {
                                 reset()
                                 setShowForm(true)
                             }}
-                            className="glow-accent rounded-lg bg-gradient-to-r from-nr-accent to-[#6d58f0] px-4 py-2 text-sm font-semibold text-white transition-all hover:-translate-y-0.5"
+                            className="glow-accent rounded-lg bg-gradient-to-r from-nr-accent to-nr-accent-dark px-4 py-2 text-sm font-semibold text-white transition-all hover:-translate-y-0.5"
                         >
                             + Nueva categoría
                         </button>
@@ -305,7 +305,7 @@ export default function CategoriesIndex({ categories }: Props) {
                                 <button
                                     type="submit"
                                     disabled={processing}
-                                    className="glow-accent w-full rounded-xl bg-gradient-to-r from-nr-accent to-[#6d58f0] py-2.5 text-sm font-semibold text-white transition-all hover:-translate-y-0.5 disabled:opacity-50"
+                                    className="glow-accent w-full rounded-xl bg-gradient-to-r from-nr-accent to-nr-accent-dark py-2.5 text-sm font-semibold text-white transition-all hover:-translate-y-0.5 disabled:opacity-50"
                                 >
                                     {processing
                                         ? 'Guardando...'

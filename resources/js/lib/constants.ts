@@ -7,22 +7,29 @@ export const CATEGORY_COLORS: Record<string, string> = {
     Reviews: '#F59E0B',
     Negocios: '#EC4899',
     Noticias: '#F97316',
+    'Desarrollo Web': '#3B82F6',
+    Productividad: '#8B5CF6',
+    Freelancing: '#14B8A6',
+    Automatización: '#EF4444',
 }
 
 export const SITE = {
     name: 'NeuralRift',
-    tagline: 'El futuro de la IA empieza aquí',
+    tagline: 'Tecnología, IA y herramientas para construir mejor',
+    taglineEn: 'Tech, AI & tools to build smarter',
     url: 'https://neuralrift.com',
     twitter: '@neuralrift',
     description:
-        'Guías en profundidad, reviews honestas y estrategias para navegar la revolución de la IA.',
+        'Guías técnicas, reviews honestas y estrategias para developers y freelancers que quieren construir mejores productos con tecnología e IA.',
+    descriptionEn:
+        'Technical guides, honest reviews and strategies for developers and freelancers building better products with tech and AI.',
     lang: ['es', 'en'] as const,
 }
 
 export const NAV_LINKS = [
     { label: 'Blog', labelEn: 'Blog', href: '/blog' },
     { label: 'Categorías', labelEn: 'Categories', href: '/categorias' },
-    { label: 'Herramientas IA', labelEn: 'AI Tools', href: '/herramientas' },
+    { label: 'Herramientas', labelEn: 'Tools', href: '/herramientas' },
     { label: 'Newsletter', labelEn: 'Newsletter', href: '/#newsletter' },
     { label: 'Sobre mí', labelEn: 'About', href: '/sobre-mi' },
 ]

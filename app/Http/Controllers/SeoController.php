@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
 use App\Models\Post;
 use Spatie\Sitemap\Sitemap;
 use Spatie\Sitemap\Tags\Url;
@@ -13,10 +14,23 @@ class SeoController extends Controller
     {
         $sitemap = Sitemap::create()
             ->add(Url::create('/')->setPriority(1.0)->setChangeFrequency(Url::CHANGE_FREQUENCY_DAILY))
+            ->add(Url::create('/en')->setPriority(1.0)->setChangeFrequency(Url::CHANGE_FREQUENCY_DAILY))
             ->add(Url::create('/blog')->setPriority(0.9)->setChangeFrequency(Url::CHANGE_FREQUENCY_DAILY))
+            ->add(Url::create('/en/blog')->setPriority(0.9)->setChangeFrequency(Url::CHANGE_FREQUENCY_DAILY))
             ->add(Url::create('/herramientas')->setPriority(0.8))
-            ->add(Url::create('/sobre-mi')->setPriority(0.5));
+            ->add(Url::create('/en/tools')->setPriority(0.8))
+            ->add(Url::create('/sobre-mi')->setPriority(0.5))
+            ->add(Url::create('/en/about')->setPriority(0.5))
+            ->add(Url::create('/categorias')->setPriority(0.7))
+            ->add(Url::create('/en/categories')->setPriority(0.7));
 
+        // Categories
+        Category::all()->each(function (Category $category) use ($sitemap) {
+            $sitemap->add(Url::create("/categoria/{$category->slug}")->setPriority(0.6));
+            $sitemap->add(Url::create("/en/category/{$category->slug}")->setPriority(0.6));
+        });
+
+        // Posts
         Post::published()->each(function (Post $post) use ($sitemap) {
             $sitemap->add(
                 Url::create("/blog/{$post->slug}")

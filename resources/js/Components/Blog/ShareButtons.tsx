@@ -46,7 +46,7 @@ export default function ShareButtons({ url, title, className }: Props) {
                     target="_blank"
                     rel="noopener noreferrer"
                     className="glass flex h-11 w-11 items-center justify-center rounded-lg text-xs font-bold text-nr-faint transition-colors hover:border-nr-accent/30 hover:text-nr-accent"
-                    title={`Compartir en ${link.label}`}
+                    aria-label={`Compartir en ${link.label}`}
                 >
                     {link.icon}
                 </a>
@@ -54,7 +54,7 @@ export default function ShareButtons({ url, title, className }: Props) {
             <button
                 onClick={copyLink}
                 className="glass flex h-11 w-11 items-center justify-center rounded-lg text-xs text-nr-faint transition-colors hover:border-nr-accent/30 hover:text-nr-accent"
-                title="Copiar enlace"
+                aria-label="Copiar enlace"
             >
                 {copied ? '✓' : '⎘'}
             </button>

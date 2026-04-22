@@ -23,6 +23,7 @@ class AffiliateController extends Controller
         return Inertia::render('Tools', [
             'affiliates' => $affiliates,
             'grouped'    => $grouped,
+            'canonical'  => url(app()->getLocale() === 'en' ? '/en/tools' : '/herramientas'),
         ]);
     }
 

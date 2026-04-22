@@ -20,9 +20,18 @@ interface Props {
     related: Post[]
     schema?: Record<string, unknown>
     lang?: 'es' | 'en'
+    canonical?: string
+    alternates?: { es: string; en: string | null }
 }
 
-export default function BlogShow({ post, related, schema, lang = 'es' }: Props) {
+export default function BlogShow({
+    post,
+    related,
+    schema,
+    lang = 'es',
+    canonical,
+    alternates: _alternates,
+}: Props) {
     const catColor = post.category
         ? (CATEGORY_COLORS[post.category.name] ?? post.category.color ?? '#7C6AF7')
         : '#7C6AF7'
@@ -40,8 +49,21 @@ export default function BlogShow({ post, related, schema, lang = 'es' }: Props) 
 
     const [featuredAffiliate, ...restAffiliates] = post.affiliates ?? []
 
-    // Noop effect — view tracking is handled server-side on show()
-    useEffect(() => {}, [post.id])
+    // Track view via API
+    useEffect(() => {
+        const xsrf = document.cookie
+            .split('; ')
+            .find(r => r.startsWith('XSRF-TOKEN='))
+            ?.split('=')[1]
+
+        fetch(`/api/views/${post.id}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-XSRF-TOKEN': xsrf ? decodeURIComponent(xsrf) : '',
+            },
+        }).catch(() => {})
+    }, [post.id])
 
     return (
         <>
@@ -49,7 +71,13 @@ export default function BlogShow({ post, related, schema, lang = 'es' }: Props) 
                 <meta name="description" content={excerpt ?? ''} />
                 <meta property="og:title" content={title} />
                 <meta property="og:description" content={excerpt ?? ''} />
+                <meta property="og:type" content="article" />
+                <meta property="og:locale" content={isEn ? 'en_US' : 'es_CO'} />
+                <meta property="og:site_name" content="NeuralRift" />
+                {canonical && <meta property="og:url" content={canonical} />}
                 {post.og_image && <meta property="og:image" content={post.og_image} />}
+                <meta name="twitter:card" content="summary_large_image" />
+                <meta name="twitter:site" content="@neuralrift" />
                 {!post.indexable && <meta name="robots" content="noindex" />}
                 {schema && <script type="application/ld+json">{JSON.stringify(schema)}</script>}
             </Head>
@@ -57,7 +85,7 @@ export default function BlogShow({ post, related, schema, lang = 'es' }: Props) 
             <ReadingProgress />
             <Navbar />
 
-            <main className="min-h-screen bg-nr-bg pt-[70px]">
+            <main id="main-content" className="min-h-screen bg-nr-bg pt-[70px]">
                 {/* Hero */}
                 <section
                     className="relative overflow-hidden border-b border-white/[0.05]"
@@ -302,38 +330,7 @@ export default function BlogShow({ post, related, schema, lang = 'es' }: Props) 
                             <div className="sticky top-[90px] space-y-6">
                                 <TableOfContents content={content} />
 
-                                {/* Newsletter compact */}
-                                <div className="rounded-2xl border border-white/[0.08] bg-nr-surface p-5">
-                                    <p className="mb-1 text-sm font-semibold text-nr-text">
-                                        {t('post.sidebar_newsletter_title')}
-                                    </p>
-                                    <p className="mb-4 text-xs text-nr-faint">
-                                        {t('post.sidebar_newsletter_text')}
-                                    </p>
-                                    <form
-                                        onSubmit={e => e.preventDefault()}
-                                        className="flex flex-col gap-2"
-                                    >
-                                        <label
-                                            htmlFor="sidebar-newsletter-email"
-                                            className="sr-only"
-                                        >
-                                            Email
-                                        </label>
-                                        <input
-                                            id="sidebar-newsletter-email"
-                                            type="email"
-                                            placeholder={t('newsletter.placeholder')}
-                                            className="glass w-full rounded-lg px-3 py-2 text-sm text-nr-text placeholder-nr-faint outline-none transition-colors focus:border-nr-accent/50"
-                                        />
-                                        <button
-                                            type="submit"
-                                            className="w-full rounded-lg bg-gradient-to-r from-nr-accent to-nr-accent-dark py-2 text-sm font-semibold text-white transition-all duration-200 hover:-translate-y-0.5"
-                                        >
-                                            {t('post.sidebar_subscribe')}
-                                        </button>
-                                    </form>
-                                </div>
+                                <NewsletterWidget compact />
 
                                 {/* Sidebar affiliates (first 2 of rest) */}
                                 {restAffiliates.slice(0, 2).map(affiliate => (

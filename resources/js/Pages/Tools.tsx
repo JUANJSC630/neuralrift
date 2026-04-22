@@ -28,7 +28,7 @@ export default function Tools({ affiliates, grouped }: Props) {
 
             <Navbar />
 
-            <main className="min-h-screen bg-nr-bg pt-[70px]">
+            <main id="main-content" className="min-h-screen bg-nr-bg pt-[70px]">
                 <section className="mx-auto max-w-7xl px-6 py-16 md:px-12">
                     {/* Header */}
                     <div className="mb-12 text-center">
@@ -85,9 +85,11 @@ export default function Tools({ affiliates, grouped }: Props) {
                             ))}
                         </div>
                     ) : (
-                        <div className="py-24 text-center text-nr-faint">
+                        <div className="py-24 text-center">
                             <div className="mb-4 text-4xl opacity-20">⚡</div>
-                            <p>...</p>
+                            <p className="text-sm text-nr-faint" role="status">
+                                No hay herramientas disponibles en esta categoría.
+                            </p>
                         </div>
                     )}
 

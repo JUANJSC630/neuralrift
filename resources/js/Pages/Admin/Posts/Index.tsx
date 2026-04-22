@@ -105,7 +105,7 @@ export default function PostsIndex({ posts, categories, filters }: Props) {
 
                     <Link
                         href="/admin/posts/create"
-                        className="whitespace-nowrap rounded-lg bg-gradient-to-r from-nr-accent to-[#6d58f0] px-4 py-2 text-sm font-semibold text-white transition-all duration-200 hover:-translate-y-0.5"
+                        className="whitespace-nowrap rounded-lg bg-gradient-to-r from-nr-accent to-nr-accent-dark px-4 py-2 text-sm font-semibold text-white transition-all duration-200 hover:-translate-y-0.5"
                     >
                         + Nuevo
                     </Link>

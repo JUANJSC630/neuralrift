@@ -120,7 +120,7 @@ export default function AdminLayout({ children, title }: Props) {
                         </Link>
                         <Link
                             href="/admin/posts/create"
-                            className="glow-accent rounded-lg bg-gradient-to-r from-nr-accent to-[#6d58f0] px-4 py-2 text-xs font-semibold text-white transition-all duration-200 hover:-translate-y-0.5"
+                            className="glow-accent rounded-lg bg-gradient-to-r from-nr-accent to-nr-accent-dark px-4 py-2 text-xs font-semibold text-white transition-all duration-200 hover:-translate-y-0.5"
                         >
                             + Nuevo artículo
                         </Link>

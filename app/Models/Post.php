@@ -104,10 +104,14 @@ class Post extends Model
         parent::boot();
 
         static::saving(function (Post $post) {
-            // Calcular tiempo de lectura
-            $text = strip_tags($post->content ?? '');
-            $wordCount = str_word_count($text);
-            $post->read_time = max(1, (int) ceil($wordCount / 200));
+            // Calcular tiempo de lectura desde texto puro del JSON Tiptap
+            try {
+                $text = self::extractTextFromTiptap($post->content);
+                $wordCount = str_word_count($text);
+                $post->read_time = max(1, (int) ceil($wordCount / 200));
+            } catch (\Throwable) {
+                $post->read_time = $post->read_time ?? 1;
+            }
 
             // Auto-slug
             if (empty($post->slug)) {
@@ -117,6 +121,38 @@ class Post extends Model
                 $post->slug_en = str($post->title_en)->slug();
             }
         });
+    }
+
+    private static function extractTextFromTiptap(mixed $content): string
+    {
+        if (!$content) {
+            return '';
+        }
+
+        $data = is_string($content) ? json_decode($content, true) : $content;
+
+        if (!is_array($data)) {
+            return strip_tags((string) $content);
+        }
+
+        return self::extractTextFromNode($data);
+    }
+
+    private static function extractTextFromNode(array $node): string
+    {
+        $text = '';
+
+        if (($node['type'] ?? '') === 'text') {
+            $text .= ($node['text'] ?? '') . ' ';
+        }
+
+        foreach ($node['content'] ?? [] as $child) {
+            if (is_array($child)) {
+                $text .= self::extractTextFromNode($child);
+            }
+        }
+
+        return $text;
     }
 
     // ── Helpers ──────────────────────────────────────

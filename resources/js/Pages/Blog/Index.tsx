@@ -3,6 +3,7 @@ import { useState } from 'react'
 import { motion } from 'framer-motion'
 import Navbar from '@/Components/Layout/Navbar'
 import Footer from '@/Components/Layout/Footer'
+import MeshBackground from '@/Components/Layout/MeshBackground'
 import PostCard from '@/Components/Blog/PostCard'
 import { CATEGORY_COLORS, SITE } from '@/lib/constants'
 import { useLocale } from '@/hooks/useLocale'
@@ -57,10 +58,10 @@ export default function BlogIndex({ posts, filters }: Props) {
 
             <Navbar />
 
-            <main className="min-h-screen bg-nr-bg pt-[70px]">
+            <main id="main-content" className="min-h-screen bg-nr-bg pt-[70px]">
                 {/* Hero */}
                 <section className="relative overflow-hidden border-b border-white/[0.05]">
-                    <div className="mesh-bg pointer-events-none absolute inset-0" />
+                    <MeshBackground />
                     <div className="relative z-10 mx-auto max-w-7xl px-6 py-20 md:px-12">
                         <motion.div
                             initial={{ opacity: 0, y: 20 }}

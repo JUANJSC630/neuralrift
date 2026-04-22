@@ -16,13 +16,22 @@ class AnalyticsController extends Controller
 {
     public function index(Request $request): Response
     {
-        $days = (int) $request->get('days', 30);
+        $days = min((int) $request->get('days', 30), 365);
         $from = now()->subDays($days);
 
-        $viewsChart = collect(range($days - 1, 0))->map(fn($d) => [
-            'date'  => now()->subDays($d)->format('d M'),
-            'views' => PostView::whereDate('viewed_at', now()->subDays($d))->count(),
-        ])->values();
+        $viewsByDay = PostView::where('viewed_at', '>=', now()->subDays($days - 1))
+            ->selectRaw('DATE(viewed_at) as date, COUNT(*) as views')
+            ->groupBy('date')
+            ->orderBy('date')
+            ->pluck('views', 'date');
+
+        $viewsChart = collect(range($days - 1, 0))->map(function ($daysAgo) use ($viewsByDay) {
+            $date = now()->subDays($daysAgo)->format('Y-m-d');
+            return [
+                'date'  => now()->subDays($daysAgo)->format('d M'),
+                'views' => $viewsByDay[$date] ?? 0,
+            ];
+        })->values();
 
         $sources = PostView::where('viewed_at', '>=', $from)
             ->selectRaw('source, count(*) as total')

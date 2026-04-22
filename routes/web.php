@@ -27,7 +27,7 @@ Route::get('/robots.txt',  [SeoController::class, 'robots']);
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/sobre-mi', fn() => Inertia::render('About'))->name('about');
 Route::get('/herramientas', [AffiliateController::class, 'index'])->name('tools');
-Route::get('/herramientas/{slug}/click', [AffiliateController::class, 'click'])->name('tools.click');
+Route::get('/herramientas/{slug}/click', [AffiliateController::class, 'click'])->name('tools.click')->middleware('throttle:30,1');
 
 Route::prefix('blog')->name('blog.')->group(function () {
     Route::get('/',        [PostController::class, 'index'])->name('index');
@@ -63,14 +63,14 @@ Route::prefix('en')->name('en.')->group(function () {
 });
 
 // Newsletter
-Route::post('/newsletter/subscribe', [NewsletterController::class, 'subscribe'])->name('newsletter.subscribe');
+Route::post('/newsletter/subscribe', [NewsletterController::class, 'subscribe'])->name('newsletter.subscribe')->middleware('throttle:3,60');
 Route::get('/newsletter/confirm/{token}', [NewsletterController::class, 'confirm'])->name('newsletter.confirm');
 
 // Analytics (AJAX, sin SSR)
-Route::post('/api/views/{post}', [PostViewController::class, 'store'])->name('views.store');
+Route::post('/api/views/{post}', [PostViewController::class, 'store'])->name('views.store')->middleware('throttle:10,1');
 
 // ── ADMIN ─────────────────────────────────────────────────
-Route::middleware(['auth', 'verified'])
+Route::middleware(['auth', 'verified', 'admin'])
     ->prefix('admin')
     ->name('admin.')
     ->group(function () {

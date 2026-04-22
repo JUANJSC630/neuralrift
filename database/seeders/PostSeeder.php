@@ -45,7 +45,7 @@ class PostSeeder extends Seeder
                 'featured'       => false,
                 'published_at'   => now()->subDays(5),
                 'category_slug'  => 'herramientas',
-                'tags'           => ['Writesonic', 'Automatización'],
+                'tags'           => ['Copywriting IA', 'Automatización'],
                 'affiliates'     => ['writesonic', 'copy-ai'],
             ],
             [

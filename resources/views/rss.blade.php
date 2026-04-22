@@ -13,7 +13,7 @@
             <guid>{{ url("/blog/{$post->slug}") }}</guid>
             <description><![CDATA[{{ $post->excerpt }}]]></description>
             <pubDate>{{ $post->published_at->toRssString() }}</pubDate>
-            <author>{{ $post->author->email }} ({{ $post->author->name }})</author>
+            <author>noreply@neuralrift.com ({{ $post->author->name }})</author>
             @if($post->category)
             <category>{{ $post->category->name }}</category>
             @endif

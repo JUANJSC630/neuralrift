@@ -2,7 +2,11 @@ import { useState } from 'react'
 import { router } from '@inertiajs/react'
 import { useLocale } from '@/hooks/useLocale'
 
-export default function NewsletterWidget() {
+interface NewsletterWidgetProps {
+    compact?: boolean
+}
+
+export default function NewsletterWidget({ compact = false }: NewsletterWidgetProps) {
     const [email, setEmail] = useState('')
     const [loading, setLoading] = useState(false)
     const [sent, setSent] = useState(false)
@@ -27,6 +31,51 @@ export default function NewsletterWidget() {
                     setLoading(false)
                 },
             },
+        )
+    }
+
+    if (compact) {
+        return (
+            <div className="glass rounded-2xl p-5">
+                <p className="mb-1 text-sm font-semibold text-nr-text">{t('newsletter.label')}</p>
+                <p className="mb-3 text-xs text-nr-faint">{t('newsletter.subtitle')}</p>
+                {sent ? (
+                    <div className="flex items-center gap-2 text-sm font-medium text-nr-green">
+                        <span aria-hidden="true">✓</span>
+                        <span>{t('newsletter.success')}</span>
+                    </div>
+                ) : (
+                    <form onSubmit={handleSubmit} className="flex flex-col gap-2">
+                        <label htmlFor="newsletter-compact-email" className="sr-only">
+                            Email
+                        </label>
+                        <input
+                            id="newsletter-compact-email"
+                            type="email"
+                            value={email}
+                            onChange={e => {
+                                setEmail(e.target.value)
+                                setError(null)
+                            }}
+                            placeholder={t('newsletter.placeholder')}
+                            required
+                            className="glass w-full rounded-lg px-3 py-2 text-sm text-nr-text placeholder-nr-faint outline-none transition-colors focus:border-nr-accent/50"
+                        />
+                        <button
+                            type="submit"
+                            disabled={loading}
+                            className="w-full rounded-lg bg-gradient-to-r from-nr-accent to-nr-accent-dark py-2 text-sm font-semibold text-white transition-all duration-200 hover:-translate-y-0.5 disabled:opacity-60"
+                        >
+                            {loading ? t('newsletter.sending') : t('newsletter.submit')}
+                        </button>
+                    </form>
+                )}
+                {error && (
+                    <p role="alert" className="mt-2 text-xs text-red-400">
+                        {error}
+                    </p>
+                )}
+            </div>
         )
     }
 

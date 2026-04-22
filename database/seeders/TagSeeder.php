@@ -30,6 +30,20 @@ class TagSeeder extends Seeder
             'Copywriting IA',
             'Agentes IA',
             'Multimodal',
+            'Laravel',
+            'React',
+            'Inertia.js',
+            'Vite',
+            'Deploy',
+            'Freelance',
+            'Make.com',
+            'n8n',
+            'Zapier',
+            'Notion',
+            'Productividad',
+            'DigitalOcean',
+            'Cobrar en dólares',
+            'LATAM',
         ];
 
         foreach ($tags as $tag) {

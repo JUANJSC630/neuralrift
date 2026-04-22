@@ -28,10 +28,19 @@ class DashboardController extends Controller
             'clicks_month'     => AffiliateClick::where('clicked_at', '>=', now()->subMonth())->count(),
         ];
 
-        $chartData = collect(range(29, 0))->map(fn($d) => [
-            'date'  => now()->subDays($d)->format('d M'),
-            'views' => PostView::whereDate('viewed_at', now()->subDays($d))->count(),
-        ])->values();
+        $viewsByDay = PostView::where('viewed_at', '>=', now()->subDays(29))
+            ->selectRaw('DATE(viewed_at) as date, COUNT(*) as views')
+            ->groupBy('date')
+            ->orderBy('date')
+            ->pluck('views', 'date');
+
+        $chartData = collect(range(29, 0))->map(function ($daysAgo) use ($viewsByDay) {
+            $date = now()->subDays($daysAgo)->format('Y-m-d');
+            return [
+                'date'  => now()->subDays($daysAgo)->format('d M'),
+                'views' => $viewsByDay[$date] ?? 0,
+            ];
+        })->values();
 
         $recentPosts = Post::with(['category'])
             ->latest()

@@ -55,9 +55,17 @@ function KpiCard({
     sub: string
     color: string
 }) {
+    const colorMap: Record<string, string> = {
+        'nr-accent': 'text-gradient',
+        'nr-green': 'text-nr-green',
+        'nr-gold': 'text-nr-gold',
+        'nr-cyan': 'text-nr-cyan',
+    }
+    const textClass = colorMap[color] ?? 'text-nr-text'
+
     return (
         <div className="glass rounded-2xl p-5">
-            <div className={`font-display text-3xl font-bold text-${color} mb-1`}>
+            <div className={`font-display text-3xl font-bold ${textClass} mb-1`}>
                 {value.toLocaleString()}
             </div>
             <div className="text-sm font-medium text-nr-text">{label}</div>

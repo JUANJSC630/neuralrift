@@ -17,20 +17,23 @@ interface Props {
     recent: Post[]
     popular: Post[]
     affiliates: Affiliate[]
+    canonical?: string
 }
 
 const ROTATING_WORDS = [
     'Inteligencia Artificial',
-    'Modelos de Lenguaje',
-    'Automatización IA',
-    'El Futuro Digital',
+    'Desarrollo Web',
+    'Automatización',
+    'Freelancing Digital',
+    'Herramientas Tech',
 ]
 
 const ROTATING_WORDS_EN = [
     'Artificial Intelligence',
-    'Language Models',
-    'AI Automation',
-    'The Digital Future',
+    'Web Development',
+    'Automation',
+    'Digital Freelancing',
+    'Tech Tools',
 ]
 
 const NODES = [
@@ -53,7 +56,7 @@ const SVG_LINES = [
     ['33%', '55%', '70%', '38%'],
 ]
 
-export default function Home({ featured, recent, affiliates }: Props) {
+export default function Home({ featured, recent, affiliates, canonical }: Props) {
     const [wordIndex, setWordIndex] = useState(0)
     const { locale, t, localePath } = useLocale()
     const words = locale === 'en' ? ROTATING_WORDS_EN : ROTATING_WORDS
@@ -72,6 +75,24 @@ export default function Home({ featured, recent, affiliates }: Props) {
                 <meta property="og:title" content={SITE.name} />
                 <meta property="og:description" content={SITE.description} />
                 <meta property="og:type" content="website" />
+                <meta property="og:locale" content={locale === 'en' ? 'en_US' : 'es_CO'} />
+                <meta property="og:site_name" content="NeuralRift" />
+                {canonical && <meta property="og:url" content={canonical} />}
+                <meta name="twitter:card" content="summary_large_image" />
+                <meta name="twitter:site" content="@neuralrift" />
+                <script type="application/ld+json">
+                    {JSON.stringify({
+                        '@context': 'https://schema.org',
+                        '@type': 'WebSite',
+                        name: 'NeuralRift',
+                        url: 'https://neuralrift.com',
+                        potentialAction: {
+                            '@type': 'SearchAction',
+                            target: 'https://neuralrift.com/blog?search={search_term_string}',
+                            'query-input': 'required name=search_term_string',
+                        },
+                    })}
+                </script>
             </Head>
 
             <Navbar />

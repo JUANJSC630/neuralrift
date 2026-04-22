@@ -211,7 +211,7 @@ export default function PostEdit({ post, categories, tags, affiliates }: Props) 
                     <button
                         type="button"
                         onClick={handlePublish}
-                        className="rounded-lg bg-gradient-to-r from-nr-accent to-[#6d58f0] px-6 py-2 text-sm font-semibold text-white transition-all duration-200 hover:-translate-y-0.5"
+                        className="rounded-lg bg-gradient-to-r from-nr-accent to-nr-accent-dark px-6 py-2 text-sm font-semibold text-white transition-all duration-200 hover:-translate-y-0.5"
                     >
                         {post?.status === 'published' ? 'Actualizar' : 'Publicar'}
                     </button>

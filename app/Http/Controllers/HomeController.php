@@ -46,6 +46,7 @@ class HomeController extends Controller
             'recent'     => $recent,
             'popular'    => $popular,
             'affiliates' => $affiliates,
+            'canonical'  => url($lang === 'en' ? '/en' : '/'),
         ]);
     }
 }

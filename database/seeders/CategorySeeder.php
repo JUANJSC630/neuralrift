@@ -58,6 +58,42 @@ class CategorySeeder extends Seeder
                 'order' => 6,
                 'description' => 'Las últimas novedades del ecosistema de IA.'
             ],
+            [
+                'name' => 'Desarrollo Web',
+                'name_en' => 'Web Dev',
+                'color' => '#3B82F6',
+                'icon' => '⟨/⟩',
+                'order' => 7,
+                'description' => 'Laravel, React, Inertia, deploy y arquitectura web moderna.',
+                'description_en' => 'Laravel, React, Inertia, deployment and modern web architecture.',
+            ],
+            [
+                'name' => 'Productividad',
+                'name_en' => 'Productivity',
+                'color' => '#8B5CF6',
+                'icon' => '⊡',
+                'order' => 8,
+                'description' => 'Herramientas y sistemas para trabajar mejor y en menos tiempo.',
+                'description_en' => 'Tools and systems to work smarter and faster.',
+            ],
+            [
+                'name' => 'Freelancing',
+                'name_en' => 'Freelancing',
+                'color' => '#14B8A6',
+                'icon' => '◆',
+                'order' => 9,
+                'description' => 'Cómo conseguir clientes, cobrar en dólares y escalar como freelancer desde LATAM.',
+                'description_en' => 'How to get clients, charge in USD and scale as a freelancer from LATAM.',
+            ],
+            [
+                'name' => 'Automatización',
+                'name_en' => 'Automation',
+                'color' => '#EF4444',
+                'icon' => '⟳',
+                'order' => 10,
+                'description' => 'Make, n8n, Zapier y flujos de trabajo que ahorran horas cada semana.',
+                'description_en' => 'Make, n8n, Zapier and workflows that save hours every week.',
+            ],
         ];
 
         foreach ($categories as $cat) {

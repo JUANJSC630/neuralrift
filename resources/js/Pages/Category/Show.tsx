@@ -29,7 +29,7 @@ export default function CategoryShow({ category, posts, featured }: Props) {
 
             <Navbar />
 
-            <main className="min-h-screen bg-nr-bg pt-[70px]">
+            <main id="main-content" className="min-h-screen bg-nr-bg pt-[70px]">
                 {/* Hero with category-colored gradient */}
                 <section className="relative overflow-hidden border-b border-white/[0.05]">
                     <div

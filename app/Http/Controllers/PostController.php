@@ -42,9 +42,10 @@ class PostController extends Controller
         $posts = $query->paginate(12)->withQueryString();
 
         return Inertia::render('Blog/Index', [
-            'posts'   => $posts,
-            'filters' => $request->only(['category', 'tag', 'search', 'sort']),
-            'lang'    => $lang,
+            'posts'     => $posts,
+            'filters'   => $request->only(['category', 'tag', 'search', 'sort']),
+            'lang'      => $lang,
+            'canonical' => url($isEn ? '/en/blog' : '/blog'),
         ]);
     }
 
@@ -69,8 +70,6 @@ class PostController extends Controller
             ->take(3)
             ->get();
 
-        $post->increment('views_count');
-
         $title = $isEn && $post->title_en ? $post->title_en : $post->title;
         $desc  = $isEn && $post->excerpt_en ? $post->excerpt_en : $post->excerpt;
 
@@ -92,10 +91,15 @@ class PostController extends Controller
         ];
 
         return Inertia::render('Blog/Show', [
-            'post'    => $post,
-            'related' => $related,
-            'schema'  => $schema,
-            'lang'    => $lang,
+            'post'       => $post,
+            'related'    => $related,
+            'schema'     => $schema,
+            'lang'       => $lang,
+            'canonical'  => url($isEn ? "/en/blog/{$post->slug_en}" : "/blog/{$post->slug}"),
+            'alternates' => [
+                'es' => url("/blog/{$post->slug}"),
+                'en' => $post->slug_en ? url("/en/blog/{$post->slug_en}") : null,
+            ],
         ]);
     }
 }

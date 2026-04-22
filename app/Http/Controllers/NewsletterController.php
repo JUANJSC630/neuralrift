@@ -2,32 +2,37 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Subscriber;
-use Illuminate\Http\Request;
+use App\Actions\Newsletter\ConfirmSubscriberAction;
+use App\Actions\Newsletter\SubscribeAction;
+use App\Http\Requests\SubscribeNewsletterRequest;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Http\RedirectResponse;
 
 class NewsletterController extends Controller
 {
-    public function subscribe(Request $request)
-    {
-        $request->validate(['email' => 'required|email']);
+    public function __construct(
+        private readonly SubscribeAction $subscribeAction,
+        private readonly ConfirmSubscriberAction $confirmAction,
+    ) {}
 
-        Subscriber::firstOrCreate(
-            ['email' => $request->email],
-            ['confirmed' => false]
+    public function subscribe(SubscribeNewsletterRequest $request): RedirectResponse
+    {
+        $this->subscribeAction->execute(
+            $request->validated('email'),
+            $request->validated('lang', 'es'),
         );
 
-        return back()->with('success', '¡Suscrito! Revisa tu email.');
+        return back()->with('success', 'Revisa tu email para confirmar tu suscripción.');
     }
 
-    public function confirm(string $token)
+    public function confirm(string $token): RedirectResponse
     {
-        $subscriber = Subscriber::where('token', $token)->firstOrFail();
-        $subscriber->update([
-            'confirmed'    => true,
-            'confirmed_at' => now(),
-            'token'        => null,
-        ]);
+        try {
+            $this->confirmAction->execute($token);
 
-        return redirect('/')->with('success', '¡Email confirmado! Bienvenido a NeuralRift.');
+            return redirect('/')->with('success', '¡Confirmado! Bienvenido a NeuralRift.');
+        } catch (ModelNotFoundException) {
+            return redirect('/')->with('error', 'El link no es válido o ya fue usado.');
+        }
     }
 }
