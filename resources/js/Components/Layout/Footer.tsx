@@ -10,29 +10,27 @@ const SOCIAL_LINKS = [
 
 export default function Footer() {
     return (
-        <footer className="border-t border-white/[0.06] bg-nr-bg3 mt-24">
-            <div className="max-w-7xl mx-auto px-6 md:px-12 py-16">
-                <div className="grid grid-cols-1 md:grid-cols-4 gap-12">
+        <footer className="mt-24 border-t border-white/[0.06] bg-nr-bg3">
+            <div className="mx-auto max-w-7xl px-6 py-16 md:px-12">
+                <div className="grid grid-cols-1 gap-12 md:grid-cols-4">
                     {/* Brand */}
                     <div className="md:col-span-2">
-                        <div className="font-display text-2xl font-black text-gradient mb-3">
+                        <div className="text-gradient mb-3 font-display text-2xl font-black">
                             NeuralRift
                         </div>
-                        <p className="text-sm text-nr-muted leading-relaxed max-w-sm">
+                        <p className="max-w-sm text-sm leading-relaxed text-nr-muted">
                             Guías en profundidad, reviews honestas y estrategias para navegar la
                             revolución de la IA. Sin ruido, sin hype.
                         </p>
                         {/* Social */}
-                        <div className="flex gap-3 mt-6">
+                        <div className="mt-6 flex gap-3">
                             {SOCIAL_LINKS.map(s => (
                                 <a
                                     key={s.label}
                                     href={s.href}
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className="px-3 py-1.5 glass rounded-lg text-xs text-nr-faint
-                                              hover:text-nr-accent hover:border-nr-accent/30
-                                              transition-all duration-200"
+                                    className="glass rounded-lg px-3 py-1.5 text-xs text-nr-faint transition-all duration-200 hover:border-nr-accent/30 hover:text-nr-accent"
                                 >
                                     {s.label}
                                 </a>
@@ -42,10 +40,7 @@ export default function Footer() {
 
                     {/* Links */}
                     <div>
-                        <h4
-                            className="text-xs font-semibold text-nr-faint uppercase
-                                       tracking-widest mb-4"
-                        >
+                        <h4 className="mb-4 text-xs font-semibold uppercase tracking-widest text-nr-faint">
                             Navegación
                         </h4>
                         <ul className="space-y-2.5">
@@ -53,8 +48,7 @@ export default function Footer() {
                                 <li key={link.href}>
                                     <Link
                                         href={link.href}
-                                        className="text-sm text-nr-muted hover:text-nr-text
-                                                     transition-colors"
+                                        className="text-sm text-nr-muted transition-colors hover:text-nr-text"
                                     >
                                         {link.label}
                                     </Link>
@@ -65,10 +59,7 @@ export default function Footer() {
 
                     {/* Legal */}
                     <div>
-                        <h4
-                            className="text-xs font-semibold text-nr-faint uppercase
-                                       tracking-widest mb-4"
-                        >
+                        <h4 className="mb-4 text-xs font-semibold uppercase tracking-widest text-nr-faint">
                             Legal
                         </h4>
                         <ul className="space-y-2.5">
@@ -76,38 +67,34 @@ export default function Footer() {
                                 <li key={l}>
                                     <a
                                         href="#"
-                                        className="text-sm text-nr-muted
-                                                           hover:text-nr-text transition-colors"
+                                        className="text-sm text-nr-muted transition-colors hover:text-nr-text"
                                     >
                                         {l}
                                     </a>
                                 </li>
                             ))}
                         </ul>
-                        <p className="text-xs text-nr-faint mt-6 leading-relaxed">
+                        <p className="mt-6 text-xs leading-relaxed text-nr-faint">
                             Este blog contiene links de afiliado. Si compras a través de ellos
                             recibo una comisión sin costo adicional para ti.
                         </p>
                     </div>
                 </div>
 
-                <div
-                    className="border-t border-white/[0.05] mt-12 pt-8 flex flex-col
-                                md:flex-row items-center justify-between gap-4"
-                >
+                <div className="mt-12 flex flex-col items-center justify-between gap-4 border-t border-white/[0.05] pt-8 md:flex-row">
                     <p className="text-xs text-nr-faint">
                         © {new Date().getFullYear()} NeuralRift. Hecho con ☕ desde Colombia.
                     </p>
                     <div className="flex items-center gap-4">
                         <a
                             href="/feed.xml"
-                            className="text-xs text-nr-faint hover:text-nr-orange transition-colors"
+                            className="text-xs text-nr-faint transition-colors hover:text-nr-orange"
                         >
                             RSS Feed
                         </a>
                         <a
                             href="/sitemap.xml"
-                            className="text-xs text-nr-faint hover:text-nr-text transition-colors"
+                            className="text-xs text-nr-faint transition-colors hover:text-nr-text"
                         >
                             Sitemap
                         </a>

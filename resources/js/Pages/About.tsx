@@ -36,12 +36,12 @@ export default function About() {
 
             <Navbar />
 
-            <main className="min-h-screen bg-nr-bg pt-[70px]">
+            <main id="main-content" className="min-h-screen bg-nr-bg pt-[70px]">
                 {/* Hero */}
-                <section className="relative overflow-hidden py-20 border-b border-white/[0.05]">
+                <section className="relative overflow-hidden border-b border-white/[0.05] py-20">
                     <MeshBackground />
-                    <div className="relative z-10 max-w-4xl mx-auto px-6 md:px-12">
-                        <div className="flex flex-col md:flex-row items-center gap-12">
+                    <div className="relative z-10 mx-auto max-w-4xl px-6 md:px-12">
+                        <div className="flex flex-col items-center gap-12 md:flex-row">
                             {/* Avatar */}
                             <motion.div
                                 initial={{ opacity: 0, scale: 0.9 }}
@@ -50,18 +50,10 @@ export default function About() {
                                 className="flex-shrink-0"
                             >
                                 <div className="relative">
-                                    <div
-                                        className="w-40 h-40 rounded-3xl bg-gradient-to-br
-                                                    from-nr-accent to-nr-cyan flex items-center
-                                                    justify-center text-6xl font-bold text-white
-                                                    font-display"
-                                    >
+                                    <div className="flex h-40 w-40 items-center justify-center rounded-3xl bg-gradient-to-br from-nr-accent to-nr-cyan font-display text-6xl font-bold text-white">
                                         J
                                     </div>
-                                    <div
-                                        className="absolute inset-0 rounded-3xl glow-accent-lg
-                                                    opacity-40 blur-xl -z-10"
-                                    />
+                                    <div className="glow-accent-lg absolute inset-0 -z-10 rounded-3xl opacity-40 blur-xl" />
                                 </div>
                             </motion.div>
 
@@ -71,41 +63,31 @@ export default function About() {
                                 animate={{ opacity: 1, x: 0 }}
                                 transition={{ duration: 0.4, delay: 0.1 }}
                             >
-                                <span
-                                    className="text-xs font-mono text-nr-accent tracking-widest
-                                                 uppercase block mb-3"
-                                >
+                                <span className="mb-3 block font-mono text-xs uppercase tracking-widest text-nr-accent">
                                     Hola, soy
                                 </span>
-                                <h1
-                                    className="font-display text-4xl md:text-5xl font-black
-                                               text-nr-text mb-2"
-                                >
+                                <h1 className="text-gradient mb-2 font-display text-4xl font-black md:text-5xl">
                                     Juan Jose
                                 </h1>
-                                <p className="text-nr-muted text-lg mb-5 leading-relaxed">
+                                <p className="mb-5 text-lg leading-relaxed text-nr-muted">
                                     Desarrollador y apasionado de la IA desde Colombia. Escribo
                                     sobre tecnología, herramientas y cómo monetizar en la era de la
                                     inteligencia artificial.
                                 </p>
 
-                                <div className="flex gap-3 flex-wrap">
+                                <div className="flex flex-wrap gap-3">
                                     {[
                                         {
                                             label: 'Twitter/X',
                                             href: `https://twitter.com/${SITE.twitter.replace('@', '')}`,
                                         },
-                                        { label: 'LinkedIn', href: '#' },
-                                        { label: 'GitHub', href: '#' },
                                     ].map(s => (
                                         <a
                                             key={s.label}
                                             href={s.href}
                                             target="_blank"
                                             rel="noopener"
-                                            className="px-4 py-2 glass rounded-xl text-xs font-medium
-                                                      text-nr-muted hover:text-nr-text
-                                                      hover:border-white/20 transition-all duration-200"
+                                            className="glass rounded-xl px-4 py-2 text-xs font-medium text-nr-muted transition-all duration-200 hover:border-white/20 hover:text-nr-text"
                                         >
                                             {s.label} ↗
                                         </a>
@@ -116,17 +98,17 @@ export default function About() {
                     </div>
                 </section>
 
-                <div className="max-w-4xl mx-auto px-6 md:px-12 py-16 space-y-16">
+                <div className="mx-auto max-w-4xl space-y-16 px-6 py-16 md:px-12">
                     {/* Stats */}
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
-                        className="grid grid-cols-2 md:grid-cols-4 gap-4"
+                        className="grid grid-cols-2 gap-4 md:grid-cols-4"
                     >
                         {STATS.map(stat => (
                             <div key={stat.label} className="glass rounded-2xl p-5 text-center">
-                                <div className="text-3xl font-black font-display text-gradient mb-1">
+                                <div className="text-gradient mb-1 font-display text-3xl font-black">
                                     {stat.value}
                                 </div>
                                 <div className="text-xs text-nr-faint">{stat.label}</div>
@@ -140,10 +122,10 @@ export default function About() {
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                     >
-                        <h2 className="font-display text-2xl font-bold text-nr-text mb-6">
+                        <h2 className="mb-6 font-display text-2xl font-bold text-nr-text">
                             Por qué NeuralRift
                         </h2>
-                        <div className="space-y-4 text-nr-muted leading-relaxed">
+                        <div className="space-y-4 leading-relaxed text-nr-muted">
                             <p>
                                 Empecé NeuralRift porque me frustré con el ruido que rodea a la
                                 inteligencia artificial. Demasiado hype, demasiadas promesas vacías,
@@ -167,7 +149,7 @@ export default function About() {
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                     >
-                        <h2 className="font-display text-2xl font-bold text-nr-text mb-6">
+                        <h2 className="mb-6 font-display text-2xl font-bold text-nr-text">
                             Áreas de expertise
                         </h2>
                         <div className="flex flex-wrap gap-2">
@@ -178,9 +160,7 @@ export default function About() {
                                     whileInView={{ opacity: 1, scale: 1 }}
                                     viewport={{ once: true }}
                                     transition={{ delay: i * 0.05 }}
-                                    className="px-4 py-2 glass rounded-xl text-sm text-nr-muted
-                                               border border-white/[0.08] hover:border-nr-accent/30
-                                               hover:text-nr-accent transition-all duration-200"
+                                    className="glass rounded-xl px-4 py-2 text-sm text-nr-muted transition-all duration-200 hover:border-nr-accent/30 hover:text-nr-accent"
                                 >
                                     {skill}
                                 </motion.span>
@@ -195,20 +175,17 @@ export default function About() {
                         viewport={{ once: true }}
                         className="glass rounded-2xl p-8 text-center"
                     >
-                        <h2 className="font-display text-2xl font-bold text-nr-text mb-3">
+                        <h2 className="mb-3 font-display text-2xl font-bold text-nr-text">
                             ¿Colaboraciones?
                         </h2>
-                        <p className="text-nr-muted text-sm leading-relaxed mb-6 max-w-md mx-auto">
+                        <p className="mx-auto mb-6 max-w-md text-sm leading-relaxed text-nr-muted">
                             Estoy abierto a reviews patrocinadas, colaboraciones y menciones de
                             herramientas que realmente valgan la pena. Solo trabajo con productos
                             que usaría yo mismo.
                         </p>
                         <a
                             href="mailto:hola@neuralrift.com"
-                            className="inline-flex items-center gap-2 px-6 py-3 rounded-xl
-                                      font-semibold text-sm text-white
-                                      bg-gradient-to-r from-nr-accent to-[#6d58f0]
-                                      glow-accent hover:-translate-y-0.5 transition-all duration-200"
+                            className="glow-accent inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-nr-accent to-nr-accent-dark px-6 py-3 text-sm font-semibold text-white transition-all duration-200 will-change-transform hover:-translate-y-0.5"
                         >
                             ✉ hola@neuralrift.com
                         </a>

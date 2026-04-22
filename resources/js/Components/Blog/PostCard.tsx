@@ -9,16 +9,10 @@ export default function PostCard({ post }: { post: Post }) {
     return (
         <Link
             href={`/blog/${post.slug}`}
-            className="group block glass rounded-2xl overflow-hidden
-                         hover:border-white/[0.18]
-                         hover:-translate-y-1 will-change-transform
-                         transition-[transform,border-color] duration-300 h-full"
+            className="glass group block h-full overflow-hidden rounded-2xl transition-[transform,border-color] duration-300 will-change-transform hover:-translate-y-1 hover:border-white/[0.18]"
         >
             {/* Imagen */}
-            <div
-                className="relative h-48 bg-gradient-to-br from-nr-surface to-nr-bg2
-                            overflow-hidden flex items-center justify-center"
-            >
+            <div className="relative flex h-48 items-center justify-center overflow-hidden bg-gradient-to-br from-nr-surface to-nr-bg2">
                 {post.cover_image ? (
                     <img
                         src={post.cover_image}
@@ -27,30 +21,23 @@ export default function PostCard({ post }: { post: Post }) {
                         decoding="async"
                         width="800"
                         height="450"
-                        className="w-full h-full object-cover
-                                    group-hover:scale-105 transition-transform duration-500"
+                        className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
                     />
                 ) : (
-                    <div className="text-nr-faint font-mono text-xs text-center leading-loose">
-                        <div className="text-3xl mb-2 opacity-20">◈</div>
+                    <div className="text-center font-mono text-xs leading-loose text-nr-faint">
+                        <div className="mb-2 text-3xl opacity-20">◈</div>
                         NeuralRift
                     </div>
                 )}
                 {/* Lang badge */}
-                <div className="absolute top-3 right-3 flex gap-1.5">
+                <div className="absolute right-3 top-3 flex gap-1.5">
                     {(post.lang === 'es' || post.lang === 'both') && (
-                        <span
-                            className="px-2 py-0.5 rounded text-[10px] font-mono font-semibold
-                                         bg-nr-accent/20 border border-nr-accent/30 text-nr-accent"
-                        >
+                        <span className="rounded border border-nr-accent/30 bg-nr-accent/20 px-2 py-0.5 font-mono text-[10px] font-semibold text-nr-accent">
                             ES
                         </span>
                     )}
                     {(post.lang === 'en' || post.lang === 'both') && (
-                        <span
-                            className="px-2 py-0.5 rounded text-[10px] font-mono font-semibold
-                                         bg-nr-cyan/20 border border-nr-cyan/30 text-nr-cyan"
-                        >
+                        <span className="rounded border border-nr-cyan/30 bg-nr-cyan/20 px-2 py-0.5 font-mono text-[10px] font-semibold text-nr-cyan">
                             EN
                         </span>
                     )}
@@ -62,8 +49,7 @@ export default function PostCard({ post }: { post: Post }) {
                 {/* Categoría */}
                 {post.category && (
                     <span
-                        className="inline-block px-3 py-1 rounded-full text-[11px] font-semibold
-                                     uppercase tracking-wider mb-3"
+                        className="mb-3 inline-block rounded-full px-3 py-1 text-[11px] font-semibold uppercase tracking-wider"
                         style={{
                             background: `${catColor}20`,
                             border: `1px solid ${catColor}35`,
@@ -75,26 +61,19 @@ export default function PostCard({ post }: { post: Post }) {
                 )}
 
                 {/* Título */}
-                <h3
-                    className="font-display text-lg font-bold text-nr-text leading-snug
-                               mb-3 group-hover:text-nr-accent transition-colors duration-300
-                               line-clamp-2"
-                >
+                <h3 className="mb-3 line-clamp-2 font-display text-lg font-bold leading-snug text-nr-text transition-colors duration-300 group-hover:text-nr-accent">
                     {post.title}
                 </h3>
 
                 {/* Excerpt */}
                 {post.excerpt && (
-                    <p className="text-sm text-nr-muted leading-relaxed line-clamp-2 mb-4">
+                    <p className="mb-4 line-clamp-2 text-sm leading-relaxed text-nr-muted">
                         {post.excerpt}
                     </p>
                 )}
 
                 {/* Meta */}
-                <div
-                    className="flex items-center gap-3 text-xs text-nr-faint font-mono
-                                pt-4 border-t border-white/[0.05]"
-                >
+                <div className="flex items-center gap-3 border-t border-white/[0.05] pt-4 font-mono text-xs text-nr-faint">
                     <span>{formatDate(post.published_at ?? post.created_at)}</span>
                     <span className="text-white/10">·</span>
                     <span>{readTime(post.read_time)}</span>

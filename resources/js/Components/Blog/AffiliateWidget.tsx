@@ -2,13 +2,9 @@ import type { Affiliate } from '@/types'
 
 export default function AffiliateWidget({ affiliate }: { affiliate: Affiliate }) {
     return (
-        <div
-            className="glass rounded-2xl p-5 hover:border-white/[0.18]
-                        hover:-translate-y-1 will-change-transform
-                        transition-[transform,border-color] duration-300 flex flex-col h-full group"
-        >
+        <div className="glass group flex h-full flex-col rounded-2xl p-5 transition-[transform,border-color] duration-300 will-change-transform hover:-translate-y-1 hover:border-white/[0.18]">
             {/* Header */}
-            <div className="flex items-start justify-between mb-3">
+            <div className="mb-3 flex items-start justify-between">
                 <div className="flex items-center gap-3">
                     {affiliate.logo ? (
                         <img
@@ -18,30 +14,22 @@ export default function AffiliateWidget({ affiliate }: { affiliate: Affiliate })
                             decoding="async"
                             width="40"
                             height="40"
-                            className="w-10 h-10 rounded-xl object-contain bg-white/5 p-1"
+                            className="h-10 w-10 rounded-xl bg-white/5 object-contain p-1"
                         />
                     ) : (
-                        <div
-                            className="w-10 h-10 rounded-xl bg-gradient-to-br
-                                        from-nr-accent/20 to-nr-cyan/20 flex items-center
-                                        justify-center text-nr-accent font-bold text-lg"
-                        >
+                        <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-nr-accent/20 to-nr-cyan/20 text-lg font-bold text-nr-accent">
                             {affiliate.name[0]}
                         </div>
                     )}
                     <div>
-                        <h3 className="font-semibold text-nr-text text-sm">{affiliate.name}</h3>
+                        <h3 className="text-sm font-semibold text-nr-text">{affiliate.name}</h3>
                         {affiliate.category && (
                             <span className="text-xs text-nr-faint">{affiliate.category}</span>
                         )}
                     </div>
                 </div>
                 {affiliate.badge && (
-                    <span
-                        className="text-[10px] px-2 py-0.5 rounded-full font-semibold
-                                     bg-nr-gold/15 border border-nr-gold/25 text-nr-gold
-                                     whitespace-nowrap"
-                    >
+                    <span className="whitespace-nowrap rounded-full border border-nr-gold/25 bg-nr-gold/15 px-2 py-0.5 text-[10px] font-semibold text-nr-gold">
                         {affiliate.badge}
                     </span>
                 )}
@@ -49,15 +37,15 @@ export default function AffiliateWidget({ affiliate }: { affiliate: Affiliate })
 
             {/* Descripción */}
             {affiliate.description && (
-                <p className="text-xs text-nr-muted leading-relaxed mb-4 flex-1 line-clamp-2">
+                <p className="mb-4 line-clamp-2 flex-1 text-xs leading-relaxed text-nr-muted">
                     {affiliate.description}
                 </p>
             )}
 
             {/* Comisión */}
             {affiliate.commission && (
-                <div className="flex items-center gap-1.5 mb-4">
-                    <span className="text-xs text-nr-green font-mono font-semibold">
+                <div className="mb-4 flex items-center gap-1.5">
+                    <span className="font-mono text-xs font-semibold text-nr-green">
                         ✓ {affiliate.commission}
                     </span>
                 </div>
@@ -65,7 +53,7 @@ export default function AffiliateWidget({ affiliate }: { affiliate: Affiliate })
 
             {/* Rating */}
             {affiliate.rating && (
-                <div className="flex items-center gap-1 mb-4">
+                <div className="mb-4 flex items-center gap-1">
                     {Array.from({ length: 5 }).map((_, i) => (
                         <span
                             key={i}
@@ -74,7 +62,7 @@ export default function AffiliateWidget({ affiliate }: { affiliate: Affiliate })
                             ★
                         </span>
                     ))}
-                    <span className="text-xs text-nr-faint ml-1">{affiliate.rating}</span>
+                    <span className="ml-1 text-xs text-nr-faint">{affiliate.rating}</span>
                 </div>
             )}
 
@@ -83,12 +71,7 @@ export default function AffiliateWidget({ affiliate }: { affiliate: Affiliate })
                 href={`/herramientas/${affiliate.slug}/click`}
                 target="_blank"
                 rel="noopener noreferrer nofollow"
-                className="block text-center py-2.5 rounded-xl text-sm font-semibold
-                          bg-gradient-to-r from-nr-accent/20 to-nr-cyan/20
-                          border border-nr-accent/25 text-nr-accent
-                          hover:from-nr-accent hover:to-nr-accent-dark hover:text-white
-                          hover:border-transparent hover:glow-accent
-                          transition-all duration-300 mt-auto"
+                className="hover:glow-accent mt-auto block rounded-xl border border-nr-accent/25 bg-gradient-to-r from-nr-accent/20 to-nr-cyan/20 py-2.5 text-center text-sm font-semibold text-nr-accent transition-all duration-300 hover:border-transparent hover:from-nr-accent hover:to-nr-accent-dark hover:text-white"
             >
                 Ver herramienta →
             </a>

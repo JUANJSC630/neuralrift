@@ -1,9 +1,9 @@
 export default function MeshBackground({ className = '' }: { className?: string }) {
     return (
-        <div className={`absolute inset-0 pointer-events-none overflow-hidden ${className}`}>
-            <div className="absolute inset-0 mesh-bg" />
+        <div className={`pointer-events-none absolute inset-0 overflow-hidden ${className}`}>
+            <div className="mesh-bg absolute inset-0" />
             <div
-                className="absolute inset-0 noise opacity-40 mix-blend-overlay"
+                className="noise absolute inset-0 opacity-40 mix-blend-overlay"
                 style={{ backgroundSize: '128px 128px' }}
             />
         </div>

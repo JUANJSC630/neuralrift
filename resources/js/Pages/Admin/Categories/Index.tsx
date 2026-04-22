@@ -83,7 +83,7 @@ export default function CategoriesIndex({ categories }: Props) {
             <div className="flex gap-6">
                 {/* List */}
                 <div className="flex-1">
-                    <div className="flex items-center justify-between mb-5">
+                    <div className="mb-5 flex items-center justify-between">
                         <h2 className="font-display text-xl font-bold text-nr-text">Categorías</h2>
                         <button
                             onClick={() => {
@@ -91,26 +91,22 @@ export default function CategoriesIndex({ categories }: Props) {
                                 reset()
                                 setShowForm(true)
                             }}
-                            className="px-4 py-2 rounded-lg text-sm font-semibold text-white
-                                       bg-gradient-to-r from-nr-accent to-[#6d58f0]
-                                       glow-accent hover:-translate-y-0.5 transition-all"
+                            className="glow-accent rounded-lg bg-gradient-to-r from-nr-accent to-[#6d58f0] px-4 py-2 text-sm font-semibold text-white transition-all hover:-translate-y-0.5"
                         >
                             + Nueva categoría
                         </button>
                     </div>
 
-                    <div className="glass rounded-2xl overflow-hidden">
+                    <div className="glass overflow-hidden rounded-2xl">
                         <div className="divide-y divide-white/[0.04]">
                             {categories.map(cat => (
                                 <div
                                     key={cat.id}
-                                    className="flex items-center gap-4 px-6 py-4
-                                                hover:bg-white/[0.02] transition-colors group"
+                                    className="group flex items-center gap-4 px-6 py-4 transition-colors hover:bg-white/[0.02]"
                                 >
                                     {/* Color + icon */}
                                     <div
-                                        className="w-8 h-8 rounded-lg flex items-center justify-center
-                                                    text-sm flex-shrink-0"
+                                        className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-lg text-sm"
                                         style={{
                                             background: `${cat.color}20`,
                                             border: `1px solid ${cat.color}30`,
@@ -120,8 +116,8 @@ export default function CategoriesIndex({ categories }: Props) {
                                     </div>
 
                                     {/* Name */}
-                                    <div className="flex-1 min-w-0">
-                                        <p className="text-sm text-nr-text font-medium">
+                                    <div className="min-w-0 flex-1">
+                                        <p className="text-sm font-medium text-nr-text">
                                             {cat.name}
                                         </p>
                                         {cat.name_en && (
@@ -131,42 +127,31 @@ export default function CategoriesIndex({ categories }: Props) {
 
                                     {/* Color swatch */}
                                     <div
-                                        className="w-4 h-4 rounded-full flex-shrink-0"
+                                        className="h-4 w-4 flex-shrink-0 rounded-full"
                                         style={{ background: cat.color }}
                                     />
 
                                     {/* Order */}
-                                    <span
-                                        className="text-xs font-mono text-nr-faint w-6 text-center
-                                                     flex-shrink-0"
-                                    >
+                                    <span className="w-6 flex-shrink-0 text-center font-mono text-xs text-nr-faint">
                                         #{cat.order}
                                     </span>
 
                                     {/* Posts count */}
-                                    <span
-                                        className="text-xs font-mono text-nr-faint flex-shrink-0
-                                                     hidden md:block"
-                                    >
+                                    <span className="hidden flex-shrink-0 font-mono text-xs text-nr-faint md:block">
                                         {cat.posts_count} posts
                                     </span>
 
                                     {/* Actions */}
-                                    <div
-                                        className="flex gap-3 opacity-0 group-hover:opacity-100
-                                                    transition-opacity flex-shrink-0"
-                                    >
+                                    <div className="flex flex-shrink-0 gap-3 opacity-0 transition-opacity group-hover:opacity-100">
                                         <button
                                             onClick={() => startEdit(cat)}
-                                            className="text-xs text-nr-muted hover:text-nr-text
-                                                           transition-colors"
+                                            className="text-xs text-nr-muted transition-colors hover:text-nr-text"
                                         >
                                             Editar
                                         </button>
                                         <button
                                             onClick={() => deleteCategory(cat)}
-                                            className="text-xs text-nr-faint hover:text-nr-red
-                                                           transition-colors"
+                                            className="text-xs text-nr-faint transition-colors hover:text-nr-red"
                                         >
                                             Eliminar
                                         </button>
@@ -175,7 +160,7 @@ export default function CategoriesIndex({ categories }: Props) {
                             ))}
 
                             {categories.length === 0 && (
-                                <div className="text-center py-12 text-nr-faint text-sm">
+                                <div className="py-12 text-center text-sm text-nr-faint">
                                     No hay categorías creadas.
                                 </div>
                             )}
@@ -186,8 +171,8 @@ export default function CategoriesIndex({ categories }: Props) {
                 {/* Side form */}
                 {showForm && (
                     <div className="w-[320px] flex-shrink-0">
-                        <div className="glass rounded-2xl p-6 sticky top-6">
-                            <div className="flex items-center justify-between mb-5">
+                        <div className="glass sticky top-6 rounded-2xl p-6">
+                            <div className="mb-5 flex items-center justify-between">
                                 <h3 className="font-semibold text-nr-text">
                                     {editing ? 'Editar categoría' : 'Nueva categoría'}
                                 </h3>
@@ -197,7 +182,7 @@ export default function CategoriesIndex({ categories }: Props) {
                                         setEditing(null)
                                         reset()
                                     }}
-                                    className="text-nr-faint hover:text-nr-text transition-colors text-sm"
+                                    className="text-sm text-nr-faint transition-colors hover:text-nr-text"
                                 >
                                     ✕
                                 </button>
@@ -205,10 +190,7 @@ export default function CategoriesIndex({ categories }: Props) {
 
                             <form onSubmit={handleSubmit} className="space-y-4">
                                 <div>
-                                    <label
-                                        className="text-[10px] font-mono text-nr-faint uppercase
-                                                      tracking-wider block mb-1.5"
-                                    >
+                                    <label className="mb-1.5 block font-mono text-[10px] uppercase tracking-wider text-nr-faint">
                                         Nombre (ES)
                                     </label>
                                     <input
@@ -219,15 +201,12 @@ export default function CategoriesIndex({ categories }: Props) {
                                         required
                                     />
                                     {errors.name && (
-                                        <p className="text-xs text-nr-red mt-1">{errors.name}</p>
+                                        <p className="mt-1 text-xs text-nr-red">{errors.name}</p>
                                     )}
                                 </div>
 
                                 <div>
-                                    <label
-                                        className="text-[10px] font-mono text-nr-faint uppercase
-                                                      tracking-wider block mb-1.5"
-                                    >
+                                    <label className="mb-1.5 block font-mono text-[10px] uppercase tracking-wider text-nr-faint">
                                         Nombre (EN)
                                     </label>
                                     <input
@@ -239,10 +218,7 @@ export default function CategoriesIndex({ categories }: Props) {
                                 </div>
 
                                 <div>
-                                    <label
-                                        className="text-[10px] font-mono text-nr-faint uppercase
-                                                      tracking-wider block mb-1.5"
-                                    >
+                                    <label className="mb-1.5 block font-mono text-[10px] uppercase tracking-wider text-nr-faint">
                                         Descripción
                                     </label>
                                     <textarea
@@ -256,10 +232,7 @@ export default function CategoriesIndex({ categories }: Props) {
 
                                 <div className="grid grid-cols-2 gap-3">
                                     <div>
-                                        <label
-                                            className="text-[10px] font-mono text-nr-faint uppercase
-                                                          tracking-wider block mb-1.5"
-                                        >
+                                        <label className="mb-1.5 block font-mono text-[10px] uppercase tracking-wider text-nr-faint">
                                             Icono
                                         </label>
                                         <input
@@ -271,10 +244,7 @@ export default function CategoriesIndex({ categories }: Props) {
                                         />
                                     </div>
                                     <div>
-                                        <label
-                                            className="text-[10px] font-mono text-nr-faint uppercase
-                                                          tracking-wider block mb-1.5"
-                                        >
+                                        <label className="mb-1.5 block font-mono text-[10px] uppercase tracking-wider text-nr-faint">
                                             Orden
                                         </label>
                                         <input
@@ -291,22 +261,19 @@ export default function CategoriesIndex({ categories }: Props) {
 
                                 {/* Color picker */}
                                 <div>
-                                    <label
-                                        className="text-[10px] font-mono text-nr-faint uppercase
-                                                      tracking-wider block mb-2"
-                                    >
+                                    <label className="mb-2 block font-mono text-[10px] uppercase tracking-wider text-nr-faint">
                                         Color
                                     </label>
-                                    <div className="flex flex-wrap gap-2 mb-2">
+                                    <div className="mb-2 flex flex-wrap gap-2">
                                         {PRESET_COLORS.map(color => (
                                             <button
                                                 key={color}
                                                 type="button"
                                                 onClick={() => setData('color', color)}
                                                 className={cn(
-                                                    'w-7 h-7 rounded-lg transition-all',
+                                                    'h-7 w-7 rounded-lg transition-all',
                                                     data.color === color
-                                                        ? 'ring-2 ring-white ring-offset-2 ring-offset-nr-bg2 scale-110'
+                                                        ? 'scale-110 ring-2 ring-white ring-offset-2 ring-offset-nr-bg2'
                                                         : 'hover:scale-105',
                                                 )}
                                                 style={{ background: color }}
@@ -316,14 +283,13 @@ export default function CategoriesIndex({ categories }: Props) {
                                             type="color"
                                             value={data.color}
                                             onChange={e => setData('color', e.target.value)}
-                                            className="w-7 h-7 rounded-lg cursor-pointer border-0
-                                                          bg-transparent"
+                                            className="h-7 w-7 cursor-pointer rounded-lg border-0 bg-transparent"
                                             title="Color personalizado"
                                         />
                                     </div>
                                     {/* Live preview */}
                                     <div
-                                        className="flex items-center gap-2 p-2 rounded-lg"
+                                        className="flex items-center gap-2 rounded-lg p-2"
                                         style={{ background: `${data.color}10` }}
                                     >
                                         <span>{data.icon || '◈'}</span>
@@ -339,10 +305,7 @@ export default function CategoriesIndex({ categories }: Props) {
                                 <button
                                     type="submit"
                                     disabled={processing}
-                                    className="w-full py-2.5 rounded-xl text-sm font-semibold
-                                                   text-white bg-gradient-to-r from-nr-accent to-[#6d58f0]
-                                                   glow-accent hover:-translate-y-0.5 transition-all
-                                                   disabled:opacity-50"
+                                    className="glow-accent w-full rounded-xl bg-gradient-to-r from-nr-accent to-[#6d58f0] py-2.5 text-sm font-semibold text-white transition-all hover:-translate-y-0.5 disabled:opacity-50"
                                 >
                                     {processing
                                         ? 'Guardando...'

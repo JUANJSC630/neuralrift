@@ -13,6 +13,10 @@ export default {
     arrowParens:       'avoid',
     endOfLine:         'lf',
 
+    // Tailwind: ordena y normaliza clases en una sola línea
+    plugins:           ['prettier-plugin-tailwindcss'],
+    tailwindConfig:    './tailwind.config.js',
+
     // Por tipo de archivo
     overrides: [
         {

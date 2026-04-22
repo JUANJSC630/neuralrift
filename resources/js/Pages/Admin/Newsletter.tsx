@@ -47,7 +47,7 @@ export default function Newsletter({ subscribers, totals, filters }: Props) {
             <Head title="Newsletter — Admin" />
 
             {/* KPIs */}
-            <div className="grid grid-cols-2 md:grid-cols-5 gap-4 mb-6">
+            <div className="mb-6 grid grid-cols-2 gap-4 md:grid-cols-5">
                 {[
                     { label: 'Total', value: totals.all, color: 'text-nr-text' },
                     { label: 'Confirmados', value: totals.confirmed, color: 'text-nr-green' },
@@ -56,10 +56,10 @@ export default function Newsletter({ subscribers, totals, filters }: Props) {
                     { label: 'Inglés', value: totals.en, color: 'text-nr-cyan' },
                 ].map(stat => (
                     <div key={stat.label} className="glass rounded-2xl p-4 text-center">
-                        <div className={`text-2xl font-bold font-display ${stat.color} mb-1`}>
+                        <div className={`font-display text-2xl font-bold ${stat.color} mb-1`}>
                             {stat.value.toLocaleString()}
                         </div>
-                        <div className="text-[10px] font-mono text-nr-faint uppercase tracking-wider">
+                        <div className="font-mono text-[10px] uppercase tracking-wider text-nr-faint">
                             {stat.label}
                         </div>
                     </div>
@@ -67,26 +67,23 @@ export default function Newsletter({ subscribers, totals, filters }: Props) {
             </div>
 
             {/* Filters */}
-            <div className="glass rounded-2xl p-4 mb-5 flex flex-wrap gap-3 items-center">
-                <form onSubmit={handleSearch} className="flex gap-2 flex-1 min-w-[200px]">
+            <div className="glass mb-5 flex flex-wrap items-center gap-3 rounded-2xl p-4">
+                <form onSubmit={handleSearch} className="flex min-w-[200px] flex-1 gap-2">
                     <input
                         value={search}
                         onChange={e => setSearch(e.target.value)}
                         placeholder="Buscar por email..."
-                        className="flex-1 bg-white/[0.04] border border-white/[0.08] rounded-lg
-                                   px-3 py-2 text-sm text-nr-text placeholder-nr-faint
-                                   outline-none focus:border-nr-accent/40"
+                        className="flex-1 rounded-lg border border-white/[0.08] bg-white/[0.04] px-3 py-2 text-sm text-nr-text placeholder-nr-faint outline-none focus:border-nr-accent/40"
                     />
                     <button
                         type="submit"
-                        className="px-3 py-2 glass rounded-lg text-xs text-nr-muted
-                                       hover:text-nr-text transition-colors"
+                        className="glass rounded-lg px-3 py-2 text-xs text-nr-muted transition-colors hover:text-nr-text"
                     >
                         Buscar
                     </button>
                 </form>
 
-                <div className="flex gap-1 glass rounded-xl p-1">
+                <div className="glass flex gap-1 rounded-xl p-1">
                     {[
                         { label: 'Todos', value: '' },
                         { label: 'Confirmados', value: '1' },
@@ -96,7 +93,7 @@ export default function Newsletter({ subscribers, totals, filters }: Props) {
                             key={opt.label}
                             onClick={() => applyFilter('confirmed', opt.value)}
                             className={cn(
-                                'px-3 py-1.5 rounded-lg text-xs transition-all',
+                                'rounded-lg px-3 py-1.5 text-xs transition-all',
                                 (filters.confirmed ?? '') === opt.value
                                     ? 'bg-nr-accent text-white'
                                     : 'text-nr-faint hover:text-nr-muted',
@@ -110,7 +107,7 @@ export default function Newsletter({ subscribers, totals, filters }: Props) {
                 {(filters.confirmed !== undefined || filters.search) && (
                     <button
                         onClick={() => router.get('/admin/newsletter')}
-                        className="text-xs text-nr-faint hover:text-nr-red transition-colors"
+                        className="text-xs text-nr-faint transition-colors hover:text-nr-red"
                     >
                         ✕ Limpiar
                     </button>
@@ -118,78 +115,68 @@ export default function Newsletter({ subscribers, totals, filters }: Props) {
             </div>
 
             {/* Table */}
-            <div className="glass rounded-2xl overflow-hidden">
-                <div
-                    className="flex items-center justify-between px-6 py-4
-                                border-b border-white/[0.05]"
-                >
-                    <span className="text-xs text-nr-faint font-mono">
+            <div className="glass overflow-hidden rounded-2xl">
+                <div className="flex items-center justify-between border-b border-white/[0.05] px-6 py-4">
+                    <span className="font-mono text-xs text-nr-faint">
                         {subscribers.from}–{subscribers.to} de {subscribers.total} suscriptores
                     </span>
-                    <button className="text-xs text-nr-accent hover:text-nr-accent/80 transition-colors">
+                    <button className="text-xs text-nr-accent transition-colors hover:text-nr-accent/80">
                         ↓ Exportar CSV
                     </button>
                 </div>
 
                 <div className="divide-y divide-white/[0.04]">
                     {subscribers.data.length === 0 ? (
-                        <div className="text-center py-12 text-nr-faint text-sm">
+                        <div className="py-12 text-center text-sm text-nr-faint">
                             No se encontraron suscriptores.
                         </div>
                     ) : (
                         subscribers.data.map(sub => (
                             <div
                                 key={sub.id}
-                                className="flex items-center gap-4 px-6 py-3
-                                        hover:bg-white/[0.02] transition-colors group"
+                                className="group flex items-center gap-4 px-6 py-3 transition-colors hover:bg-white/[0.02]"
                             >
                                 {/* Avatar */}
-                                <div
-                                    className="w-8 h-8 rounded-full bg-gradient-to-br
-                                            from-nr-accent/20 to-nr-cyan/20 flex items-center
-                                            justify-center text-xs font-bold text-nr-accent
-                                            flex-shrink-0"
-                                >
+                                <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-nr-accent/20 to-nr-cyan/20 text-xs font-bold text-nr-accent">
                                     {sub.email[0].toUpperCase()}
                                 </div>
 
                                 {/* Email + name */}
-                                <div className="flex-1 min-w-0">
-                                    <p className="text-sm text-nr-text font-medium truncate">
+                                <div className="min-w-0 flex-1">
+                                    <p className="truncate text-sm font-medium text-nr-text">
                                         {sub.email}
                                     </p>
                                     {sub.name && (
-                                        <p className="text-xs text-nr-faint truncate">{sub.name}</p>
+                                        <p className="truncate text-xs text-nr-faint">{sub.name}</p>
                                     )}
                                 </div>
 
                                 {/* Status badge */}
                                 <span
                                     className={cn(
-                                        'px-2.5 py-1 rounded-full text-[10px] font-semibold border flex-shrink-0',
+                                        'flex-shrink-0 rounded-full border px-2.5 py-1 text-[10px] font-semibold',
                                         sub.confirmed
-                                            ? 'bg-nr-green/15 text-nr-green border-nr-green/25'
-                                            : 'bg-nr-gold/15 text-nr-gold border-nr-gold/25',
+                                            ? 'border-nr-green/25 bg-nr-green/15 text-nr-green'
+                                            : 'border-nr-gold/25 bg-nr-gold/15 text-nr-gold',
                                     )}
                                 >
                                     {sub.confirmed ? 'Confirmado' : 'Pendiente'}
                                 </span>
 
                                 {/* Language */}
-                                <span className="text-xs font-mono text-nr-faint flex-shrink-0 w-8 text-center">
+                                <span className="w-8 flex-shrink-0 text-center font-mono text-xs text-nr-faint">
                                     {sub.lang.toUpperCase()}
                                 </span>
 
                                 {/* Date */}
-                                <span className="text-xs font-mono text-nr-faint flex-shrink-0 hidden md:block">
+                                <span className="hidden flex-shrink-0 font-mono text-xs text-nr-faint md:block">
                                     {formatDate(sub.created_at)}
                                 </span>
 
                                 {/* Delete */}
                                 <button
                                     onClick={() => deleteSubscriber(sub.id, sub.email)}
-                                    className="text-xs text-nr-faint hover:text-nr-red transition-colors
-                                           opacity-0 group-hover:opacity-100 flex-shrink-0"
+                                    className="flex-shrink-0 text-xs text-nr-faint opacity-0 transition-colors hover:text-nr-red group-hover:opacity-100"
                                 >
                                     ✕
                                 </button>
@@ -200,10 +187,7 @@ export default function Newsletter({ subscribers, totals, filters }: Props) {
 
                 {/* Pagination */}
                 {subscribers.last_page > 1 && (
-                    <div
-                        className="flex items-center justify-center gap-2 px-6 py-4
-                                    border-t border-white/[0.05]"
-                    >
+                    <div className="flex items-center justify-center gap-2 border-t border-white/[0.05] px-6 py-4">
                         {subscribers.links.map((link, i) => (
                             <button
                                 key={i}
@@ -211,7 +195,7 @@ export default function Newsletter({ subscribers, totals, filters }: Props) {
                                 disabled={!link.url}
                                 dangerouslySetInnerHTML={{ __html: link.label }}
                                 className={cn(
-                                    'px-3 py-1.5 rounded-lg text-xs font-mono transition-all',
+                                    'rounded-lg px-3 py-1.5 font-mono text-xs transition-all',
                                     link.active
                                         ? 'bg-nr-accent text-white'
                                         : 'text-nr-faint hover:text-nr-muted disabled:opacity-30',

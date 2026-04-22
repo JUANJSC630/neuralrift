@@ -20,76 +20,68 @@ export default function CategoryIndex({ categories }: Props) {
 
             <Navbar />
 
-            <main className="pt-[70px] min-h-screen bg-nr-bg">
-                <section className="max-w-5xl mx-auto px-6 md:px-12 py-20">
+            <main className="min-h-screen bg-nr-bg pt-[70px]">
+                <section className="mx-auto max-w-5xl px-6 py-20 md:px-12">
                     {/* Header */}
                     <div className="mb-14">
-                        <span className="text-xs font-mono text-nr-faint uppercase tracking-widest">
+                        <span className="font-mono text-xs uppercase tracking-widest text-nr-faint">
                             Explorar
                         </span>
-                        <h1 className="font-display text-4xl md:text-5xl font-black mt-2 text-gradient">
+                        <h1 className="text-gradient mt-2 font-display text-4xl font-black md:text-5xl">
                             Categorías
                         </h1>
-                        <p className="text-nr-muted mt-3 max-w-lg">
+                        <p className="mt-3 max-w-lg text-nr-muted">
                             Todos los temas que cubro en NeuralRift, desde modelos de lenguaje hasta
                             automatización.
                         </p>
                     </div>
 
                     {/* Grid */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+                    <div className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
                         {categories.map(cat => (
                             <Link
                                 key={cat.id}
                                 href={`/categoria/${cat.slug}`}
-                                className="glass rounded-2xl p-6 group hover:border-white/[0.14]
-                                             transition-all duration-300 hover:-translate-y-1"
+                                className="glass group rounded-2xl p-6 transition-all duration-300 hover:-translate-y-1 hover:border-white/[0.14]"
                             >
-                                <div className="flex items-start justify-between mb-4">
+                                <div className="mb-4 flex items-start justify-between">
                                     <div className="flex items-center gap-3">
                                         {cat.icon ? (
                                             <span className="text-2xl">{cat.icon}</span>
                                         ) : (
                                             <div
-                                                className="w-8 h-8 rounded-lg"
+                                                className="h-8 w-8 rounded-lg"
                                                 style={{ background: cat.color + '33' }}
                                             />
                                         )}
                                         <div
-                                            className="w-1 h-8 rounded-full flex-shrink-0"
+                                            className="h-8 w-1 flex-shrink-0 rounded-full"
                                             style={{ background: cat.color }}
                                         />
                                     </div>
-                                    <span
-                                        className="text-xs font-mono text-nr-faint glass
-                                                     px-2 py-0.5 rounded-md"
-                                    >
+                                    <span className="glass rounded-md px-2 py-0.5 font-mono text-xs text-nr-faint">
                                         {cat.posts_count}
                                     </span>
                                 </div>
 
                                 <h2
-                                    className="font-display font-bold text-lg text-nr-text
-                                               group-hover:text-white transition-colors"
+                                    className="font-display text-lg font-bold text-nr-text transition-colors group-hover:text-white"
                                     style={{ color: cat.color }}
                                 >
                                     {cat.name}
                                 </h2>
                                 {cat.name_en && (
-                                    <p className="text-xs text-nr-faint mt-0.5">{cat.name_en}</p>
+                                    <p className="mt-0.5 text-xs text-nr-faint">{cat.name_en}</p>
                                 )}
                                 {cat.description && (
-                                    <p className="text-sm text-nr-muted mt-2 line-clamp-2 leading-relaxed">
+                                    <p className="mt-2 line-clamp-2 text-sm leading-relaxed text-nr-muted">
                                         {cat.description}
                                     </p>
                                 )}
 
-                                <div
-                                    className="mt-4 text-xs text-nr-faint group-hover:text-nr-accent
-                                                transition-colors flex items-center gap-1"
-                                >
+                                <div className="mt-4 flex items-center gap-1 text-xs text-nr-faint transition-colors group-hover:text-nr-accent">
                                     Ver artículos
-                                    <span className="group-hover:translate-x-1 transition-transform">
+                                    <span className="transition-transform group-hover:translate-x-1">
                                         →
                                     </span>
                                 </div>
@@ -98,7 +90,7 @@ export default function CategoryIndex({ categories }: Props) {
                     </div>
 
                     {categories.length === 0 && (
-                        <div className="text-center py-20 text-nr-faint">
+                        <div className="py-20 text-center text-nr-faint">
                             Aún no hay categorías publicadas.
                         </div>
                     )}

@@ -69,7 +69,7 @@ export default function TableOfContents({ content }: Props) {
 
     return (
         <div className="glass rounded-2xl p-5">
-            <p className="text-xs font-mono text-nr-faint uppercase tracking-widest mb-4">
+            <p className="mb-4 font-mono text-xs uppercase tracking-widest text-nr-faint">
                 Contenido
             </p>
             <nav className="space-y-1">
@@ -82,10 +82,10 @@ export default function TableOfContents({ content }: Props) {
                             scrollTo(heading.id)
                         }}
                         className={[
-                            'block text-sm transition-colors leading-relaxed',
+                            'block text-sm leading-relaxed transition-colors',
                             heading.level === 3 ? 'pl-3' : '',
                             activeId === heading.id
-                                ? 'text-nr-accent font-medium'
+                                ? 'font-medium text-nr-accent'
                                 : 'text-nr-faint hover:text-nr-muted',
                         ].join(' ')}
                     >

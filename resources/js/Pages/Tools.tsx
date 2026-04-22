@@ -29,17 +29,17 @@ export default function Tools({ affiliates, grouped }: Props) {
 
             <Navbar />
 
-            <main className="pt-[70px] min-h-screen bg-nr-bg">
-                <section className="max-w-7xl mx-auto px-6 md:px-12 py-16">
+            <main className="min-h-screen bg-nr-bg pt-[70px]">
+                <section className="mx-auto max-w-7xl px-6 py-16 md:px-12">
                     {/* Header */}
-                    <div className="text-center mb-12">
-                        <span className="text-xs font-mono text-nr-accent tracking-widest uppercase mb-3 block">
+                    <div className="mb-12 text-center">
+                        <span className="mb-3 block font-mono text-xs uppercase tracking-widest text-nr-accent">
                             Herramientas recomendadas
                         </span>
-                        <h1 className="font-display text-4xl md:text-5xl font-black text-nr-text mb-4">
+                        <h1 className="mb-4 font-display text-4xl font-black text-nr-text md:text-5xl">
                             Las mejores herramientas IA
                         </h1>
-                        <p className="text-nr-muted max-w-xl mx-auto">
+                        <p className="mx-auto max-w-xl text-nr-muted">
                             Solo recomiendo herramientas que uso o he probado personalmente. Algunos
                             links son de afiliado.
                         </p>
@@ -47,15 +47,14 @@ export default function Tools({ affiliates, grouped }: Props) {
 
                     {/* Category filter pills */}
                     {categories.length > 1 && (
-                        <div className="flex flex-wrap justify-center gap-2 mb-12">
+                        <div className="mb-12 flex flex-wrap justify-center gap-2">
                             <button
                                 onClick={() => setActive(null)}
-                                className={`px-5 py-2 rounded-full text-sm font-semibold transition-all
-                                    ${
-                                        !active
-                                            ? 'bg-nr-accent/20 border border-nr-accent/30 text-nr-accent'
-                                            : 'glass text-nr-faint hover:text-nr-muted'
-                                    }`}
+                                className={`rounded-full px-5 py-2 text-sm font-semibold transition-all ${
+                                    !active
+                                        ? 'border border-nr-accent/30 bg-nr-accent/20 text-nr-accent'
+                                        : 'glass text-nr-faint hover:text-nr-muted'
+                                }`}
                             >
                                 Todas ({affiliates.length})
                             </button>
@@ -63,12 +62,11 @@ export default function Tools({ affiliates, grouped }: Props) {
                                 <button
                                     key={cat}
                                     onClick={() => setActive(cat)}
-                                    className={`px-5 py-2 rounded-full text-sm font-semibold transition-all
-                                            ${
-                                                active === cat
-                                                    ? 'bg-nr-accent/20 border border-nr-accent/30 text-nr-accent'
-                                                    : 'glass text-nr-faint hover:text-nr-muted'
-                                            }`}
+                                    className={`rounded-full px-5 py-2 text-sm font-semibold transition-all ${
+                                        active === cat
+                                            ? 'border border-nr-accent/30 bg-nr-accent/20 text-nr-accent'
+                                            : 'glass text-nr-faint hover:text-nr-muted'
+                                    }`}
                                 >
                                     {cat} ({grouped[cat].length})
                                 </button>
@@ -78,7 +76,7 @@ export default function Tools({ affiliates, grouped }: Props) {
 
                     {/* Grid */}
                     {displayed.length > 0 ? (
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+                        <div className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
                             {displayed.map((affiliate, i) => (
                                 <motion.div
                                     key={affiliate.id}
@@ -91,14 +89,14 @@ export default function Tools({ affiliates, grouped }: Props) {
                             ))}
                         </div>
                     ) : (
-                        <div className="text-center py-24 text-nr-faint">
-                            <div className="text-4xl mb-4 opacity-20">⚡</div>
+                        <div className="py-24 text-center text-nr-faint">
+                            <div className="mb-4 text-4xl opacity-20">⚡</div>
                             <p>Próximamente...</p>
                         </div>
                     )}
 
                     {/* Disclaimer */}
-                    <p className="text-xs text-nr-faint text-center mt-16 max-w-lg mx-auto leading-relaxed">
+                    <p className="mx-auto mt-16 max-w-lg text-center text-xs leading-relaxed text-nr-faint">
                         Este sitio contiene links de afiliado. Si compras a través de ellos recibo
                         una comisión sin costo adicional para ti. Solo recomiendo productos que uso
                         o he evaluado personalmente.

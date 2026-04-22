@@ -27,55 +27,55 @@ export default function CategoryShow({ category, posts, featured }: Props) {
 
             <Navbar />
 
-            <main className="pt-[70px] min-h-screen bg-nr-bg">
+            <main className="min-h-screen bg-nr-bg pt-[70px]">
                 {/* Hero with category-colored gradient */}
                 <section className="relative overflow-hidden border-b border-white/[0.05]">
                     <div
-                        className="absolute inset-0 pointer-events-none"
+                        className="pointer-events-none absolute inset-0"
                         style={{
                             background: `radial-gradient(ellipse 70% 60% at 15% 50%, ${color}18 0%, transparent 70%)`,
                         }}
                     />
-                    <div className="max-w-7xl mx-auto px-6 md:px-12 py-16 relative z-10">
+                    <div className="relative z-10 mx-auto max-w-7xl px-6 py-16 md:px-12">
                         {/* Breadcrumb */}
-                        <nav className="flex items-center gap-2 text-xs text-nr-faint font-mono mb-6">
-                            <Link href="/" className="hover:text-nr-muted transition-colors">
+                        <nav className="mb-6 flex items-center gap-2 font-mono text-xs text-nr-faint">
+                            <Link href="/" className="transition-colors hover:text-nr-muted">
                                 Inicio
                             </Link>
                             <span>›</span>
-                            <Link href="/blog" className="hover:text-nr-muted transition-colors">
+                            <Link href="/blog" className="transition-colors hover:text-nr-muted">
                                 Blog
                             </Link>
                             <span>›</span>
                             <span style={{ color }}>{category.name}</span>
                         </nav>
 
-                        <div className="flex items-center gap-5 flex-wrap">
+                        <div className="flex flex-wrap items-center gap-5">
                             {category.icon && <span className="text-5xl">{category.icon}</span>}
-                            <div className="flex-1 min-w-0">
+                            <div className="min-w-0 flex-1">
                                 <motion.h1
                                     initial={{ opacity: 0, y: 12 }}
                                     animate={{ opacity: 1, y: 0 }}
                                     transition={{ duration: 0.4 }}
-                                    className="font-display text-4xl md:text-5xl font-black"
+                                    className="font-display text-4xl font-black md:text-5xl"
                                     style={{ color }}
                                 >
                                     {category.name}
                                 </motion.h1>
                                 {category.description && (
-                                    <p className="text-nr-muted mt-2 max-w-lg">
+                                    <p className="mt-2 max-w-lg text-nr-muted">
                                         {category.description}
                                     </p>
                                 )}
                             </div>
-                            <span className="text-xs font-mono text-nr-faint glass px-3 py-1.5 rounded-lg shrink-0">
+                            <span className="glass shrink-0 rounded-lg px-3 py-1.5 font-mono text-xs text-nr-faint">
                                 {posts.total} artículos
                             </span>
                         </div>
                     </div>
                 </section>
 
-                <section className="max-w-7xl mx-auto px-6 md:px-12 py-12">
+                <section className="mx-auto max-w-7xl px-6 py-12 md:px-12">
                     {/* Featured post */}
                     {featured && (
                         <div className="mb-12">
@@ -84,7 +84,7 @@ export default function CategoryShow({ category, posts, featured }: Props) {
                     )}
 
                     {/* Grid — exclude featured to avoid duplicate */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
                         {posts.data
                             .filter(p => p.id !== featured?.id)
                             .map((post, i) => (
@@ -102,14 +102,13 @@ export default function CategoryShow({ category, posts, featured }: Props) {
 
                     {/* Pagination with category-themed active page */}
                     {posts.last_page > 1 && (
-                        <div className="flex justify-center gap-2 mt-12">
+                        <div className="mt-12 flex justify-center gap-2">
                             {posts.links.map((link, i) =>
                                 link.url ? (
                                     <button
                                         key={i}
                                         onClick={() => router.get(link.url!)}
-                                        className="px-4 py-2 rounded-lg text-sm transition-colors
-                                                       glass text-nr-faint hover:text-nr-muted"
+                                        className="glass rounded-lg px-4 py-2 text-sm text-nr-faint transition-colors hover:text-nr-muted"
                                         style={
                                             link.active
                                                 ? {
@@ -124,7 +123,7 @@ export default function CategoryShow({ category, posts, featured }: Props) {
                                 ) : (
                                     <span
                                         key={i}
-                                        className="px-4 py-2 text-nr-faint/30 text-sm"
+                                        className="px-4 py-2 text-sm text-nr-faint/30"
                                         dangerouslySetInnerHTML={{ __html: link.label }}
                                     />
                                 ),

@@ -20,45 +20,38 @@ export default function Navbar() {
             {/* Skip link */}
             <a
                 href="#main-content"
-                className="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-[100]
-                      focus:px-4 focus:py-2 focus:rounded-lg focus:bg-nr-surface focus:text-nr-text
-                      focus:border focus:border-nr-accent/50 focus:text-sm focus:font-medium"
+                className="sr-only focus:not-sr-only focus:fixed focus:left-2 focus:top-2 focus:z-[100] focus:rounded-lg focus:border focus:border-nr-accent/50 focus:bg-nr-surface focus:px-4 focus:py-2 focus:text-sm focus:font-medium focus:text-nr-text"
             >
                 Saltar al contenido
             </a>
 
             <nav
                 className={cn(
-                    'fixed top-0 left-0 right-0 z-50 h-[70px] flex items-center px-6 md:px-12',
+                    'fixed left-0 right-0 top-0 z-50 flex h-[70px] items-center px-6 md:px-12',
                     'transition-all duration-300',
                     scrolled
                         ? 'glass-strong border-b border-white/[0.08]'
-                        : 'bg-transparent border-b border-transparent',
+                        : 'border-b border-transparent bg-transparent',
                 )}
             >
                 {/* Logo */}
                 <Link
                     href="/"
-                    className="font-display text-xl font-black tracking-tight flex-shrink-0"
+                    className="flex-shrink-0 font-display text-xl font-black tracking-tight"
                 >
                     <span className="text-gradient">NeuralRift</span>
                 </Link>
 
                 {/* Links desktop */}
-                <ul className="hidden md:flex items-center gap-8 flex-1 justify-center">
+                <ul className="hidden flex-1 items-center justify-center gap-8 md:flex">
                     {NAV_LINKS.map(link => (
                         <li key={link.href}>
                             <Link
                                 href={link.href}
-                                className="text-sm font-medium text-nr-muted hover:text-nr-text
-                                       transition-colors relative group"
+                                className="group relative text-sm font-medium text-nr-muted transition-colors hover:text-nr-text"
                             >
                                 {lang === 'es' ? link.label : link.labelEn}
-                                <span
-                                    className="absolute -bottom-1 left-0 right-0 h-px bg-nr-accent
-                                             scale-x-0 group-hover:scale-x-100 transition-transform
-                                             duration-300 origin-left"
-                                />
+                                <span className="absolute -bottom-1 left-0 right-0 h-px origin-left scale-x-0 bg-nr-accent transition-transform duration-300 group-hover:scale-x-100" />
                             </Link>
                         </li>
                     ))}
@@ -69,8 +62,7 @@ export default function Navbar() {
                     {/* Lang toggle */}
                     <button
                         onClick={() => setLang(l => (l === 'es' ? 'en' : 'es'))}
-                        className="hidden md:flex items-center gap-1.5 px-3 py-1.5 glass rounded-lg
-                               text-xs font-mono text-nr-faint hover:text-nr-muted transition-colors"
+                        className="glass hidden items-center gap-1.5 rounded-lg px-3 py-1.5 font-mono text-xs text-nr-faint transition-colors hover:text-nr-muted md:flex"
                     >
                         <span className={lang === 'es' ? 'text-nr-accent' : ''}>ES</span>
                         <span className="text-nr-faint/40">/</span>
@@ -80,19 +72,14 @@ export default function Navbar() {
                     {/* CTA */}
                     <a
                         href="/#newsletter"
-                        className="px-4 py-2 rounded-full text-sm font-semibold text-white
-                              bg-gradient-to-r from-nr-accent to-nr-accent-dark
-                              glow-accent hover:glow-accent-lg transition-all duration-300
-                              hover:-translate-y-0.5 flex-shrink-0 min-h-[44px] inline-flex
-                              items-center"
+                        className="glow-accent hover:glow-accent-lg inline-flex min-h-[44px] flex-shrink-0 items-center rounded-full bg-gradient-to-r from-nr-accent to-nr-accent-dark px-4 py-2 text-sm font-semibold text-white transition-all duration-300 hover:-translate-y-0.5"
                     >
                         ✦ Suscribirse
                     </a>
 
                     {/* Mobile hamburger */}
                     <button
-                        className="md:hidden text-nr-muted hover:text-nr-text ml-1 min-h-[44px] min-w-[44px]
-                               flex items-center justify-center"
+                        className="ml-1 flex min-h-[44px] min-w-[44px] items-center justify-center text-nr-muted hover:text-nr-text md:hidden"
                         onClick={() => setMobileOpen(!mobileOpen)}
                         aria-expanded={mobileOpen}
                         aria-controls="mobile-nav"
@@ -105,34 +92,28 @@ export default function Navbar() {
                 </div>
 
                 {/* Gradient line bottom */}
-                <div
-                    className="absolute bottom-0 left-0 w-1/3 h-0.5
-                            bg-gradient-to-r from-nr-accent to-nr-cyan rounded-full"
-                />
+                <div className="absolute bottom-0 left-0 h-0.5 w-1/3 rounded-full bg-gradient-to-r from-nr-accent to-nr-cyan" />
 
                 {/* Mobile menu */}
                 {mobileOpen && (
                     <div
                         id="mobile-nav"
-                        className="absolute top-full left-0 right-0 glass-strong border-b
-                                border-white/[0.08] py-4 px-6 flex flex-col gap-3 md:hidden"
+                        className="glass-strong absolute left-0 right-0 top-full flex flex-col gap-3 border-b border-white/[0.08] px-6 py-4 md:hidden"
                     >
                         {NAV_LINKS.map(link => (
                             <Link
                                 key={link.href}
                                 href={link.href}
-                                className="text-sm font-medium text-nr-muted hover:text-nr-text
-                                       transition-colors py-1"
+                                className="py-1 text-sm font-medium text-nr-muted transition-colors hover:text-nr-text"
                                 onClick={() => setMobileOpen(false)}
                             >
                                 {lang === 'es' ? link.label : link.labelEn}
                             </Link>
                         ))}
-                        <div className="pt-2 mt-1 border-t border-white/[0.06]">
+                        <div className="mt-1 border-t border-white/[0.06] pt-2">
                             <button
                                 onClick={() => setLang(l => (l === 'es' ? 'en' : 'es'))}
-                                className="flex items-center gap-1.5 px-3 py-1.5 glass rounded-lg
-                                       text-xs font-mono text-nr-faint hover:text-nr-muted transition-colors"
+                                className="glass flex items-center gap-1.5 rounded-lg px-3 py-1.5 font-mono text-xs text-nr-faint transition-colors hover:text-nr-muted"
                                 aria-label={`Cambiar idioma a ${lang === 'es' ? 'inglés' : 'español'}`}
                             >
                                 <span className={lang === 'es' ? 'text-nr-accent' : ''}>ES</span>

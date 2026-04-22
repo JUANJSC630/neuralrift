@@ -58,23 +58,23 @@ export default function BlogIndex({ posts, filters, lang }: Props) {
 
             <Navbar />
 
-            <main className="pt-[70px] min-h-screen bg-nr-bg">
+            <main className="min-h-screen bg-nr-bg pt-[70px]">
                 {/* Hero */}
                 <section className="relative overflow-hidden border-b border-white/[0.05]">
-                    <div className="mesh-bg absolute inset-0 pointer-events-none" />
-                    <div className="max-w-7xl mx-auto px-6 md:px-12 py-20 relative z-10">
+                    <div className="mesh-bg pointer-events-none absolute inset-0" />
+                    <div className="relative z-10 mx-auto max-w-7xl px-6 py-20 md:px-12">
                         <motion.div
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.5 }}
                         >
-                            <span className="text-xs font-mono text-nr-accent tracking-widest uppercase">
+                            <span className="font-mono text-xs uppercase tracking-widest text-nr-accent">
                                 {isEn ? 'All articles' : 'Todos los artículos'} · {posts.total}
                             </span>
-                            <h1 className="font-display text-5xl md:text-6xl font-black text-nr-text mt-2">
+                            <h1 className="mt-2 font-display text-5xl font-black text-nr-text md:text-6xl">
                                 Blog
                             </h1>
-                            <p className="text-nr-muted mt-3 max-w-xl text-lg">
+                            <p className="mt-3 max-w-xl text-lg text-nr-muted">
                                 {isEn
                                     ? 'Guides, analysis and strategies about the AI world.'
                                     : 'Guías, análisis y estrategias sobre el mundo de la IA.'}
@@ -83,44 +83,35 @@ export default function BlogIndex({ posts, filters, lang }: Props) {
                     </div>
                 </section>
 
-                <section className="max-w-7xl mx-auto px-6 md:px-12 py-12">
+                <section className="mx-auto max-w-7xl px-6 py-12 md:px-12">
                     {/* Search + Sort */}
-                    <div className="flex flex-col md:flex-row gap-4 mb-8">
-                        <form onSubmit={handleSearch} className="flex-1 flex gap-2">
+                    <div className="mb-8 flex flex-col gap-4 md:flex-row">
+                        <form onSubmit={handleSearch} className="flex flex-1 gap-2">
                             <input
                                 type="text"
                                 value={search}
                                 onChange={e => setSearch(e.target.value)}
                                 placeholder={isEn ? 'Search articles...' : 'Buscar artículos...'}
-                                className="flex-1 px-4 py-2.5 glass rounded-xl text-sm text-nr-text
-                                           placeholder-nr-faint focus:border-nr-accent/50 outline-none
-                                           transition-colors"
+                                className="glass flex-1 rounded-xl px-4 py-2.5 text-sm text-nr-text placeholder-nr-faint outline-none transition-colors focus:border-nr-accent/50"
                             />
                             <button
                                 type="submit"
-                                className="px-5 py-2.5 rounded-xl text-sm font-semibold text-white
-                                               bg-gradient-to-r from-nr-accent to-nr-accent-dark
-                                               hover:-translate-y-0.5 transition-all duration-200"
+                                className="rounded-xl bg-gradient-to-r from-nr-accent to-nr-accent-dark px-5 py-2.5 text-sm font-semibold text-white transition-all duration-200 hover:-translate-y-0.5"
                             >
                                 {isEn ? 'Search' : 'Buscar'}
                             </button>
                         </form>
 
-                        <div
-                            className="flex gap-2 overflow-x-auto flex-shrink-0
-                                        [scrollbar-width:none] [-ms-overflow-style:none]
-                                        [&::-webkit-scrollbar]:hidden"
-                        >
+                        <div className="flex flex-shrink-0 gap-2 overflow-x-auto [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
                             {SORT_OPTIONS.map(opt => (
                                 <button
                                     key={opt.value}
                                     onClick={() => navigate({ sort: opt.value })}
-                                    className={`flex-shrink-0 px-3 py-2 rounded-lg text-xs font-medium transition-colors
-                                            ${
-                                                (filters.sort ?? 'recent') === opt.value
-                                                    ? 'bg-nr-accent/20 border border-nr-accent/30 text-nr-accent'
-                                                    : 'glass text-nr-faint hover:text-nr-muted'
-                                            }`}
+                                    className={`flex-shrink-0 rounded-lg px-3 py-2 text-xs font-medium transition-colors ${
+                                        (filters.sort ?? 'recent') === opt.value
+                                            ? 'border border-nr-accent/30 bg-nr-accent/20 text-nr-accent'
+                                            : 'glass text-nr-faint hover:text-nr-muted'
+                                    }`}
                                 >
                                     {opt.label}
                                 </button>
@@ -130,15 +121,14 @@ export default function BlogIndex({ posts, filters, lang }: Props) {
 
                     {/* Category pills */}
                     {categories.length > 0 && (
-                        <div className="flex flex-wrap gap-2 mb-10">
+                        <div className="mb-10 flex flex-wrap gap-2">
                             <button
                                 onClick={() => navigate({ category: undefined })}
-                                className={`px-4 py-1.5 rounded-full text-xs font-semibold transition-all
-                                    ${
-                                        !filters.category
-                                            ? 'bg-nr-accent/20 border border-nr-accent/30 text-nr-accent'
-                                            : 'glass text-nr-faint hover:text-nr-muted'
-                                    }`}
+                                className={`rounded-full px-4 py-1.5 text-xs font-semibold transition-all ${
+                                    !filters.category
+                                        ? 'border border-nr-accent/30 bg-nr-accent/20 text-nr-accent'
+                                        : 'glass text-nr-faint hover:text-nr-muted'
+                                }`}
                             >
                                 Todas
                             </button>
@@ -149,7 +139,7 @@ export default function BlogIndex({ posts, filters, lang }: Props) {
                                     <button
                                         key={cat.id}
                                         onClick={() => navigate({ category: cat.slug })}
-                                        className="px-4 py-1.5 rounded-full text-xs font-semibold transition-all"
+                                        className="rounded-full px-4 py-1.5 text-xs font-semibold transition-all"
                                         style={
                                             isActive
                                                 ? {
@@ -171,8 +161,7 @@ export default function BlogIndex({ posts, filters, lang }: Props) {
                             {hasActiveFilters && (
                                 <button
                                     onClick={clearFilters}
-                                    className="px-3 py-1.5 rounded-full text-xs glass
-                                               text-nr-faint hover:text-nr-red transition-colors"
+                                    className="glass rounded-full px-3 py-1.5 text-xs text-nr-faint transition-colors hover:text-nr-red"
                                 >
                                     ✕ Limpiar
                                 </button>
@@ -182,7 +171,7 @@ export default function BlogIndex({ posts, filters, lang }: Props) {
 
                     {/* Grid */}
                     {posts.data.length > 0 ? (
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
                             {posts.data.map((post, i) => (
                                 <motion.div
                                     key={post.id}
@@ -195,32 +184,31 @@ export default function BlogIndex({ posts, filters, lang }: Props) {
                             ))}
                         </div>
                     ) : (
-                        <div className="text-center py-24 text-nr-faint">
-                            <div className="text-4xl mb-4 opacity-20">◈</div>
+                        <div className="py-24 text-center text-nr-faint">
+                            <div className="mb-4 text-4xl opacity-20">◈</div>
                             <p>No se encontraron artículos.</p>
                         </div>
                     )}
 
                     {/* Pagination */}
                     {posts.last_page > 1 && (
-                        <div className="flex justify-center gap-2 mt-12">
+                        <div className="mt-12 flex justify-center gap-2">
                             {posts.links.map((link, i) =>
                                 link.url ? (
                                     <button
                                         key={i}
                                         onClick={() => router.get(link.url!)}
-                                        className={`px-4 py-2 rounded-lg text-sm transition-colors
-                                                ${
-                                                    link.active
-                                                        ? 'bg-nr-accent text-white'
-                                                        : 'glass text-nr-faint hover:text-nr-muted'
-                                                }`}
+                                        className={`rounded-lg px-4 py-2 text-sm transition-colors ${
+                                            link.active
+                                                ? 'bg-nr-accent text-white'
+                                                : 'glass text-nr-faint hover:text-nr-muted'
+                                        }`}
                                         dangerouslySetInnerHTML={{ __html: link.label }}
                                     />
                                 ) : (
                                     <span
                                         key={i}
-                                        className="px-4 py-2 rounded-lg text-sm text-nr-faint/30"
+                                        className="rounded-lg px-4 py-2 text-sm text-nr-faint/30"
                                         dangerouslySetInnerHTML={{ __html: link.label }}
                                     />
                                 ),

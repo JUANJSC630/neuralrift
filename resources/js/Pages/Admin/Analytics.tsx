@@ -46,8 +46,8 @@ const CustomTooltip = ({ active, payload, label }: any) => {
     if (!active || !payload?.length) return null
     return (
         <div className="glass-strong rounded-xl px-3 py-2 text-xs shadow-xl">
-            <div className="text-nr-faint mb-1">{label}</div>
-            <div className="text-nr-accent font-mono font-semibold">
+            <div className="mb-1 text-nr-faint">{label}</div>
+            <div className="font-mono font-semibold text-nr-accent">
                 {payload[0].value.toLocaleString()}
             </div>
         </div>
@@ -73,13 +73,13 @@ function StatCard({
     }
     return (
         <div className="glass rounded-2xl p-5">
-            <div className="text-[10px] font-mono text-nr-faint uppercase tracking-widest mb-2">
+            <div className="mb-2 font-mono text-[10px] uppercase tracking-widest text-nr-faint">
                 {label}
             </div>
-            <div className={`text-3xl font-bold font-display ${colorMap[color] ?? 'text-nr-text'}`}>
+            <div className={`font-display text-3xl font-bold ${colorMap[color] ?? 'text-nr-text'}`}>
                 {typeof value === 'number' ? value.toLocaleString() : value}
             </div>
-            {sub && <div className="text-xs text-nr-muted mt-1">{sub}</div>}
+            {sub && <div className="mt-1 text-xs text-nr-muted">{sub}</div>}
         </div>
     )
 }
@@ -108,18 +108,18 @@ export default function Analytics({
             <Head title="Analytics — Admin" />
 
             {/* Range selector */}
-            <div className="flex items-center justify-between mb-6">
+            <div className="mb-6 flex items-center justify-between">
                 <div>
                     <h2 className="font-display text-xl font-bold text-nr-text">Analytics</h2>
-                    <p className="text-xs text-nr-faint mt-0.5">Últimos {days} días</p>
+                    <p className="mt-0.5 text-xs text-nr-faint">Últimos {days} días</p>
                 </div>
-                <div className="flex gap-1 glass rounded-xl p-1">
+                <div className="glass flex gap-1 rounded-xl p-1">
                     {dayOptions.map(d => (
                         <button
                             key={d}
                             onClick={() => router.get('/admin/analytics', { days: d })}
                             className={cn(
-                                'px-3 py-1.5 rounded-lg text-xs font-mono transition-all',
+                                'rounded-lg px-3 py-1.5 font-mono text-xs transition-all',
                                 days === d
                                     ? 'bg-nr-accent text-white'
                                     : 'text-nr-faint hover:text-nr-muted',
@@ -132,7 +132,7 @@ export default function Analytics({
             </div>
 
             {/* KPIs */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+            <div className="mb-6 grid grid-cols-1 gap-4 md:grid-cols-3">
                 <StatCard
                     label="Visitas"
                     value={totals.views}
@@ -154,9 +154,9 @@ export default function Analytics({
             </div>
 
             {/* Area chart + Pie sources */}
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
-                <div className="lg:col-span-2 glass rounded-2xl p-6">
-                    <h3 className="font-semibold text-nr-text mb-5">Visitas en el tiempo</h3>
+            <div className="mb-6 grid grid-cols-1 gap-6 lg:grid-cols-3">
+                <div className="glass rounded-2xl p-6 lg:col-span-2">
+                    <h3 className="mb-5 font-semibold text-nr-text">Visitas en el tiempo</h3>
                     <ResponsiveContainer width="100%" height={220}>
                         <AreaChart data={viewsChart}>
                             <defs>
@@ -190,7 +190,7 @@ export default function Analytics({
                 </div>
 
                 <div className="glass rounded-2xl p-6">
-                    <h3 className="font-semibold text-nr-text mb-5">Fuentes de tráfico</h3>
+                    <h3 className="mb-5 font-semibold text-nr-text">Fuentes de tráfico</h3>
                     {pieData.length > 0 ? (
                         <>
                             <ResponsiveContainer width="100%" height={160}>
@@ -210,19 +210,19 @@ export default function Analytics({
                                     </Pie>
                                 </PieChart>
                             </ResponsiveContainer>
-                            <div className="space-y-2 mt-2">
+                            <div className="mt-2 space-y-2">
                                 {pieData.map((entry, i) => (
                                     <div key={i} className="flex items-center justify-between">
                                         <div className="flex items-center gap-2">
                                             <div
-                                                className="w-2 h-2 rounded-full flex-shrink-0"
+                                                className="h-2 w-2 flex-shrink-0 rounded-full"
                                                 style={{ background: entry.color }}
                                             />
                                             <span className="text-xs text-nr-muted">
                                                 {entry.name}
                                             </span>
                                         </div>
-                                        <span className="text-xs font-mono text-nr-faint">
+                                        <span className="font-mono text-xs text-nr-faint">
                                             {entry.value.toLocaleString()}
                                         </span>
                                     </div>
@@ -230,7 +230,7 @@ export default function Analytics({
                             </div>
                         </>
                     ) : (
-                        <div className="flex items-center justify-center h-40 text-nr-faint text-sm">
+                        <div className="flex h-40 items-center justify-center text-sm text-nr-faint">
                             Sin datos aún
                         </div>
                     )}
@@ -238,33 +238,29 @@ export default function Analytics({
             </div>
 
             {/* Top posts + Countries + Affiliates */}
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
                 {/* Top posts */}
                 <div className="glass rounded-2xl p-6">
-                    <h3 className="font-semibold text-nr-text mb-5">Top artículos</h3>
+                    <h3 className="mb-5 font-semibold text-nr-text">Top artículos</h3>
                     <div className="space-y-4">
                         {topPosts.slice(0, 8).map((post, i) => (
                             <div key={post.id}>
-                                <div className="flex items-start justify-between gap-2 mb-1.5">
-                                    <div className="flex items-start gap-2 min-w-0">
-                                        <span
-                                            className="text-[10px] font-mono text-nr-faint
-                                                         w-4 flex-shrink-0 pt-0.5"
-                                        >
+                                <div className="mb-1.5 flex items-start justify-between gap-2">
+                                    <div className="flex min-w-0 items-start gap-2">
+                                        <span className="w-4 flex-shrink-0 pt-0.5 font-mono text-[10px] text-nr-faint">
                                             {i + 1}
                                         </span>
-                                        <p className="text-xs text-nr-text leading-snug line-clamp-2">
+                                        <p className="line-clamp-2 text-xs leading-snug text-nr-text">
                                             {post.title}
                                         </p>
                                     </div>
-                                    <span className="text-[10px] font-mono text-nr-accent flex-shrink-0">
+                                    <span className="flex-shrink-0 font-mono text-[10px] text-nr-accent">
                                         {post.period_views.toLocaleString()}
                                     </span>
                                 </div>
-                                <div className="ml-6 h-1 bg-white/[0.05] rounded-full overflow-hidden">
+                                <div className="ml-6 h-1 overflow-hidden rounded-full bg-white/[0.05]">
                                     <div
-                                        className="h-full bg-gradient-to-r from-nr-accent to-nr-cyan
-                                                    rounded-full transition-all duration-500"
+                                        className="h-full rounded-full bg-gradient-to-r from-nr-accent to-nr-cyan transition-all duration-500"
                                         style={{
                                             width: `${(post.period_views / maxViews) * 100}%`,
                                         }}
@@ -273,30 +269,30 @@ export default function Analytics({
                             </div>
                         ))}
                         {topPosts.length === 0 && (
-                            <p className="text-xs text-nr-faint text-center py-6">Sin datos</p>
+                            <p className="py-6 text-center text-xs text-nr-faint">Sin datos</p>
                         )}
                     </div>
                 </div>
 
                 {/* Countries */}
                 <div className="glass rounded-2xl p-6">
-                    <h3 className="font-semibold text-nr-text mb-5">Por país</h3>
+                    <h3 className="mb-5 font-semibold text-nr-text">Por país</h3>
                     <div className="space-y-3">
                         {countries.slice(0, 8).map(c => {
                             const maxC = countries[0]?.total ?? 1
                             return (
                                 <div key={c.country}>
-                                    <div className="flex items-center justify-between mb-1">
-                                        <span className="text-xs text-nr-muted font-mono">
+                                    <div className="mb-1 flex items-center justify-between">
+                                        <span className="font-mono text-xs text-nr-muted">
                                             {c.country}
                                         </span>
-                                        <span className="text-xs font-mono text-nr-faint">
+                                        <span className="font-mono text-xs text-nr-faint">
                                             {c.total.toLocaleString()}
                                         </span>
                                     </div>
-                                    <div className="h-1 bg-white/[0.05] rounded-full overflow-hidden">
+                                    <div className="h-1 overflow-hidden rounded-full bg-white/[0.05]">
                                         <div
-                                            className="h-full bg-nr-cyan/60 rounded-full"
+                                            className="h-full rounded-full bg-nr-cyan/60"
                                             style={{ width: `${(c.total / maxC) * 100}%` }}
                                         />
                                     </div>
@@ -304,35 +300,35 @@ export default function Analytics({
                             )
                         })}
                         {countries.length === 0 && (
-                            <p className="text-xs text-nr-faint text-center py-6">Sin datos</p>
+                            <p className="py-6 text-center text-xs text-nr-faint">Sin datos</p>
                         )}
                     </div>
                 </div>
 
                 {/* Affiliate clicks */}
                 <div className="glass rounded-2xl p-6">
-                    <h3 className="font-semibold text-nr-text mb-5">Clics por afiliado</h3>
+                    <h3 className="mb-5 font-semibold text-nr-text">Clics por afiliado</h3>
                     <div className="space-y-3">
                         {affiliateStats.map(aff => {
                             const maxC = affiliateStats[0]?.period_clicks ?? 1
                             return (
                                 <div key={aff.id}>
-                                    <div className="flex items-center justify-between mb-1">
-                                        <span className="text-xs text-nr-muted truncate max-w-[130px]">
+                                    <div className="mb-1 flex items-center justify-between">
+                                        <span className="max-w-[130px] truncate text-xs text-nr-muted">
                                             {aff.name}
                                         </span>
                                         <div className="flex items-center gap-2">
-                                            <span className="text-[10px] font-mono text-nr-faint">
+                                            <span className="font-mono text-[10px] text-nr-faint">
                                                 {aff.period_clicks}
                                             </span>
-                                            <span className="text-[10px] font-mono text-nr-faint/40">
+                                            <span className="font-mono text-[10px] text-nr-faint/40">
                                                 / {aff.clicks_count}
                                             </span>
                                         </div>
                                     </div>
-                                    <div className="h-1 bg-white/[0.05] rounded-full overflow-hidden">
+                                    <div className="h-1 overflow-hidden rounded-full bg-white/[0.05]">
                                         <div
-                                            className="h-full bg-nr-gold/60 rounded-full"
+                                            className="h-full rounded-full bg-nr-gold/60"
                                             style={{
                                                 width:
                                                     maxC > 0
@@ -345,7 +341,7 @@ export default function Analytics({
                             )
                         })}
                         {affiliateStats.length === 0 && (
-                            <p className="text-xs text-nr-faint text-center py-6">
+                            <p className="py-6 text-center text-xs text-nr-faint">
                                 Sin clics en este período
                             </p>
                         )}

@@ -10,19 +10,11 @@ export default function PostCardFeatured({ post }: { post: Post }) {
         <div className="border-gradient-animated">
             <Link
                 href={`/blog/${post.slug}`}
-                className="group block relative min-h-[280px] sm:min-h-[400px] rounded-[17px] overflow-hidden
-                             bg-gradient-to-br from-nr-bg3 to-nr-surface
-                             flex items-end transition-colors duration-300"
+                className="group relative block flex min-h-[280px] items-end overflow-hidden rounded-[17px] bg-gradient-to-br from-nr-bg3 to-nr-surface transition-colors duration-300 sm:min-h-[400px]"
             >
                 {/* Glow orbs */}
-                <div
-                    className="absolute -top-10 -left-10 w-72 h-72 rounded-full
-                                bg-nr-accent/10 blur-2xl pointer-events-none"
-                />
-                <div
-                    className="absolute -bottom-10 -right-10 w-72 h-72 rounded-full
-                                bg-nr-cyan/[0.08] blur-2xl pointer-events-none"
-                />
+                <div className="pointer-events-none absolute -left-10 -top-10 h-72 w-72 rounded-full bg-nr-accent/10 blur-2xl" />
+                <div className="pointer-events-none absolute -bottom-10 -right-10 h-72 w-72 rounded-full bg-nr-cyan/[0.08] blur-2xl" />
 
                 {/* Grid pattern bg */}
                 <div
@@ -36,10 +28,7 @@ export default function PostCardFeatured({ post }: { post: Post }) {
                 />
 
                 {/* Badge */}
-                <div
-                    className="absolute top-4 right-5 px-2 py-1 glass rounded font-mono
-                                    text-[10px] text-nr-faint"
-                >
+                <div className="glass absolute right-5 top-4 rounded px-2 py-1 font-mono text-[10px] text-nr-faint">
                     ★ ARTÍCULO DESTACADO
                 </div>
 
@@ -50,18 +39,17 @@ export default function PostCardFeatured({ post }: { post: Post }) {
                         alt={post.title}
                         loading="eager"
                         decoding="async"
-                        className="absolute inset-0 w-full h-full object-cover opacity-20
-                                   group-hover:opacity-25 transition-opacity duration-500"
+                        className="absolute inset-0 h-full w-full object-cover opacity-20 transition-opacity duration-500 group-hover:opacity-25"
                     />
                 )}
 
                 {/* Contenido */}
-                <div className="relative z-10 p-8 md:p-12 max-w-2xl">
+                <div className="relative z-10 max-w-2xl p-8 md:p-12">
                     {/* Badges */}
-                    <div className="flex items-center gap-2 mb-4 flex-wrap">
+                    <div className="mb-4 flex flex-wrap items-center gap-2">
                         {post.category && (
                             <span
-                                className="px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider"
+                                className="rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-wider"
                                 style={{
                                     background: `${catColor}20`,
                                     border: `1px solid ${catColor}35`,
@@ -72,50 +60,34 @@ export default function PostCardFeatured({ post }: { post: Post }) {
                             </span>
                         )}
                         {(post.lang === 'es' || post.lang === 'both') && (
-                            <span
-                                className="px-2 py-0.5 rounded text-[10px] font-mono
-                                                 bg-nr-accent/20 border border-nr-accent/30 text-nr-accent"
-                            >
+                            <span className="rounded border border-nr-accent/30 bg-nr-accent/20 px-2 py-0.5 font-mono text-[10px] text-nr-accent">
                                 ES
                             </span>
                         )}
                         {(post.lang === 'en' || post.lang === 'both') && (
-                            <span
-                                className="px-2 py-0.5 rounded text-[10px] font-mono
-                                                 bg-nr-cyan/20 border border-nr-cyan/30 text-nr-cyan"
-                            >
+                            <span className="rounded border border-nr-cyan/30 bg-nr-cyan/20 px-2 py-0.5 font-mono text-[10px] text-nr-cyan">
                                 EN
                             </span>
                         )}
                     </div>
 
                     {/* Título */}
-                    <h2
-                        className="font-display text-2xl md:text-4xl font-bold leading-[1.15]
-                                       text-nr-text mb-4 group-hover:text-nr-accent transition-colors duration-300"
-                    >
+                    <h2 className="mb-4 font-display text-2xl font-bold leading-[1.15] text-nr-text transition-colors duration-300 group-hover:text-nr-accent md:text-4xl">
                         {post.title}
                     </h2>
 
                     {/* Excerpt */}
                     {post.excerpt && (
-                        <p
-                            className="text-nr-muted text-sm md:text-base leading-relaxed
-                                          mb-6 line-clamp-2"
-                        >
+                        <p className="mb-6 line-clamp-2 text-sm leading-relaxed text-nr-muted md:text-base">
                             {post.excerpt}
                         </p>
                     )}
 
                     {/* Meta */}
-                    <div className="flex items-center gap-5 flex-wrap">
+                    <div className="flex flex-wrap items-center gap-5">
                         {post.author && (
                             <div className="flex items-center gap-2">
-                                <div
-                                    className="w-7 h-7 rounded-full bg-gradient-to-br
-                                                    from-nr-accent to-nr-cyan flex items-center
-                                                    justify-center text-xs font-bold text-white flex-shrink-0"
-                                >
+                                <div className="flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-nr-accent to-nr-cyan text-xs font-bold text-white">
                                     {post.author.name[0]}
                                 </div>
                                 <span className="text-sm text-nr-muted">{post.author.name}</span>

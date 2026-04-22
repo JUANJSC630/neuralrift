@@ -43,12 +43,11 @@ function ToolbarBtn({
             type="button"
             onClick={onClick}
             title={title}
-            className={`px-2 py-1 rounded text-xs transition-colors
-                    ${
-                        active
-                            ? 'bg-nr-accent/20 text-nr-accent'
-                            : 'text-nr-faint hover:text-nr-muted hover:bg-white/[0.06]'
-                    }`}
+            className={`rounded px-2 py-1 text-xs transition-colors ${
+                active
+                    ? 'bg-nr-accent/20 text-nr-accent'
+                    : 'text-nr-faint hover:bg-white/[0.06] hover:text-nr-muted'
+            }`}
         >
             {children}
         </button>
@@ -103,7 +102,7 @@ export default function TiptapEditor({
     const readTime = Math.max(1, Math.round(words / 200))
 
     return (
-        <div className="glass rounded-xl border border-white/[0.08] overflow-hidden">
+        <div className="glass overflow-hidden rounded-xl border border-white/[0.08]">
             <style>{`
                 .prose-nr .ProseMirror { outline: none; min-height: 320px; padding: 1rem; }
                 .prose-nr .ProseMirror > * + * { margin-top: 0.75em; }
@@ -127,7 +126,7 @@ export default function TiptapEditor({
             `}</style>
 
             {/* Toolbar */}
-            <div className="flex flex-wrap items-center gap-0.5 px-3 py-2 border-b border-white/[0.06]">
+            <div className="flex flex-wrap items-center gap-0.5 border-b border-white/[0.06] px-3 py-2">
                 <ToolbarBtn
                     onClick={() => editor.chain().focus().toggleBold().run()}
                     active={editor.isActive('bold')}
@@ -157,7 +156,7 @@ export default function TiptapEditor({
                     M
                 </ToolbarBtn>
 
-                <span className="w-px h-4 bg-white/10 mx-1" />
+                <span className="mx-1 h-4 w-px bg-white/10" />
 
                 {([1, 2, 3] as const).map(level => (
                     <ToolbarBtn
@@ -170,7 +169,7 @@ export default function TiptapEditor({
                     </ToolbarBtn>
                 ))}
 
-                <span className="w-px h-4 bg-white/10 mx-1" />
+                <span className="mx-1 h-4 w-px bg-white/10" />
 
                 <ToolbarBtn
                     onClick={() => editor.chain().focus().toggleBulletList().run()}
@@ -194,7 +193,7 @@ export default function TiptapEditor({
                     "
                 </ToolbarBtn>
 
-                <span className="w-px h-4 bg-white/10 mx-1" />
+                <span className="mx-1 h-4 w-px bg-white/10" />
 
                 <ToolbarBtn
                     onClick={() => editor.chain().focus().toggleCode().run()}
@@ -207,7 +206,7 @@ export default function TiptapEditor({
                     title="Bloque de código"
                 >{`{ }`}</ToolbarBtn>
 
-                <span className="w-px h-4 bg-white/10 mx-1" />
+                <span className="mx-1 h-4 w-px bg-white/10" />
 
                 <ToolbarBtn onClick={addImage} title="Imagen">
                     ⬜
@@ -216,7 +215,7 @@ export default function TiptapEditor({
                     🔗
                 </ToolbarBtn>
 
-                <span className="w-px h-4 bg-white/10 mx-1" />
+                <span className="mx-1 h-4 w-px bg-white/10" />
 
                 <ToolbarBtn
                     onClick={() => editor.chain().focus().setTextAlign('left').run()}
@@ -240,7 +239,7 @@ export default function TiptapEditor({
                     ➡
                 </ToolbarBtn>
 
-                <span className="w-px h-4 bg-white/10 mx-1" />
+                <span className="mx-1 h-4 w-px bg-white/10" />
 
                 <ToolbarBtn onClick={() => editor.chain().focus().undo().run()} title="Deshacer">
                     ↩
@@ -262,7 +261,7 @@ export default function TiptapEditor({
             </div>
 
             {/* Footer stats */}
-            <div className="flex gap-4 px-4 py-2 border-t border-white/[0.04] text-[10px] font-mono text-nr-faint">
+            <div className="flex gap-4 border-t border-white/[0.04] px-4 py-2 font-mono text-[10px] text-nr-faint">
                 <span>{words} palabras</span>
                 <span>{chars} caracteres</span>
                 <span>~{readTime} min lectura</span>

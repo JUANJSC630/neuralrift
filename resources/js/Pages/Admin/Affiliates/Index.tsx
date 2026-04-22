@@ -92,12 +92,12 @@ export default function AffiliatesIndex({ affiliates }: Props) {
             <div className="flex gap-6">
                 {/* List */}
                 <div className="flex-1">
-                    <div className="flex items-center justify-between mb-5">
+                    <div className="mb-5 flex items-center justify-between">
                         <div>
                             <h2 className="font-display text-xl font-bold text-nr-text">
                                 Programas de afiliados
                             </h2>
-                            <p className="text-xs text-nr-faint mt-0.5">
+                            <p className="mt-0.5 text-xs text-nr-faint">
                                 {affiliates.filter(a => a.active).length} activos ·{' '}
                                 {totalClicks.toLocaleString()} clics totales
                             </p>
@@ -108,9 +108,7 @@ export default function AffiliatesIndex({ affiliates }: Props) {
                                 reset()
                                 setShowForm(true)
                             }}
-                            className="px-4 py-2 rounded-lg text-sm font-semibold text-white
-                                       bg-gradient-to-r from-nr-accent to-[#6d58f0]
-                                       glow-accent hover:-translate-y-0.5 transition-all"
+                            className="glow-accent rounded-lg bg-gradient-to-r from-nr-accent to-[#6d58f0] px-4 py-2 text-sm font-semibold text-white transition-all hover:-translate-y-0.5"
                         >
                             + Nuevo afiliado
                         </button>
@@ -121,33 +119,24 @@ export default function AffiliatesIndex({ affiliates }: Props) {
                             <div
                                 key={aff.id}
                                 className={cn(
-                                    'glass rounded-2xl p-5 transition-all group',
+                                    'glass group rounded-2xl p-5 transition-all',
                                     !aff.active && 'opacity-50',
                                 )}
                             >
                                 <div className="flex items-start gap-4">
                                     {/* Logo placeholder */}
-                                    <div
-                                        className="w-11 h-11 rounded-xl bg-gradient-to-br
-                                                    from-nr-accent/15 to-nr-cyan/15 flex items-center
-                                                    justify-center text-nr-accent font-bold text-lg
-                                                    flex-shrink-0"
-                                    >
+                                    <div className="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-nr-accent/15 to-nr-cyan/15 text-lg font-bold text-nr-accent">
                                         {aff.name[0]}
                                     </div>
 
                                     {/* Info */}
-                                    <div className="flex-1 min-w-0">
-                                        <div className="flex items-center gap-2 flex-wrap mb-1">
+                                    <div className="min-w-0 flex-1">
+                                        <div className="mb-1 flex flex-wrap items-center gap-2">
                                             <h3 className="font-semibold text-nr-text">
                                                 {aff.name}
                                             </h3>
                                             {aff.featured && (
-                                                <span
-                                                    className="px-2 py-0.5 rounded-full text-[10px]
-                                                                 bg-nr-gold/15 border border-nr-gold/25
-                                                                 text-nr-gold font-semibold"
-                                                >
+                                                <span className="rounded-full border border-nr-gold/25 bg-nr-gold/15 px-2 py-0.5 text-[10px] font-semibold text-nr-gold">
                                                     Destacado
                                                 </span>
                                             )}
@@ -157,19 +146,19 @@ export default function AffiliatesIndex({ affiliates }: Props) {
                                                 </span>
                                             )}
                                         </div>
-                                        <p className="text-xs text-nr-muted line-clamp-1 mb-2">
+                                        <p className="mb-2 line-clamp-1 text-xs text-nr-muted">
                                             {aff.description}
                                         </p>
-                                        <div className="flex items-center gap-4 flex-wrap">
-                                            <span className="text-xs font-mono text-nr-green">
+                                        <div className="flex flex-wrap items-center gap-4">
+                                            <span className="font-mono text-xs text-nr-green">
                                                 ✓ {aff.commission}
                                             </span>
                                             {aff.cookie_duration && (
-                                                <span className="text-xs font-mono text-nr-faint">
+                                                <span className="font-mono text-xs text-nr-faint">
                                                     🍪 {aff.cookie_duration}
                                                 </span>
                                             )}
-                                            <span className="text-xs font-mono text-nr-faint">
+                                            <span className="font-mono text-xs text-nr-faint">
                                                 {aff.clicks_count.toLocaleString()} clics
                                             </span>
                                             {aff.category && (
@@ -181,18 +170,18 @@ export default function AffiliatesIndex({ affiliates }: Props) {
                                     </div>
 
                                     {/* Actions */}
-                                    <div className="flex items-center gap-3 flex-shrink-0">
+                                    <div className="flex flex-shrink-0 items-center gap-3">
                                         {/* Active toggle */}
                                         <button
                                             onClick={() => toggleActive(aff)}
                                             className={cn(
-                                                'w-9 h-5 rounded-full relative transition-colors',
+                                                'relative h-5 w-9 rounded-full transition-colors',
                                                 aff.active ? 'bg-nr-green' : 'bg-white/10',
                                             )}
                                         >
                                             <span
                                                 className={cn(
-                                                    'absolute top-0.5 w-4 h-4 rounded-full bg-white shadow-sm',
+                                                    'absolute top-0.5 h-4 w-4 rounded-full bg-white shadow-sm',
                                                     'transition-transform duration-200',
                                                     aff.active
                                                         ? 'translate-x-4'
@@ -201,14 +190,10 @@ export default function AffiliatesIndex({ affiliates }: Props) {
                                             />
                                         </button>
 
-                                        <div
-                                            className="flex gap-2 opacity-0 group-hover:opacity-100
-                                                        transition-opacity"
-                                        >
+                                        <div className="flex gap-2 opacity-0 transition-opacity group-hover:opacity-100">
                                             <button
                                                 onClick={() => startEdit(aff)}
-                                                className="text-xs text-nr-muted hover:text-nr-text
-                                                               transition-colors"
+                                                className="text-xs text-nr-muted transition-colors hover:text-nr-text"
                                             >
                                                 Editar
                                             </button>
@@ -216,15 +201,13 @@ export default function AffiliatesIndex({ affiliates }: Props) {
                                                 href={aff.url}
                                                 target="_blank"
                                                 rel="noopener"
-                                                className="text-xs text-nr-cyan hover:text-nr-cyan/80
-                                                          transition-colors"
+                                                className="text-xs text-nr-cyan transition-colors hover:text-nr-cyan/80"
                                             >
                                                 Probar ↗
                                             </a>
                                             <button
                                                 onClick={() => deleteAffiliate(aff)}
-                                                className="text-xs text-nr-faint hover:text-nr-red
-                                                               transition-colors"
+                                                className="text-xs text-nr-faint transition-colors hover:text-nr-red"
                                             >
                                                 ✕
                                             </button>
@@ -235,7 +218,7 @@ export default function AffiliatesIndex({ affiliates }: Props) {
                         ))}
 
                         {affiliates.length === 0 && (
-                            <div className="glass rounded-2xl p-12 text-center text-nr-faint text-sm">
+                            <div className="glass rounded-2xl p-12 text-center text-sm text-nr-faint">
                                 No hay programas de afiliados configurados.
                             </div>
                         )}
@@ -245,8 +228,8 @@ export default function AffiliatesIndex({ affiliates }: Props) {
                 {/* Side form */}
                 {showForm && (
                     <div className="w-[340px] flex-shrink-0">
-                        <div className="glass rounded-2xl p-6 sticky top-6 max-h-[85vh] overflow-y-auto">
-                            <div className="flex items-center justify-between mb-5">
+                        <div className="glass sticky top-6 max-h-[85vh] overflow-y-auto rounded-2xl p-6">
+                            <div className="mb-5 flex items-center justify-between">
                                 <h3 className="font-semibold text-nr-text">
                                     {editing ? 'Editar afiliado' : 'Nuevo afiliado'}
                                 </h3>
@@ -256,7 +239,7 @@ export default function AffiliatesIndex({ affiliates }: Props) {
                                         setEditing(null)
                                         reset()
                                     }}
-                                    className="text-nr-faint hover:text-nr-text transition-colors"
+                                    className="text-nr-faint transition-colors hover:text-nr-text"
                                 >
                                     ✕
                                 </button>
@@ -264,10 +247,7 @@ export default function AffiliatesIndex({ affiliates }: Props) {
 
                             <form onSubmit={handleSubmit} className="space-y-4">
                                 <div>
-                                    <label
-                                        className="text-[10px] font-mono text-nr-faint
-                                                      uppercase tracking-wider block mb-1.5"
-                                    >
+                                    <label className="mb-1.5 block font-mono text-[10px] uppercase tracking-wider text-nr-faint">
                                         Nombre *
                                     </label>
                                     <input
@@ -280,10 +260,7 @@ export default function AffiliatesIndex({ affiliates }: Props) {
                                 </div>
 
                                 <div>
-                                    <label
-                                        className="text-[10px] font-mono text-nr-faint
-                                                      uppercase tracking-wider block mb-1.5"
-                                    >
+                                    <label className="mb-1.5 block font-mono text-[10px] uppercase tracking-wider text-nr-faint">
                                         Link de afiliado *
                                     </label>
                                     <input
@@ -297,10 +274,7 @@ export default function AffiliatesIndex({ affiliates }: Props) {
                                 </div>
 
                                 <div>
-                                    <label
-                                        className="text-[10px] font-mono text-nr-faint
-                                                      uppercase tracking-wider block mb-1.5"
-                                    >
+                                    <label className="mb-1.5 block font-mono text-[10px] uppercase tracking-wider text-nr-faint">
                                         Sitio web oficial
                                     </label>
                                     <input
@@ -313,10 +287,7 @@ export default function AffiliatesIndex({ affiliates }: Props) {
                                 </div>
 
                                 <div>
-                                    <label
-                                        className="text-[10px] font-mono text-nr-faint
-                                                      uppercase tracking-wider block mb-1.5"
-                                    >
+                                    <label className="mb-1.5 block font-mono text-[10px] uppercase tracking-wider text-nr-faint">
                                         Descripción
                                     </label>
                                     <textarea
@@ -330,10 +301,7 @@ export default function AffiliatesIndex({ affiliates }: Props) {
 
                                 <div className="grid grid-cols-2 gap-3">
                                     <div>
-                                        <label
-                                            className="text-[10px] font-mono text-nr-faint
-                                                          uppercase tracking-wider block mb-1.5"
-                                        >
+                                        <label className="mb-1.5 block font-mono text-[10px] uppercase tracking-wider text-nr-faint">
                                             Comisión
                                         </label>
                                         <input
@@ -344,10 +312,7 @@ export default function AffiliatesIndex({ affiliates }: Props) {
                                         />
                                     </div>
                                     <div>
-                                        <label
-                                            className="text-[10px] font-mono text-nr-faint
-                                                          uppercase tracking-wider block mb-1.5"
-                                        >
+                                        <label className="mb-1.5 block font-mono text-[10px] uppercase tracking-wider text-nr-faint">
                                             Cookie
                                         </label>
                                         <input
@@ -363,10 +328,7 @@ export default function AffiliatesIndex({ affiliates }: Props) {
 
                                 <div className="grid grid-cols-2 gap-3">
                                     <div>
-                                        <label
-                                            className="text-[10px] font-mono text-nr-faint
-                                                          uppercase tracking-wider block mb-1.5"
-                                        >
+                                        <label className="mb-1.5 block font-mono text-[10px] uppercase tracking-wider text-nr-faint">
                                             Categoría
                                         </label>
                                         <input
@@ -377,10 +339,7 @@ export default function AffiliatesIndex({ affiliates }: Props) {
                                         />
                                     </div>
                                     <div>
-                                        <label
-                                            className="text-[10px] font-mono text-nr-faint
-                                                          uppercase tracking-wider block mb-1.5"
-                                        >
+                                        <label className="mb-1.5 block font-mono text-[10px] uppercase tracking-wider text-nr-faint">
                                             Rating
                                         </label>
                                         <input
@@ -398,10 +357,7 @@ export default function AffiliatesIndex({ affiliates }: Props) {
                                 </div>
 
                                 <div>
-                                    <label
-                                        className="text-[10px] font-mono text-nr-faint
-                                                      uppercase tracking-wider block mb-1.5"
-                                    >
+                                    <label className="mb-1.5 block font-mono text-[10px] uppercase tracking-wider text-nr-faint">
                                         Badge
                                     </label>
                                     <input
@@ -422,21 +378,21 @@ export default function AffiliatesIndex({ affiliates }: Props) {
                                     ).map(({ key, label }) => (
                                         <label
                                             key={key}
-                                            className="flex items-center justify-between cursor-pointer"
+                                            className="flex cursor-pointer items-center justify-between"
                                         >
                                             <span className="text-xs text-nr-muted">{label}</span>
                                             <button
                                                 type="button"
                                                 onClick={() => setData(key, !data[key])}
                                                 className={cn(
-                                                    'w-9 h-5 rounded-full relative transition-colors',
+                                                    'relative h-5 w-9 rounded-full transition-colors',
                                                     data[key] ? 'bg-nr-accent' : 'bg-white/10',
                                                 )}
                                             >
                                                 <span
                                                     className={cn(
-                                                        'absolute top-0.5 w-4 h-4 rounded-full bg-white',
-                                                        'transition-transform duration-200 shadow-sm',
+                                                        'absolute top-0.5 h-4 w-4 rounded-full bg-white',
+                                                        'shadow-sm transition-transform duration-200',
                                                         data[key]
                                                             ? 'translate-x-4'
                                                             : 'translate-x-0.5',
@@ -450,10 +406,7 @@ export default function AffiliatesIndex({ affiliates }: Props) {
                                 <button
                                     type="submit"
                                     disabled={processing}
-                                    className="w-full py-2.5 rounded-xl text-sm font-semibold
-                                                   text-white bg-gradient-to-r from-nr-accent
-                                                   to-[#6d58f0] glow-accent hover:-translate-y-0.5
-                                                   transition-all disabled:opacity-50"
+                                    className="glow-accent w-full rounded-xl bg-gradient-to-r from-nr-accent to-[#6d58f0] py-2.5 text-sm font-semibold text-white transition-all hover:-translate-y-0.5 disabled:opacity-50"
                                 >
                                     {processing
                                         ? 'Guardando...'

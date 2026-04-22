@@ -61,21 +61,18 @@ export default function PostsIndex({ posts, categories, filters }: Props) {
 
             <div className="space-y-5">
                 {/* Toolbar */}
-                <div className="flex flex-col md:flex-row gap-3">
-                    <form onSubmit={handleSearch} className="flex gap-2 flex-1">
+                <div className="flex flex-col gap-3 md:flex-row">
+                    <form onSubmit={handleSearch} className="flex flex-1 gap-2">
                         <input
                             type="text"
                             value={search}
                             onChange={e => setSearch(e.target.value)}
                             placeholder="Buscar por título..."
-                            className="flex-1 px-3 py-2 glass rounded-lg text-sm text-nr-text
-                                       placeholder-nr-faint border border-white/[0.08]
-                                       focus:border-nr-accent/50 outline-none"
+                            className="glass flex-1 rounded-lg border border-white/[0.08] px-3 py-2 text-sm text-nr-text placeholder-nr-faint outline-none focus:border-nr-accent/50"
                         />
                         <button
                             type="submit"
-                            className="px-4 py-2 rounded-lg text-sm font-medium glass
-                                           text-nr-muted hover:text-nr-text transition-colors"
+                            className="glass rounded-lg px-4 py-2 text-sm font-medium text-nr-muted transition-colors hover:text-nr-text"
                         >
                             Buscar
                         </button>
@@ -84,8 +81,7 @@ export default function PostsIndex({ posts, categories, filters }: Props) {
                     <select
                         value={filters.status ?? ''}
                         onChange={e => applyFilter('status', e.target.value)}
-                        className="px-3 py-2 glass rounded-lg text-sm text-nr-muted
-                                       border border-white/[0.08] outline-none bg-transparent"
+                        className="glass rounded-lg border border-white/[0.08] bg-transparent px-3 py-2 text-sm text-nr-muted outline-none"
                     >
                         <option value="">Todos los estados</option>
                         <option value="published">Publicados</option>
@@ -97,8 +93,7 @@ export default function PostsIndex({ posts, categories, filters }: Props) {
                     <select
                         value={filters.category ?? ''}
                         onChange={e => applyFilter('category', e.target.value)}
-                        className="px-3 py-2 glass rounded-lg text-sm text-nr-muted
-                                       border border-white/[0.08] outline-none bg-transparent"
+                        className="glass rounded-lg border border-white/[0.08] bg-transparent px-3 py-2 text-sm text-nr-muted outline-none"
                     >
                         <option value="">Todas las categorías</option>
                         {categories.map(c => (
@@ -110,16 +105,14 @@ export default function PostsIndex({ posts, categories, filters }: Props) {
 
                     <Link
                         href="/admin/posts/create"
-                        className="px-4 py-2 rounded-lg text-sm font-semibold text-white
-                                     bg-gradient-to-r from-nr-accent to-[#6d58f0]
-                                     hover:-translate-y-0.5 transition-all duration-200 whitespace-nowrap"
+                        className="whitespace-nowrap rounded-lg bg-gradient-to-r from-nr-accent to-[#6d58f0] px-4 py-2 text-sm font-semibold text-white transition-all duration-200 hover:-translate-y-0.5"
                     >
                         + Nuevo
                     </Link>
                 </div>
 
                 {/* Table */}
-                <div className="glass rounded-2xl overflow-hidden">
+                <div className="glass overflow-hidden rounded-2xl">
                     <table className="w-full text-sm">
                         <thead>
                             <tr className="border-b border-white/[0.06]">
@@ -134,8 +127,7 @@ export default function PostsIndex({ posts, categories, filters }: Props) {
                                 ].map((h, i) => (
                                     <th
                                         key={i}
-                                        className="px-4 py-3 text-left text-xs font-semibold
-                                                           text-nr-faint uppercase tracking-wider"
+                                        className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-nr-faint"
                                     >
                                         {h}
                                     </th>
@@ -146,43 +138,38 @@ export default function PostsIndex({ posts, categories, filters }: Props) {
                             {posts.data.map(post => (
                                 <tr
                                     key={post.id}
-                                    className="hover:bg-white/[0.02] transition-colors group"
+                                    className="group transition-colors hover:bg-white/[0.02]"
                                 >
                                     {/* Cover thumbnail */}
-                                    <td className="px-4 py-3 w-12">
+                                    <td className="w-12 px-4 py-3">
                                         {post.cover_image ? (
                                             <img
                                                 src={post.cover_image}
                                                 alt=""
-                                                className="w-10 h-10 rounded-lg object-cover opacity-80"
+                                                className="h-10 w-10 rounded-lg object-cover opacity-80"
                                             />
                                         ) : (
-                                            <div
-                                                className="w-10 h-10 rounded-lg glass flex items-center
-                                                            justify-center text-nr-faint/30 text-lg"
-                                            >
+                                            <div className="glass flex h-10 w-10 items-center justify-center rounded-lg text-lg text-nr-faint/30">
                                                 ◈
                                             </div>
                                         )}
                                     </td>
 
-                                    <td className="px-4 py-3 max-w-xs">
+                                    <td className="max-w-xs px-4 py-3">
                                         <Link
                                             href={`/admin/posts/${post.id}/edit`}
-                                            className="text-nr-text hover:text-nr-accent transition-colors
-                                                         font-medium line-clamp-1"
+                                            className="line-clamp-1 font-medium text-nr-text transition-colors hover:text-nr-accent"
                                         >
                                             {post.title}
                                         </Link>
-                                        <span className="text-[10px] font-mono text-nr-faint/60">
+                                        <span className="font-mono text-[10px] text-nr-faint/60">
                                             {post.lang?.toUpperCase()}
                                         </span>
                                     </td>
 
                                     <td className="px-4 py-3">
                                         <span
-                                            className={`text-[10px] font-semibold px-2 py-0.5 rounded-full
-                                                          border ${STATUS_COLORS[post.status] ?? ''}`}
+                                            className={`rounded-full border px-2 py-0.5 text-[10px] font-semibold ${STATUS_COLORS[post.status] ?? ''}`}
                                         >
                                             {STATUS_LABELS[post.status] ?? post.status}
                                         </span>
@@ -192,39 +179,33 @@ export default function PostsIndex({ posts, categories, filters }: Props) {
                                         {post.category?.name ?? '—'}
                                     </td>
 
-                                    <td className="px-4 py-3 text-xs text-nr-faint font-mono whitespace-nowrap">
+                                    <td className="whitespace-nowrap px-4 py-3 font-mono text-xs text-nr-faint">
                                         {post.published_at ? formatDate(post.published_at) : '—'}
                                     </td>
 
-                                    <td className="px-4 py-3 text-xs text-nr-faint font-mono">
+                                    <td className="px-4 py-3 font-mono text-xs text-nr-faint">
                                         {post.views_count.toLocaleString()}
                                     </td>
 
                                     <td className="px-4 py-3">
-                                        <div
-                                            className="flex items-center gap-1.5 justify-end
-                                                        opacity-0 group-hover:opacity-100 transition-opacity"
-                                        >
+                                        <div className="flex items-center justify-end gap-1.5 opacity-0 transition-opacity group-hover:opacity-100">
                                             {post.status !== 'published' && (
                                                 <button
                                                     onClick={() => handlePublish(post.id)}
-                                                    className="text-xs text-nr-green hover:text-nr-green/80
-                                                                   transition-colors px-2 py-1 glass rounded"
+                                                    className="glass rounded px-2 py-1 text-xs text-nr-green transition-colors hover:text-nr-green/80"
                                                 >
                                                     Publicar
                                                 </button>
                                             )}
                                             <Link
                                                 href={`/admin/posts/${post.id}/edit`}
-                                                className="text-xs text-nr-faint hover:text-nr-accent
-                                                             transition-colors px-2 py-1 glass rounded"
+                                                className="glass rounded px-2 py-1 text-xs text-nr-faint transition-colors hover:text-nr-accent"
                                             >
                                                 Editar
                                             </Link>
                                             <button
                                                 onClick={() => handleDelete(post.id)}
-                                                className="text-xs text-nr-faint hover:text-nr-red
-                                                               transition-colors px-2 py-1 glass rounded"
+                                                className="glass rounded px-2 py-1 text-xs text-nr-faint transition-colors hover:text-nr-red"
                                             >
                                                 ✕
                                             </button>
@@ -236,7 +217,7 @@ export default function PostsIndex({ posts, categories, filters }: Props) {
                     </table>
 
                     {posts.data.length === 0 && (
-                        <div className="text-center py-16 text-nr-faint text-sm">
+                        <div className="py-16 text-center text-sm text-nr-faint">
                             No hay artículos que coincidan.
                         </div>
                     )}
@@ -254,18 +235,17 @@ export default function PostsIndex({ posts, categories, filters }: Props) {
                                     <Link
                                         key={i}
                                         href={link.url}
-                                        className={`px-3 py-1.5 rounded-lg text-xs transition-colors
-                                              ${
-                                                  link.active
-                                                      ? 'bg-nr-accent text-white'
-                                                      : 'glass text-nr-faint hover:text-nr-muted'
-                                              }`}
+                                        className={`rounded-lg px-3 py-1.5 text-xs transition-colors ${
+                                            link.active
+                                                ? 'bg-nr-accent text-white'
+                                                : 'glass text-nr-faint hover:text-nr-muted'
+                                        }`}
                                         dangerouslySetInnerHTML={{ __html: link.label }}
                                     />
                                 ) : (
                                     <span
                                         key={i}
-                                        className="px-3 py-1.5 text-nr-faint/30 text-xs"
+                                        className="px-3 py-1.5 text-xs text-nr-faint/30"
                                         dangerouslySetInnerHTML={{ __html: link.label }}
                                     />
                                 ),

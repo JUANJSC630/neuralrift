@@ -57,11 +57,11 @@ function KpiCard({
 }) {
     return (
         <div className="glass rounded-2xl p-5">
-            <div className={`text-3xl font-bold font-display text-${color} mb-1`}>
+            <div className={`font-display text-3xl font-bold text-${color} mb-1`}>
                 {value.toLocaleString()}
             </div>
             <div className="text-sm font-medium text-nr-text">{label}</div>
-            <div className="text-xs text-nr-faint mt-0.5">{sub}</div>
+            <div className="mt-0.5 text-xs text-nr-faint">{sub}</div>
         </div>
     )
 }
@@ -70,8 +70,8 @@ function CustomTooltip({ active, payload, label }: any) {
     if (!active || !payload?.length) return null
     return (
         <div className="glass rounded-lg px-3 py-2 text-xs">
-            <p className="text-nr-faint mb-1 font-mono">{label}</p>
-            <p className="text-nr-accent font-semibold">
+            <p className="mb-1 font-mono text-nr-faint">{label}</p>
+            <p className="font-semibold text-nr-accent">
                 {payload[0].value.toLocaleString()} vistas
             </p>
         </div>
@@ -85,7 +85,7 @@ export default function Dashboard({ kpis, chartData, recentPosts, topPosts, topA
 
             <div className="space-y-6">
                 {/* KPI cards */}
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
                     <KpiCard
                         label="Publicados"
                         value={kpis.posts_published}
@@ -112,10 +112,10 @@ export default function Dashboard({ kpis, chartData, recentPosts, topPosts, topA
                     />
                 </div>
 
-                <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
                     {/* Recharts area chart */}
-                    <div className="lg:col-span-2 glass rounded-2xl p-6">
-                        <h2 className="text-sm font-semibold text-nr-text mb-6">
+                    <div className="glass rounded-2xl p-6 lg:col-span-2">
+                        <h2 className="mb-6 text-sm font-semibold text-nr-text">
                             Vistas — últimos 30 días
                         </h2>
                         <ResponsiveContainer width="100%" height={160}>
@@ -159,16 +159,16 @@ export default function Dashboard({ kpis, chartData, recentPosts, topPosts, topA
 
                     {/* Top sidebar */}
                     <div className="glass rounded-2xl p-6">
-                        <h2 className="text-sm font-semibold text-nr-text mb-4">Top afiliado</h2>
+                        <h2 className="mb-4 text-sm font-semibold text-nr-text">Top afiliado</h2>
                         {topAffiliate ? (
                             <div>
-                                <div className="text-2xl font-bold text-nr-gold mb-1">
+                                <div className="mb-1 text-2xl font-bold text-nr-gold">
                                     {topAffiliate.clicks_count.toLocaleString()}
                                 </div>
-                                <div className="text-sm text-nr-text font-medium">
+                                <div className="text-sm font-medium text-nr-text">
                                     {topAffiliate.name}
                                 </div>
-                                <div className="text-xs text-nr-faint mt-1">clicks totales</div>
+                                <div className="mt-1 text-xs text-nr-faint">clicks totales</div>
                                 <Link
                                     href="/admin/affiliates"
                                     className="mt-4 block text-xs text-nr-accent hover:underline"
@@ -180,20 +180,19 @@ export default function Dashboard({ kpis, chartData, recentPosts, topPosts, topA
                             <p className="text-sm text-nr-faint">Sin datos aún</p>
                         )}
 
-                        <h2 className="text-sm font-semibold text-nr-text mt-8 mb-4">
+                        <h2 className="mb-4 mt-8 text-sm font-semibold text-nr-text">
                             Top esta semana
                         </h2>
                         <div className="space-y-3">
                             {topPosts.map((post, i) => (
                                 <div key={post.id} className="flex items-start gap-3">
-                                    <span className="text-xs font-mono text-nr-faint w-4 flex-shrink-0 mt-0.5">
+                                    <span className="mt-0.5 w-4 flex-shrink-0 font-mono text-xs text-nr-faint">
                                         {i + 1}
                                     </span>
-                                    <div className="flex-1 min-w-0">
+                                    <div className="min-w-0 flex-1">
                                         <Link
                                             href={`/admin/posts/${post.id}/edit`}
-                                            className="text-xs text-nr-text hover:text-nr-accent
-                                                         transition-colors line-clamp-2 block"
+                                            className="line-clamp-2 block text-xs text-nr-text transition-colors hover:text-nr-accent"
                                         >
                                             {post.title}
                                         </Link>
@@ -209,7 +208,7 @@ export default function Dashboard({ kpis, chartData, recentPosts, topPosts, topA
 
                 {/* Posts recientes */}
                 <div className="glass rounded-2xl p-6">
-                    <div className="flex items-center justify-between mb-5">
+                    <div className="mb-5 flex items-center justify-between">
                         <h2 className="text-sm font-semibold text-nr-text">Artículos recientes</h2>
                         <Link
                             href="/admin/posts"
@@ -222,25 +221,23 @@ export default function Dashboard({ kpis, chartData, recentPosts, topPosts, topA
                         {recentPosts.map(post => (
                             <div
                                 key={post.id}
-                                className="flex items-center gap-4 py-2.5 border-b border-white/[0.04] last:border-0"
+                                className="flex items-center gap-4 border-b border-white/[0.04] py-2.5 last:border-0"
                             >
                                 <span
-                                    className={`text-[10px] font-semibold px-2 py-0.5 rounded-full
-                                                  border flex-shrink-0 ${STATUS_COLORS[post.status] ?? ''}`}
+                                    className={`flex-shrink-0 rounded-full border px-2 py-0.5 text-[10px] font-semibold ${STATUS_COLORS[post.status] ?? ''}`}
                                 >
                                     {post.status}
                                 </span>
                                 <Link
                                     href={`/admin/posts/${post.id}/edit`}
-                                    className="flex-1 text-sm text-nr-text hover:text-nr-accent
-                                                 transition-colors truncate"
+                                    className="flex-1 truncate text-sm text-nr-text transition-colors hover:text-nr-accent"
                                 >
                                     {post.title}
                                 </Link>
-                                <span className="text-xs text-nr-faint font-mono flex-shrink-0">
+                                <span className="flex-shrink-0 font-mono text-xs text-nr-faint">
                                     {post.published_at ? formatDate(post.published_at) : '—'}
                                 </span>
-                                <span className="text-xs text-nr-faint font-mono flex-shrink-0">
+                                <span className="flex-shrink-0 font-mono text-xs text-nr-faint">
                                     {post.views_count.toLocaleString()} vistas
                                 </span>
                             </div>

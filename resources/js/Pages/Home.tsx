@@ -68,18 +68,15 @@ export default function Home({ featured, recent, affiliates }: Props) {
 
             <main id="main-content">
                 {/* ── HERO ─────────────────────────────────── */}
-                <section
-                    className="relative min-h-[680px] flex items-center justify-center
-                                    overflow-hidden bg-nr-bg pt-[70px]"
-                >
+                <section className="relative flex min-h-[680px] items-center justify-center overflow-hidden bg-nr-bg pt-[70px]">
                     <MeshBackground />
 
                     {/* Constellation nodes */}
-                    <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
+                    <div className="pointer-events-none absolute inset-0" aria-hidden="true">
                         {/* SVG connector lines — desktop only */}
                         <svg
-                            className="absolute inset-0 w-full h-full hidden md:block"
-                            style={{ opacity: 0.10 }}
+                            className="absolute inset-0 hidden h-full w-full md:block"
+                            style={{ opacity: 0.1 }}
                         >
                             {SVG_LINES.map(([x1, y1, x2, y2], i) => (
                                 <line
@@ -125,17 +122,16 @@ export default function Home({ featured, recent, affiliates }: Props) {
                     </div>
 
                     {/* Contenido hero */}
-                    <div className="relative z-10 text-center max-w-4xl mx-auto px-6">
+                    <div className="relative z-10 mx-auto max-w-4xl px-6 text-center">
                         {/* Badge */}
                         <motion.div
                             initial={{ opacity: 0, y: 14 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.5, delay: 0.05 }}
-                            className="inline-flex items-center gap-2 px-4 py-1.5 glass rounded-full
-                                       border border-nr-gold/30 mb-8"
+                            className="glass mb-8 inline-flex items-center gap-2 rounded-full border border-nr-gold/30 px-4 py-1.5"
                         >
-                            <span className="w-1.5 h-1.5 rounded-full bg-nr-gold animate-glow-pulse" />
-                            <span className="text-xs font-semibold text-nr-gold tracking-widest uppercase">
+                            <span className="h-1.5 w-1.5 animate-glow-pulse rounded-full bg-nr-gold" />
+                            <span className="text-xs font-semibold uppercase tracking-widest text-nr-gold">
                                 Nuevo artículo publicado hoy
                             </span>
                         </motion.div>
@@ -145,8 +141,7 @@ export default function Home({ featured, recent, affiliates }: Props) {
                             initial={{ opacity: 0, y: 14 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.5, delay: 0.15 }}
-                            className="font-display text-5xl md:text-7xl lg:text-[82px]
-                                       font-black leading-[1.06] tracking-tight text-nr-text mb-6"
+                            className="mb-6 font-display text-5xl font-black leading-[1.06] tracking-tight text-nr-text md:text-7xl lg:text-[82px]"
                         >
                             El futuro de{' '}
                             <motion.span
@@ -164,7 +159,7 @@ export default function Home({ featured, recent, affiliates }: Props) {
                             <span className="sr-only" aria-live="polite" aria-atomic="true">
                                 {ROTATING_WORDS[wordIndex]}
                             </span>
-                            <span className="text-nr-accent animate-blink font-thin opacity-80">
+                            <span className="animate-blink font-thin text-nr-accent opacity-80">
                                 |
                             </span>
                             <br />
@@ -176,8 +171,7 @@ export default function Home({ featured, recent, affiliates }: Props) {
                             initial={{ opacity: 0, y: 14 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.5, delay: 0.25 }}
-                            className="text-lg md:text-xl text-nr-muted leading-[1.7]
-                                       max-w-[60ch] mx-auto mb-10"
+                            className="mx-auto mb-10 max-w-[60ch] text-lg leading-[1.7] text-nr-muted md:text-xl"
                         >
                             Guías en profundidad, reviews honestas y estrategias para navegar la
                             revolución de la IA. Semanalmente, sin ruido.
@@ -188,22 +182,17 @@ export default function Home({ featured, recent, affiliates }: Props) {
                             initial={{ opacity: 0, y: 14 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.5, delay: 0.35 }}
-                            className="flex flex-col sm:flex-row gap-4 justify-center items-center"
+                            className="flex flex-col items-center justify-center gap-4 sm:flex-row"
                         >
                             <a
                                 href="/blog"
-                                className="w-full sm:w-auto px-10 py-4 rounded-full font-semibold
-                                          text-white bg-gradient-to-r from-nr-accent to-nr-accent-dark
-                                          glow-accent hover:glow-accent-lg hover:-translate-y-0.5
-                                          transition-all duration-300 text-center"
+                                className="glow-accent hover:glow-accent-lg w-full rounded-full bg-gradient-to-r from-nr-accent to-nr-accent-dark px-10 py-4 text-center font-semibold text-white transition-all duration-300 hover:-translate-y-0.5 sm:w-auto"
                             >
                                 Explorar artículos →
                             </a>
                             <a
                                 href="#newsletter"
-                                className="w-full sm:w-auto px-10 py-4 rounded-full font-medium
-                                          glass hover:bg-white/[0.08] transition-all duration-300
-                                          text-nr-text text-center"
+                                className="glass w-full rounded-full px-10 py-4 text-center font-medium text-nr-text transition-all duration-300 hover:bg-white/[0.08] sm:w-auto"
                             >
                                 Newsletter gratuita ✉
                             </a>
@@ -214,10 +203,10 @@ export default function Home({ featured, recent, affiliates }: Props) {
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
                             transition={{ delay: 1, duration: 0.5 }}
-                            className="flex flex-col items-center gap-1.5 mt-16 opacity-40"
+                            className="mt-16 flex flex-col items-center gap-1.5 opacity-40"
                         >
-                            <div className="w-px h-8 bg-gradient-to-b from-transparent to-nr-accent" />
-                            <span className="text-[10px] font-mono text-nr-muted tracking-[0.16em]">
+                            <div className="h-8 w-px bg-gradient-to-b from-transparent to-nr-accent" />
+                            <span className="font-mono text-[10px] tracking-[0.16em] text-nr-muted">
                                 SCROLL
                             </span>
                         </motion.div>
@@ -226,32 +215,31 @@ export default function Home({ featured, recent, affiliates }: Props) {
 
                 {/* ── FEATURED POST ───────────────────────── */}
                 {featured && (
-                    <section className="max-w-7xl mx-auto px-6 md:px-12 py-16">
+                    <section className="mx-auto max-w-7xl px-6 py-16 md:px-12">
                         <PostCardFeatured post={featured} />
                     </section>
                 )}
 
                 {/* ── POSTS RECIENTES ─────────────────────── */}
-                <section className="max-w-7xl mx-auto px-6 md:px-12 pb-16">
-                    <div className="flex items-center justify-between mb-10">
+                <section className="mx-auto max-w-7xl px-6 pb-16 md:px-12">
+                    <div className="mb-10 flex items-center justify-between">
                         <div>
-                            <h2 className="font-display text-3xl font-bold text-nr-text leading-tight">
+                            <h2 className="font-display text-3xl font-bold leading-tight text-nr-text">
                                 Artículos recientes
                             </h2>
-                            <p className="text-nr-muted text-sm mt-1">
+                            <p className="mt-1 text-sm text-nr-muted">
                                 Lo último del mundo de la IA
                             </p>
                         </div>
                         <a
                             href="/blog"
-                            className="text-sm text-nr-accent hover:text-nr-accent/80
-                                      transition-colors font-medium"
+                            className="text-sm font-medium text-nr-accent transition-colors hover:text-nr-accent/80"
                         >
                             Ver todos →
                         </a>
                     </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
                         {recent.map((post, i) => (
                             <motion.div
                                 key={post.id}
@@ -266,11 +254,10 @@ export default function Home({ featured, recent, affiliates }: Props) {
                     </div>
 
                     {/* "Ver todos" button — visible on mobile below grid */}
-                    <div className="flex justify-center mt-8 md:hidden">
+                    <div className="mt-8 flex justify-center md:hidden">
                         <a
                             href="/blog"
-                            className="px-6 py-3 glass rounded-full text-sm font-medium
-                                       text-nr-accent hover:text-nr-accent/80 transition-colors"
+                            className="glass rounded-full px-6 py-3 text-sm font-medium text-nr-accent transition-colors hover:text-nr-accent/80"
                         >
                             Ver todos los artículos →
                         </a>
@@ -279,25 +266,22 @@ export default function Home({ featured, recent, affiliates }: Props) {
 
                 {/* ── HERRAMIENTAS AFILIADAS ──────────────── */}
                 {affiliates.length > 0 && (
-                    <section className="bg-nr-bg3 border-t border-nr-accent/[0.18] border-b border-white/[0.05] py-20">
-                        <div className="max-w-7xl mx-auto px-6 md:px-12">
-                            <div className="text-center mb-12">
-                                <span
-                                    className="text-xs font-mono text-nr-accent tracking-widest
-                                                 uppercase mb-3 block"
-                                >
+                    <section className="border-b border-t border-nr-accent/[0.18] border-white/[0.05] bg-nr-bg3 py-20">
+                        <div className="mx-auto max-w-7xl px-6 md:px-12">
+                            <div className="mb-12 text-center">
+                                <span className="mb-3 block font-mono text-xs uppercase tracking-widest text-nr-accent">
                                     Herramientas que uso
                                 </span>
-                                <h2 className="font-display text-3xl font-bold text-nr-text leading-tight">
+                                <h2 className="font-display text-3xl font-bold leading-tight text-nr-text">
                                     Las mejores herramientas IA
                                 </h2>
-                                <p className="text-nr-muted mt-2 text-sm max-w-lg mx-auto">
+                                <p className="mx-auto mt-2 max-w-lg text-sm text-nr-muted">
                                     Solo recomiendo herramientas que uso personalmente. Algunos
                                     links son de afiliado.
                                 </p>
                             </div>
 
-                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+                            <div className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
                                 {affiliates.map((affiliate, i) => (
                                     <motion.div
                                         key={affiliate.id}
@@ -315,7 +299,7 @@ export default function Home({ featured, recent, affiliates }: Props) {
                 )}
 
                 {/* ── NEWSLETTER ──────────────────────────── */}
-                <section id="newsletter" className="max-w-4xl mx-auto px-6 md:px-12 py-24">
+                <section id="newsletter" className="mx-auto max-w-4xl px-6 py-24 md:px-12">
                     <NewsletterWidget />
                 </section>
             </main>

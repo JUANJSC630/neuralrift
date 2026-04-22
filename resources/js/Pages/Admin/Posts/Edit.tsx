@@ -43,17 +43,15 @@ function Toggle({
     onChange: (v: boolean) => void
 }) {
     return (
-        <label className="flex items-center justify-between cursor-pointer">
+        <label className="flex cursor-pointer items-center justify-between">
             <span className="text-sm text-nr-muted">{label}</span>
             <button
                 type="button"
                 onClick={() => onChange(!checked)}
-                className={`relative w-9 h-5 rounded-full transition-colors
-                        ${checked ? 'bg-nr-accent' : 'bg-white/10'}`}
+                className={`relative h-5 w-9 rounded-full transition-colors ${checked ? 'bg-nr-accent' : 'bg-white/10'}`}
             >
                 <span
-                    className={`absolute top-0.5 left-0.5 w-4 h-4 rounded-full bg-white
-                                  transition-transform ${checked ? 'translate-x-4' : ''}`}
+                    className={`absolute left-0.5 top-0.5 h-4 w-4 rounded-full bg-white transition-transform ${checked ? 'translate-x-4' : ''}`}
                 />
             </button>
         </label>
@@ -76,15 +74,15 @@ function SeoPreview({
     const descOk = description.length >= 70 && description.length <= 160
 
     return (
-        <div className="rounded-xl border border-white/[0.06] bg-[#0f1117] p-4 space-y-1 font-sans">
-            <p className="text-[11px] text-nr-faint font-mono truncate">{url}</p>
+        <div className="space-y-1 rounded-xl border border-white/[0.06] bg-[#0f1117] p-4 font-sans">
+            <p className="truncate font-mono text-[11px] text-nr-faint">{url}</p>
             <p
-                className={`text-sm font-medium truncate ${titleOk ? 'text-[#8ab4f8]' : 'text-nr-red'}`}
+                className={`truncate text-sm font-medium ${titleOk ? 'text-[#8ab4f8]' : 'text-nr-red'}`}
             >
                 {displayTitle}
             </p>
             <p
-                className={`text-xs leading-relaxed line-clamp-2 ${descOk ? 'text-nr-faint' : 'text-nr-red/70'}`}
+                className={`line-clamp-2 text-xs leading-relaxed ${descOk ? 'text-nr-faint' : 'text-nr-red/70'}`}
             >
                 {displayDesc}
             </p>
@@ -191,15 +189,14 @@ export default function PostEdit({ post, categories, tags, affiliates }: Props) 
         <AdminLayout title={isNew ? 'Nuevo artículo' : 'Editar artículo'}>
             <Head title={isNew ? 'Admin — Nuevo artículo' : `Admin — ${post?.title}`} />
 
-            <div className="space-y-6 max-w-5xl">
+            <div className="max-w-5xl space-y-6">
                 {/* Actions bar */}
-                <div className="flex items-center gap-3 justify-end">
+                <div className="flex items-center justify-end gap-3">
                     {!isNew && (
                         <button
                             type="button"
                             onClick={handleDuplicate}
-                            className="px-4 py-2 glass rounded-lg text-xs text-nr-faint
-                                           hover:text-nr-muted transition-colors"
+                            className="glass rounded-lg px-4 py-2 text-xs text-nr-faint transition-colors hover:text-nr-muted"
                         >
                             Duplicar
                         </button>
@@ -207,27 +204,24 @@ export default function PostEdit({ post, categories, tags, affiliates }: Props) 
                     <button
                         type="button"
                         onClick={handleSaveDraft}
-                        className="px-4 py-2 glass rounded-lg text-sm text-nr-muted
-                                       hover:text-nr-text transition-colors"
+                        className="glass rounded-lg px-4 py-2 text-sm text-nr-muted transition-colors hover:text-nr-text"
                     >
                         Guardar borrador
                     </button>
                     <button
                         type="button"
                         onClick={handlePublish}
-                        className="px-6 py-2 rounded-lg text-sm font-semibold text-white
-                                       bg-gradient-to-r from-nr-accent to-[#6d58f0]
-                                       hover:-translate-y-0.5 transition-all duration-200"
+                        className="rounded-lg bg-gradient-to-r from-nr-accent to-[#6d58f0] px-6 py-2 text-sm font-semibold text-white transition-all duration-200 hover:-translate-y-0.5"
                     >
                         {post?.status === 'published' ? 'Actualizar' : 'Publicar'}
                     </button>
                 </div>
 
-                <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
                     {/* Main */}
-                    <div className="lg:col-span-2 space-y-5">
+                    <div className="space-y-5 lg:col-span-2">
                         {/* Content tabs */}
-                        <div className="glass rounded-2xl overflow-hidden">
+                        <div className="glass overflow-hidden rounded-2xl">
                             {/* Tab switcher */}
                             {data.lang === 'both' && (
                                 <div className="flex border-b border-white/[0.06]">
@@ -236,12 +230,11 @@ export default function PostEdit({ post, categories, tags, affiliates }: Props) 
                                             key={t}
                                             type="button"
                                             onClick={() => setTab(t)}
-                                            className={`px-5 py-3 text-sm font-medium transition-colors
-                                                    ${
-                                                        tab === t
-                                                            ? 'text-nr-text border-b-2 border-nr-accent -mb-px'
-                                                            : 'text-nr-faint hover:text-nr-muted'
-                                                    }`}
+                                            className={`px-5 py-3 text-sm font-medium transition-colors ${
+                                                tab === t
+                                                    ? '-mb-px border-b-2 border-nr-accent text-nr-text'
+                                                    : 'text-nr-faint hover:text-nr-muted'
+                                            }`}
                                         >
                                             {t === 'es' ? '🇪🇸 Español' : '🇬🇧 English'}
                                         </button>
@@ -249,7 +242,7 @@ export default function PostEdit({ post, categories, tags, affiliates }: Props) 
                                 </div>
                             )}
 
-                            <div className="p-6 space-y-4">
+                            <div className="space-y-4 p-6">
                                 {/* Title ES */}
                                 {(data.lang !== 'en' || tab === 'es') && (
                                     <div
@@ -257,25 +250,21 @@ export default function PostEdit({ post, categories, tags, affiliates }: Props) 
                                             data.lang === 'both' && tab !== 'es' ? 'hidden' : ''
                                         }
                                     >
-                                        <label className="text-xs text-nr-faint uppercase tracking-wider block mb-1.5">
+                                        <label className="mb-1.5 block text-xs uppercase tracking-wider text-nr-faint">
                                             Título (ES)
                                         </label>
                                         <input
                                             type="text"
                                             value={data.title}
                                             onChange={e => handleTitleChange(e.target.value)}
-                                            className="w-full px-3 py-2.5 glass rounded-lg text-sm text-nr-text
-                                                          border border-white/[0.08] focus:border-nr-accent/50
-                                                          outline-none transition-colors text-base font-medium"
+                                            className="glass w-full rounded-lg border border-white/[0.08] px-3 py-2.5 text-base text-sm font-medium text-nr-text outline-none transition-colors focus:border-nr-accent/50"
                                             placeholder="Título del artículo"
                                         />
                                         <input
                                             type="text"
                                             value={data.slug}
                                             onChange={e => set('slug', e.target.value)}
-                                            className="mt-1.5 w-full px-3 py-1.5 glass rounded-lg text-xs
-                                                          text-nr-faint font-mono border border-white/[0.05]
-                                                          focus:border-nr-accent/30 outline-none"
+                                            className="glass mt-1.5 w-full rounded-lg border border-white/[0.05] px-3 py-1.5 font-mono text-xs text-nr-faint outline-none focus:border-nr-accent/30"
                                             placeholder="slug-del-articulo"
                                         />
                                     </div>
@@ -284,25 +273,21 @@ export default function PostEdit({ post, categories, tags, affiliates }: Props) 
                                 {/* Title EN */}
                                 {(data.lang === 'en' || (data.lang === 'both' && tab === 'en')) && (
                                     <div>
-                                        <label className="text-xs text-nr-faint uppercase tracking-wider block mb-1.5">
+                                        <label className="mb-1.5 block text-xs uppercase tracking-wider text-nr-faint">
                                             Title (EN)
                                         </label>
                                         <input
                                             type="text"
                                             value={data.title_en}
                                             onChange={e => handleTitleEnChange(e.target.value)}
-                                            className="w-full px-3 py-2.5 glass rounded-lg text-sm text-nr-text
-                                                          border border-white/[0.08] focus:border-nr-accent/50
-                                                          outline-none transition-colors text-base font-medium"
+                                            className="glass w-full rounded-lg border border-white/[0.08] px-3 py-2.5 text-base text-sm font-medium text-nr-text outline-none transition-colors focus:border-nr-accent/50"
                                             placeholder="Article title in English"
                                         />
                                         <input
                                             type="text"
                                             value={data.slug_en}
                                             onChange={e => set('slug_en', e.target.value)}
-                                            className="mt-1.5 w-full px-3 py-1.5 glass rounded-lg text-xs
-                                                          text-nr-faint font-mono border border-white/[0.05]
-                                                          focus:border-nr-accent/30 outline-none"
+                                            className="glass mt-1.5 w-full rounded-lg border border-white/[0.05] px-3 py-1.5 font-mono text-xs text-nr-faint outline-none focus:border-nr-accent/30"
                                             placeholder="article-slug-in-english"
                                         />
                                     </div>
@@ -314,16 +299,14 @@ export default function PostEdit({ post, categories, tags, affiliates }: Props) 
                                 >
                                     {data.lang !== 'en' && (
                                         <>
-                                            <label className="text-xs text-nr-faint uppercase tracking-wider block mb-1.5">
+                                            <label className="mb-1.5 block text-xs uppercase tracking-wider text-nr-faint">
                                                 Excerpt (ES)
                                             </label>
                                             <textarea
                                                 rows={2}
                                                 value={data.excerpt}
                                                 onChange={e => set('excerpt', e.target.value)}
-                                                className="w-full px-3 py-2.5 glass rounded-lg text-sm text-nr-text
-                                                                 border border-white/[0.08] focus:border-nr-accent/50
-                                                                 outline-none transition-colors resize-none"
+                                                className="glass w-full resize-none rounded-lg border border-white/[0.08] px-3 py-2.5 text-sm text-nr-text outline-none transition-colors focus:border-nr-accent/50"
                                                 placeholder="Resumen breve..."
                                             />
                                         </>
@@ -331,16 +314,14 @@ export default function PostEdit({ post, categories, tags, affiliates }: Props) 
                                 </div>
                                 {(data.lang === 'en' || (data.lang === 'both' && tab === 'en')) && (
                                     <div>
-                                        <label className="text-xs text-nr-faint uppercase tracking-wider block mb-1.5">
+                                        <label className="mb-1.5 block text-xs uppercase tracking-wider text-nr-faint">
                                             Excerpt (EN)
                                         </label>
                                         <textarea
                                             rows={2}
                                             value={data.excerpt_en}
                                             onChange={e => set('excerpt_en', e.target.value)}
-                                            className="w-full px-3 py-2.5 glass rounded-lg text-sm text-nr-text
-                                                             border border-white/[0.08] focus:border-nr-accent/50
-                                                             outline-none transition-colors resize-none"
+                                            className="glass w-full resize-none rounded-lg border border-white/[0.08] px-3 py-2.5 text-sm text-nr-text outline-none transition-colors focus:border-nr-accent/50"
                                             placeholder="Brief summary in English..."
                                         />
                                     </div>
@@ -352,7 +333,7 @@ export default function PostEdit({ post, categories, tags, affiliates }: Props) 
                                 >
                                     {data.lang !== 'en' && (
                                         <>
-                                            <label className="text-xs text-nr-faint uppercase tracking-wider block mb-1.5">
+                                            <label className="mb-1.5 block text-xs uppercase tracking-wider text-nr-faint">
                                                 Contenido (ES)
                                             </label>
                                             <TiptapEditor
@@ -365,7 +346,7 @@ export default function PostEdit({ post, categories, tags, affiliates }: Props) 
                                 </div>
                                 {(data.lang === 'en' || (data.lang === 'both' && tab === 'en')) && (
                                     <div>
-                                        <label className="text-xs text-nr-faint uppercase tracking-wider block mb-1.5">
+                                        <label className="mb-1.5 block text-xs uppercase tracking-wider text-nr-faint">
                                             Content (EN)
                                         </label>
                                         <TiptapEditor
@@ -379,22 +360,20 @@ export default function PostEdit({ post, categories, tags, affiliates }: Props) 
                         </div>
 
                         {/* SEO section */}
-                        <div className="glass rounded-2xl overflow-hidden">
+                        <div className="glass overflow-hidden rounded-2xl">
                             <button
                                 type="button"
                                 onClick={() => setSeoOpen(o => !o)}
-                                className="w-full flex items-center justify-between px-6 py-4
-                                               text-sm font-semibold text-nr-text hover:text-nr-accent
-                                               transition-colors"
+                                className="flex w-full items-center justify-between px-6 py-4 text-sm font-semibold text-nr-text transition-colors hover:text-nr-accent"
                             >
                                 <span>SEO & Meta</span>
-                                <span className="text-nr-faint text-xs">{seoOpen ? '▲' : '▼'}</span>
+                                <span className="text-xs text-nr-faint">{seoOpen ? '▲' : '▼'}</span>
                             </button>
 
                             {seoOpen && (
-                                <div className="px-6 pb-6 space-y-4 border-t border-white/[0.06] pt-4">
+                                <div className="space-y-4 border-t border-white/[0.06] px-6 pb-6 pt-4">
                                     <div>
-                                        <label className="text-xs text-nr-faint uppercase tracking-wider block mb-1.5">
+                                        <label className="mb-1.5 block text-xs uppercase tracking-wider text-nr-faint">
                                             Meta título ({data.meta_title.length}/70)
                                         </label>
                                         <input
@@ -402,13 +381,11 @@ export default function PostEdit({ post, categories, tags, affiliates }: Props) 
                                             value={data.meta_title}
                                             onChange={e => set('meta_title', e.target.value)}
                                             maxLength={70}
-                                            className="w-full px-3 py-2.5 glass rounded-lg text-sm text-nr-text
-                                                          border border-white/[0.08] focus:border-nr-accent/50
-                                                          outline-none transition-colors"
+                                            className="glass w-full rounded-lg border border-white/[0.08] px-3 py-2.5 text-sm text-nr-text outline-none transition-colors focus:border-nr-accent/50"
                                         />
                                     </div>
                                     <div>
-                                        <label className="text-xs text-nr-faint uppercase tracking-wider block mb-1.5">
+                                        <label className="mb-1.5 block text-xs uppercase tracking-wider text-nr-faint">
                                             Meta descripción ({data.meta_description.length}/160)
                                         </label>
                                         <textarea
@@ -416,13 +393,11 @@ export default function PostEdit({ post, categories, tags, affiliates }: Props) 
                                             value={data.meta_description}
                                             onChange={e => set('meta_description', e.target.value)}
                                             maxLength={160}
-                                            className="w-full px-3 py-2.5 glass rounded-lg text-sm text-nr-text
-                                                             border border-white/[0.08] focus:border-nr-accent/50
-                                                             outline-none transition-colors resize-none"
+                                            className="glass w-full resize-none rounded-lg border border-white/[0.08] px-3 py-2.5 text-sm text-nr-text outline-none transition-colors focus:border-nr-accent/50"
                                         />
                                     </div>
                                     <div>
-                                        <p className="text-xs text-nr-faint uppercase tracking-wider mb-2">
+                                        <p className="mb-2 text-xs uppercase tracking-wider text-nr-faint">
                                             Vista previa Google
                                         </p>
                                         <SeoPreview
@@ -439,16 +414,15 @@ export default function PostEdit({ post, categories, tags, affiliates }: Props) 
                     {/* Sidebar */}
                     <div className="space-y-4">
                         {/* Publish settings */}
-                        <div className="glass rounded-2xl p-5 space-y-4">
+                        <div className="glass space-y-4 rounded-2xl p-5">
                             <h3 className="text-sm font-semibold text-nr-text">Publicación</h3>
 
                             <div>
-                                <label className="text-xs text-nr-faint block mb-1.5">Estado</label>
+                                <label className="mb-1.5 block text-xs text-nr-faint">Estado</label>
                                 <select
                                     value={data.status}
                                     onChange={e => set('status', e.target.value as Post['status'])}
-                                    className="w-full px-3 py-2 glass rounded-lg text-sm text-nr-muted
-                                                   border border-white/[0.08] outline-none bg-transparent"
+                                    className="glass w-full rounded-lg border border-white/[0.08] bg-transparent px-3 py-2 text-sm text-nr-muted outline-none"
                                 >
                                     {STATUS_OPTIONS.map(o => (
                                         <option key={o.value} value={o.value}>
@@ -459,12 +433,11 @@ export default function PostEdit({ post, categories, tags, affiliates }: Props) 
                             </div>
 
                             <div>
-                                <label className="text-xs text-nr-faint block mb-1.5">Idioma</label>
+                                <label className="mb-1.5 block text-xs text-nr-faint">Idioma</label>
                                 <select
                                     value={data.lang}
                                     onChange={e => set('lang', e.target.value as Post['lang'])}
-                                    className="w-full px-3 py-2 glass rounded-lg text-sm text-nr-muted
-                                                   border border-white/[0.08] outline-none bg-transparent"
+                                    className="glass w-full rounded-lg border border-white/[0.08] bg-transparent px-3 py-2 text-sm text-nr-muted outline-none"
                                 >
                                     {LANG_OPTIONS.map(o => (
                                         <option key={o.value} value={o.value}>
@@ -475,14 +448,13 @@ export default function PostEdit({ post, categories, tags, affiliates }: Props) 
                             </div>
 
                             <div>
-                                <label className="text-xs text-nr-faint block mb-1.5">
+                                <label className="mb-1.5 block text-xs text-nr-faint">
                                     Categoría
                                 </label>
                                 <select
                                     value={data.category_id}
                                     onChange={e => set('category_id', e.target.value)}
-                                    className="w-full px-3 py-2 glass rounded-lg text-sm text-nr-muted
-                                                   border border-white/[0.08] outline-none bg-transparent"
+                                    className="glass w-full rounded-lg border border-white/[0.08] bg-transparent px-3 py-2 text-sm text-nr-muted outline-none"
                                 >
                                     <option value="">Sin categoría</option>
                                     {categories.map(c => (
@@ -494,16 +466,14 @@ export default function PostEdit({ post, categories, tags, affiliates }: Props) 
                             </div>
 
                             <div>
-                                <label className="text-xs text-nr-faint block mb-1.5">
+                                <label className="mb-1.5 block text-xs text-nr-faint">
                                     Fecha publicación
                                 </label>
                                 <input
                                     type="datetime-local"
                                     value={data.published_at}
                                     onChange={e => set('published_at', e.target.value)}
-                                    className="w-full px-3 py-2 glass rounded-lg text-sm text-nr-muted
-                                                  border border-white/[0.08] outline-none bg-transparent
-                                                  [color-scheme:dark]"
+                                    className="glass w-full rounded-lg border border-white/[0.08] bg-transparent px-3 py-2 text-sm text-nr-muted outline-none [color-scheme:dark]"
                                 />
                             </div>
 
@@ -527,13 +497,13 @@ export default function PostEdit({ post, categories, tags, affiliates }: Props) 
                         </div>
 
                         {/* Cover image */}
-                        <div className="glass rounded-2xl p-5 space-y-3">
+                        <div className="glass space-y-3 rounded-2xl p-5">
                             <h3 className="text-sm font-semibold text-nr-text">Portada</h3>
                             {data.cover_image && (
                                 <img
                                     src={data.cover_image}
                                     alt="Portada"
-                                    className="w-full rounded-lg object-cover max-h-36"
+                                    className="max-h-36 w-full rounded-lg object-cover"
                                 />
                             )}
                             <input
@@ -541,9 +511,7 @@ export default function PostEdit({ post, categories, tags, affiliates }: Props) 
                                 value={data.cover_image}
                                 onChange={e => set('cover_image', e.target.value)}
                                 placeholder="URL de la imagen"
-                                className="w-full px-3 py-2 glass rounded-lg text-xs text-nr-text
-                                              border border-white/[0.08] focus:border-nr-accent/50
-                                              outline-none transition-colors"
+                                className="glass w-full rounded-lg border border-white/[0.08] px-3 py-2 text-xs text-nr-text outline-none transition-colors focus:border-nr-accent/50"
                             />
                             <input
                                 ref={fileInputRef}
@@ -556,8 +524,7 @@ export default function PostEdit({ post, categories, tags, affiliates }: Props) 
                                 type="button"
                                 onClick={() => fileInputRef.current?.click()}
                                 disabled={uploading}
-                                className="w-full py-2 glass rounded-lg text-xs text-nr-faint
-                                               hover:text-nr-muted transition-colors disabled:opacity-50"
+                                className="glass w-full rounded-lg py-2 text-xs text-nr-faint transition-colors hover:text-nr-muted disabled:opacity-50"
                             >
                                 {uploading ? 'Subiendo...' : '↑ Subir imagen'}
                             </button>
@@ -565,19 +532,18 @@ export default function PostEdit({ post, categories, tags, affiliates }: Props) 
 
                         {/* Tags */}
                         <div className="glass rounded-2xl p-5">
-                            <h3 className="text-sm font-semibold text-nr-text mb-3">Tags</h3>
+                            <h3 className="mb-3 text-sm font-semibold text-nr-text">Tags</h3>
                             <div className="flex flex-wrap gap-1.5">
                                 {tags.map(tag => (
                                     <button
                                         key={tag.id}
                                         type="button"
                                         onClick={() => toggleArrayItem('tags', tag.id)}
-                                        className={`px-2.5 py-1 rounded-full text-xs transition-colors
-                                                ${
-                                                    (data.tags as number[]).includes(tag.id)
-                                                        ? 'bg-nr-accent/20 border border-nr-accent/40 text-nr-accent'
-                                                        : 'glass text-nr-faint hover:text-nr-muted'
-                                                }`}
+                                        className={`rounded-full px-2.5 py-1 text-xs transition-colors ${
+                                            (data.tags as number[]).includes(tag.id)
+                                                ? 'border border-nr-accent/40 bg-nr-accent/20 text-nr-accent'
+                                                : 'glass text-nr-faint hover:text-nr-muted'
+                                        }`}
                                     >
                                         {tag.name}
                                     </button>
@@ -592,18 +558,18 @@ export default function PostEdit({ post, categories, tags, affiliates }: Props) 
 
                         {/* Affiliates */}
                         <div className="glass rounded-2xl p-5">
-                            <h3 className="text-sm font-semibold text-nr-text mb-3">Afiliados</h3>
-                            <div className="space-y-1.5 max-h-48 overflow-y-auto">
+                            <h3 className="mb-3 text-sm font-semibold text-nr-text">Afiliados</h3>
+                            <div className="max-h-48 space-y-1.5 overflow-y-auto">
                                 {affiliates.map(aff => (
                                     <label
                                         key={aff.id}
-                                        className="flex items-center gap-2 cursor-pointer"
+                                        className="flex cursor-pointer items-center gap-2"
                                     >
                                         <input
                                             type="checkbox"
                                             checked={(data.affiliates as number[]).includes(aff.id)}
                                             onChange={() => toggleArrayItem('affiliates', aff.id)}
-                                            className="accent-nr-accent w-3.5 h-3.5"
+                                            className="h-3.5 w-3.5 accent-nr-accent"
                                         />
                                         <span className="text-xs text-nr-muted">{aff.name}</span>
                                     </label>

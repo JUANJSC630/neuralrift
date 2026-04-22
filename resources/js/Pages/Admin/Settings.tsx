@@ -24,11 +24,11 @@ function Field({
 }) {
     return (
         <div>
-            <label className="text-xs font-mono text-nr-faint uppercase tracking-wider block mb-2">
+            <label className="mb-2 block font-mono text-xs uppercase tracking-wider text-nr-faint">
                 {label}
             </label>
             {children}
-            {error && <p className="text-xs text-nr-red mt-1">{error}</p>}
+            {error && <p className="mt-1 text-xs text-nr-red">{error}</p>}
         </div>
     )
 }
@@ -57,28 +57,23 @@ export default function Settings({ settings, user }: Props) {
 
             <div className="max-w-2xl">
                 {/* Author profile */}
-                <div className="glass rounded-2xl p-6 mb-6">
-                    <h2 className="font-semibold text-nr-text mb-5 pb-4 border-b border-white/[0.05]">
+                <div className="glass mb-6 rounded-2xl p-6">
+                    <h2 className="mb-5 border-b border-white/[0.05] pb-4 font-semibold text-nr-text">
                         Perfil del autor
                     </h2>
 
                     <form onSubmit={handleSubmit} className="space-y-5">
                         {/* Avatar */}
                         <div className="flex items-center gap-5">
-                            <div
-                                className="w-16 h-16 rounded-full bg-gradient-to-br
-                                            from-nr-accent to-nr-cyan flex items-center
-                                            justify-center text-2xl font-bold text-white flex-shrink-0"
-                            >
+                            <div className="flex h-16 w-16 flex-shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-nr-accent to-nr-cyan text-2xl font-bold text-white">
                                 {data.name[0] ?? 'A'}
                             </div>
                             <div>
-                                <p className="text-sm text-nr-text font-medium">{data.name}</p>
-                                <p className="text-xs text-nr-faint mt-0.5">Admin</p>
+                                <p className="text-sm font-medium text-nr-text">{data.name}</p>
+                                <p className="mt-0.5 text-xs text-nr-faint">Admin</p>
                                 <button
                                     type="button"
-                                    className="text-xs text-nr-accent hover:text-nr-accent/80
-                                                   transition-colors mt-1"
+                                    className="mt-1 text-xs text-nr-accent transition-colors hover:text-nr-accent/80"
                                 >
                                     Cambiar foto (próximamente)
                                 </button>
@@ -102,7 +97,7 @@ export default function Settings({ settings, user }: Props) {
                                 className={cn(inputCls, 'resize-none')}
                                 placeholder="Una descripción corta sobre ti..."
                             />
-                            <p className="text-[10px] text-nr-faint mt-1">
+                            <p className="mt-1 text-[10px] text-nr-faint">
                                 {data.bio.length}/500 caracteres
                             </p>
                         </Field>
@@ -110,10 +105,7 @@ export default function Settings({ settings, user }: Props) {
                         <div className="grid grid-cols-2 gap-4">
                             <Field label="Twitter/X" error={errors.twitter}>
                                 <div className="relative">
-                                    <span
-                                        className="absolute left-3 top-1/2 -translate-y-1/2
-                                                     text-xs text-nr-faint font-mono"
-                                    >
+                                    <span className="absolute left-3 top-1/2 -translate-y-1/2 font-mono text-xs text-nr-faint">
                                         @
                                     </span>
                                     <input
@@ -148,10 +140,7 @@ export default function Settings({ settings, user }: Props) {
                             <button
                                 type="submit"
                                 disabled={processing}
-                                className="px-6 py-2.5 rounded-xl text-sm font-semibold text-white
-                                               bg-gradient-to-r from-nr-accent to-[#6d58f0]
-                                               glow-accent hover:-translate-y-0.5 transition-all
-                                               disabled:opacity-50 disabled:cursor-not-allowed"
+                                className="glow-accent rounded-xl bg-gradient-to-r from-nr-accent to-[#6d58f0] px-6 py-2.5 text-sm font-semibold text-white transition-all hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-50"
                             >
                                 {processing ? 'Guardando...' : 'Guardar cambios'}
                             </button>
@@ -166,8 +155,8 @@ export default function Settings({ settings, user }: Props) {
 
                 {/* Site info — read only */}
                 <div className="glass rounded-2xl p-6">
-                    <h2 className="font-semibold text-nr-text mb-1">Información del sitio</h2>
-                    <p className="text-xs text-nr-faint mb-5">
+                    <h2 className="mb-1 font-semibold text-nr-text">Información del sitio</h2>
+                    <p className="mb-5 text-xs text-nr-faint">
                         Configurable desde el archivo{' '}
                         <code className="font-mono text-nr-accent">.env</code>
                     </p>
@@ -183,22 +172,21 @@ export default function Settings({ settings, user }: Props) {
                         ].map(item => (
                             <div
                                 key={item.label}
-                                className="flex items-center justify-between py-2.5
-                                            border-b border-white/[0.04] last:border-0"
+                                className="flex items-center justify-between border-b border-white/[0.04] py-2.5 last:border-0"
                             >
                                 <span className="text-xs text-nr-faint">{item.label}</span>
-                                <span className="text-xs font-mono text-nr-muted">
+                                <span className="font-mono text-xs text-nr-muted">
                                     {item.value}
                                 </span>
                             </div>
                         ))}
                     </div>
 
-                    <div className="mt-5 p-4 bg-nr-bg rounded-xl border border-white/[0.05]">
-                        <p className="text-[10px] font-mono text-nr-faint mb-2">
+                    <div className="mt-5 rounded-xl border border-white/[0.05] bg-nr-bg p-4">
+                        <p className="mb-2 font-mono text-[10px] text-nr-faint">
                             Variables recomendadas en .env:
                         </p>
-                        <pre className="text-[10px] font-mono text-nr-muted leading-relaxed">{`SITE_DESCRIPTION="El futuro de la IA..."
+                        <pre className="font-mono text-[10px] leading-relaxed text-nr-muted">{`SITE_DESCRIPTION="El futuro de la IA..."
 SITE_TWITTER="@neuralrift"
 ANALYTICS_ID="G-XXXXXXXXXX"`}</pre>
                     </div>
