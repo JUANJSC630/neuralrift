@@ -1,5 +1,6 @@
 import { Head, Link, useForm } from '@inertiajs/react'
 import { FormEventHandler } from 'react'
+import CustomCursor from '@/Components/Layout/CustomCursor'
 
 export default function Login({
     status,
@@ -22,6 +23,7 @@ export default function Login({
     return (
         <>
             <Head title="Acceder — NeuralRift" />
+            <CustomCursor />
 
             <div className="relative flex min-h-screen items-center justify-center overflow-hidden bg-nr-bg px-4">
                 {/* Mesh background */}

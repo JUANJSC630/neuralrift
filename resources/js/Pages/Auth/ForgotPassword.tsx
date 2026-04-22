@@ -1,5 +1,6 @@
 import { Head, Link, useForm } from '@inertiajs/react'
 import { FormEventHandler } from 'react'
+import CustomCursor from '@/Components/Layout/CustomCursor'
 
 export default function ForgotPassword({ status }: { status?: string }) {
     const { data, setData, post, processing, errors } = useForm({
@@ -14,6 +15,7 @@ export default function ForgotPassword({ status }: { status?: string }) {
     return (
         <>
             <Head title="Recuperar contraseña — NeuralRift" />
+            <CustomCursor />
 
             <div className="relative flex min-h-screen items-center justify-center overflow-hidden bg-nr-bg px-4">
                 <div

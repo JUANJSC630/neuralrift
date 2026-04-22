@@ -54,18 +54,23 @@ export default function CustomCursor() {
         }
 
         // Delegación en lugar de iterar todos los elementos (cubre dinámicos también)
-        document.addEventListener('mouseover', e => {
+        const onMouseOver = (e: MouseEvent) => {
             const t = e.target as Element
             if (t.closest('a, button, [role="button"]')) onEnter()
-        })
-        document.addEventListener('mouseout', e => {
+        }
+        const onMouseOut = (e: MouseEvent) => {
             const t = e.relatedTarget as Element | null
             if (!t?.closest('a, button, [role="button"]')) onLeave()
-        })
+        }
+
+        document.addEventListener('mouseover', onMouseOver)
+        document.addEventListener('mouseout', onMouseOut)
 
         return () => {
             cancelAnimationFrame(rafId)
             window.removeEventListener('mousemove', onMove)
+            document.removeEventListener('mouseover', onMouseOver)
+            document.removeEventListener('mouseout', onMouseOut)
         }
     }, [])
 

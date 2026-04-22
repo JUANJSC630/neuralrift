@@ -1,5 +1,6 @@
 import { Head, Link, useForm } from '@inertiajs/react'
 import { FormEventHandler } from 'react'
+import CustomCursor from '@/Components/Layout/CustomCursor'
 
 export default function Register() {
     const { data, setData, post, processing, errors, reset } = useForm({
@@ -19,6 +20,7 @@ export default function Register() {
     return (
         <>
             <Head title="Crear cuenta — NeuralRift" />
+            <CustomCursor />
 
             <div className="relative flex min-h-screen items-center justify-center overflow-hidden bg-nr-bg px-4">
                 <div
