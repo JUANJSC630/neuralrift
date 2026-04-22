@@ -64,12 +64,12 @@ class PostGeneratorAgent
     {
         if (! empty($inputs['category_id'])) {
             $category = Category::find($inputs['category_id']);
-            $inputs['category_name'] = $category?->name ?? '';
+            $inputs['category_name'] = $category->name ?? '';
         }
 
         if (! empty($inputs['affiliate_id'])) {
             $affiliate = Affiliate::find($inputs['affiliate_id']);
-            $inputs['affiliate_name'] = $affiliate?->name ?? '';
+            $inputs['affiliate_name'] = $affiliate->name ?? '';
         }
 
         return $inputs;

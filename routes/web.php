@@ -19,6 +19,7 @@ use App\Http\Controllers\Admin\NewsletterController as AdminNewsletterController
 use App\Http\Controllers\Admin\SettingsController;
 use App\Http\Controllers\Admin\AIGeneratorController;
 use App\Http\Controllers\Admin\NotificationController;
+use App\Http\Controllers\Admin\ImageController;
 
 // ── SEO ──────────────────────────────────────────────────
 Route::get('/sitemap.xml', [SeoController::class, 'sitemap']);
@@ -99,6 +100,10 @@ Route::middleware(['auth', 'verified', 'admin'])
 
     // Upload de imágenes desde editor
     Route::post('/upload/image', [UploadController::class, 'image'])->name('upload.image');
+
+    // Gestión de imágenes
+    Route::get('/images', [ImageController::class, 'index'])->name('images.index');
+    Route::delete('/images', [ImageController::class, 'destroy'])->name('images.destroy');
 
     // Recursos
     Route::resource('categories', AdminCategoryController::class);

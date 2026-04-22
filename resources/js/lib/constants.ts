@@ -38,6 +38,7 @@ export const ADMIN_NAV = [
     { icon: '◈', label: 'Dashboard', href: '/admin' },
     { icon: '✦', label: 'Artículos', href: '/admin/posts' },
     { icon: '✧', label: 'Generador IA', href: '/admin/ai-generator' },
+    { icon: '🖼', label: 'Imágenes', href: '/admin/images' },
     { icon: '⊞', label: 'Categorías', href: '/admin/categories' },
     { icon: '⚡', label: 'Afiliados', href: '/admin/affiliates' },
     { icon: '◉', label: 'Newsletter', href: '/admin/newsletter' },

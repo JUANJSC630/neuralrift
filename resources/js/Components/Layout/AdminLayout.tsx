@@ -1,4 +1,4 @@
-import { Link, router, usePage } from '@inertiajs/react'
+import { Link, usePage } from '@inertiajs/react'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { ADMIN_NAV } from '@/lib/constants'
 import { cn } from '@/lib/utils'

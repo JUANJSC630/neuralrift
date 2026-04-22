@@ -172,12 +172,12 @@ export default function PostEdit({ post, categories, tags, affiliates }: Props) 
     }
 
     const handlePublish = () => {
-        if (!isNew) {
-            router.post(`/admin/posts/${post!.id}/publish`)
-            return
-        }
         const payload = { ...buildPayload(), status: 'published' as const }
-        router.post('/admin/posts', payload)
+        if (isNew) {
+            router.post('/admin/posts', payload)
+        } else {
+            router.put(`/admin/posts/${post!.id}`, payload)
+        }
     }
 
     const handleDuplicate = () => {

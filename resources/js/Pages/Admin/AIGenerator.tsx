@@ -97,13 +97,13 @@ export default function AIGenerator({ categories, affiliates }: Props) {
                     </div>
 
                     {/* Aviso importante */}
-                    <div className="mt-4 flex items-start gap-3 rounded-xl border border-nr-gold/20 p-4 glass">
+                    <div className="glass mt-4 flex items-start gap-3 rounded-xl border border-nr-gold/20 p-4">
                         <span className="flex-shrink-0 text-sm text-nr-gold">⚠</span>
                         <p className="text-xs leading-relaxed text-nr-muted">
                             El borrador se guarda como{' '}
                             <strong className="text-nr-gold">"En revisión"</strong> y nunca se
-                            publica automáticamente. Siempre revisa, ajusta y añade tu voz antes
-                            de publicar. Recibirás una notificación cuando esté listo (~30-60
+                            publica automáticamente. Siempre revisa, ajusta y añade tu voz antes de
+                            publicar. Recibirás una notificación cuando esté listo (~30-60
                             segundos).
                         </p>
                     </div>
@@ -111,8 +111,8 @@ export default function AIGenerator({ categories, affiliates }: Props) {
 
                 <form onSubmit={handleSubmit} className="space-y-6">
                     {/* Tipo de artículo */}
-                    <div className="rounded-2xl p-6 glass">
-                        <label className="mb-4 block text-xs font-mono uppercase tracking-widest text-nr-faint">
+                    <div className="glass rounded-2xl p-6">
+                        <label className="mb-4 block font-mono text-xs uppercase tracking-widest text-nr-faint">
                             Tipo de artículo
                         </label>
                         <div className="grid grid-cols-3 gap-3">
@@ -125,7 +125,7 @@ export default function AIGenerator({ categories, affiliates }: Props) {
                                         'rounded-xl border p-4 text-left transition-all',
                                         data.post_type === type.id
                                             ? 'border-nr-accent/40 bg-nr-accent/15'
-                                            : 'border-white/[0.08] glass hover:border-white/20',
+                                            : 'glass border-white/[0.08] hover:border-white/20',
                                     )}
                                 >
                                     <div className="mb-2 text-2xl">{type.emoji}</div>
@@ -156,8 +156,8 @@ export default function AIGenerator({ categories, affiliates }: Props) {
                     </div>
 
                     {/* Tema principal */}
-                    <div className="rounded-2xl p-6 glass">
-                        <label className="mb-3 block text-xs font-mono uppercase tracking-widest text-nr-faint">
+                    <div className="glass rounded-2xl p-6">
+                        <label className="mb-3 block font-mono text-xs uppercase tracking-widest text-nr-faint">
                             {data.post_type === 'news'
                                 ? 'Tema o noticia a cubrir *'
                                 : data.post_type === 'review'
@@ -178,9 +178,7 @@ export default function AIGenerator({ categories, affiliates }: Props) {
                             className={cn(inputCls, 'resize-none')}
                             required
                         />
-                        {errors.topic && (
-                            <p className="mt-1 text-xs text-nr-red">{errors.topic}</p>
-                        )}
+                        {errors.topic && <p className="mt-1 text-xs text-nr-red">{errors.topic}</p>}
 
                         {/* URL fuente (solo para noticias) */}
                         {data.post_type === 'news' && (
@@ -211,9 +209,7 @@ export default function AIGenerator({ categories, affiliates }: Props) {
                                         max="5"
                                         step="0.5"
                                         value={data.personal_rating}
-                                        onChange={e =>
-                                            setData('personal_rating', e.target.value)
-                                        }
+                                        onChange={e => setData('personal_rating', e.target.value)}
                                         className="flex-1 accent-nr-accent"
                                     />
                                     <span className="w-8 text-right font-mono font-bold text-nr-accent">
@@ -224,10 +220,7 @@ export default function AIGenerator({ categories, affiliates }: Props) {
                                             <span
                                                 key={i}
                                                 className={
-                                                    i <
-                                                    Math.floor(
-                                                        parseFloat(data.personal_rating),
-                                                    )
+                                                    i < Math.floor(parseFloat(data.personal_rating))
                                                         ? 'text-sm text-nr-gold'
                                                         : 'text-sm text-nr-faint'
                                                 }
@@ -242,16 +235,14 @@ export default function AIGenerator({ categories, affiliates }: Props) {
                     </div>
 
                     {/* Configuración */}
-                    <div className="rounded-2xl p-6 glass">
-                        <label className="mb-4 block text-xs font-mono uppercase tracking-widest text-nr-faint">
+                    <div className="glass rounded-2xl p-6">
+                        <label className="mb-4 block font-mono text-xs uppercase tracking-widest text-nr-faint">
                             Configuración
                         </label>
                         <div className="grid grid-cols-2 gap-4">
                             {/* Idioma */}
                             <div>
-                                <label className="mb-2 block text-xs text-nr-faint">
-                                    Idioma
-                                </label>
+                                <label className="mb-2 block text-xs text-nr-faint">Idioma</label>
                                 <select
                                     value={data.lang}
                                     onChange={e => setData('lang', e.target.value as Lang)}
@@ -265,17 +256,13 @@ export default function AIGenerator({ categories, affiliates }: Props) {
 
                             {/* Tono */}
                             <div>
-                                <label className="mb-2 block text-xs text-nr-faint">
-                                    Tono
-                                </label>
+                                <label className="mb-2 block text-xs text-nr-faint">Tono</label>
                                 <select
                                     value={data.tone}
                                     onChange={e => setData('tone', e.target.value as Tone)}
                                     className={selectCls}
                                 >
-                                    <option value="tecnico">
-                                        🔧 Técnico (análisis profundo)
-                                    </option>
+                                    <option value="tecnico">🔧 Técnico (análisis profundo)</option>
                                     <option value="accesible">
                                         💡 Accesible (explicación simple)
                                     </option>
@@ -293,9 +280,7 @@ export default function AIGenerator({ categories, affiliates }: Props) {
                                     </label>
                                     <select
                                         value={data.level}
-                                        onChange={e =>
-                                            setData('level', e.target.value as Level)
-                                        }
+                                        onChange={e => setData('level', e.target.value as Level)}
                                         className={selectCls}
                                     >
                                         <option value="basico">🟢 Básico</option>
@@ -342,16 +327,16 @@ export default function AIGenerator({ categories, affiliates }: Props) {
                                     ))}
                                 </select>
                                 <p className="mt-1 text-[10px] text-nr-faint">
-                                    Si seleccionas uno, Claude lo mencionará de forma natural en
-                                    el contenido
+                                    Si seleccionas uno, Claude lo mencionará de forma natural en el
+                                    contenido
                                 </p>
                             </div>
                         </div>
                     </div>
 
                     {/* Notas adicionales */}
-                    <div className="rounded-2xl p-6 glass">
-                        <label className="mb-3 block text-xs font-mono uppercase tracking-widest text-nr-faint">
+                    <div className="glass rounded-2xl p-6">
+                        <label className="mb-3 block font-mono text-xs uppercase tracking-widest text-nr-faint">
                             Notas adicionales para Claude (opcional)
                         </label>
                         <textarea
