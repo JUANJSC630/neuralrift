@@ -15,9 +15,9 @@ class SettingsController extends Controller
         return Inertia::render('Admin/Settings', [
             'settings' => [
                 'site_name'        => config('app.name'),
-                'site_description' => env('SITE_DESCRIPTION', ''),
-                'twitter'          => env('SITE_TWITTER', '@neuralrift'),
-                'analytics_id'     => env('ANALYTICS_ID', ''),
+                'site_description' => config('site.description'),
+                'twitter'          => config('site.twitter'),
+                'analytics_id'     => config('site.analytics_id'),
             ],
             'user' => auth()->user(),
         ]);

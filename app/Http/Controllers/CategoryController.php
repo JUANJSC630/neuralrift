@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Category;
+use App\Models\Post;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -24,14 +25,16 @@ class CategoryController extends Controller
         $category = Category::where('slug', $slug)->firstOrFail();
         $lang = app()->getLocale();
 
-        $posts = $category->posts()
+        $posts = Post::query()
+            ->where('category_id', $category->id)
             ->published()
             ->forLang($lang)
             ->with(['author', 'tags'])
             ->latest('published_at')
             ->paginate(12);
 
-        $featured = $category->posts()
+        $featured = Post::query()
+            ->where('category_id', $category->id)
             ->published()
             ->forLang($lang)
             ->featured()
