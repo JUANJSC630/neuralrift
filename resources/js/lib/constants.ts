@@ -23,7 +23,7 @@ export const NAV_LINKS = [
     { label: 'Blog', labelEn: 'Blog', href: '/blog' },
     { label: 'Categorías', labelEn: 'Categories', href: '/categorias' },
     { label: 'Herramientas IA', labelEn: 'AI Tools', href: '/herramientas' },
-    { label: 'Newsletter', labelEn: 'Newsletter', href: '#newsletter' },
+    { label: 'Newsletter', labelEn: 'Newsletter', href: '/#newsletter' },
     { label: 'Sobre mí', labelEn: 'About', href: '/sobre-mi' },
 ]
 

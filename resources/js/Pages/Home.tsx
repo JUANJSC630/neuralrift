@@ -1,4 +1,4 @@
-import { Head } from '@inertiajs/react'
+import { Head, Link } from '@inertiajs/react'
 import { motion } from 'framer-motion'
 import { useState, useEffect } from 'react'
 import Navbar from '@/Components/Layout/Navbar'
@@ -184,12 +184,12 @@ export default function Home({ featured, recent, affiliates }: Props) {
                             transition={{ duration: 0.5, delay: 0.35 }}
                             className="flex flex-col items-center justify-center gap-4 sm:flex-row"
                         >
-                            <a
+                            <Link
                                 href="/blog"
                                 className="glow-accent hover:glow-accent-lg w-full rounded-full bg-gradient-to-r from-nr-accent to-nr-accent-dark px-10 py-4 text-center font-semibold text-white transition-all duration-300 hover:-translate-y-0.5 sm:w-auto"
                             >
                                 Explorar artículos →
-                            </a>
+                            </Link>
                             <a
                                 href="#newsletter"
                                 className="glass w-full rounded-full px-10 py-4 text-center font-medium text-nr-text transition-all duration-300 hover:bg-white/[0.08] sm:w-auto"
@@ -231,12 +231,12 @@ export default function Home({ featured, recent, affiliates }: Props) {
                                 Lo último del mundo de la IA
                             </p>
                         </div>
-                        <a
+                        <Link
                             href="/blog"
                             className="text-sm font-medium text-nr-accent transition-colors hover:text-nr-accent/80"
                         >
                             Ver todos →
-                        </a>
+                        </Link>
                     </div>
 
                     <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">

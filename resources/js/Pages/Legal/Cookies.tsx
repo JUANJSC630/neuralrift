@@ -1,0 +1,246 @@
+import { Head, Link } from '@inertiajs/react'
+import { motion } from 'framer-motion'
+import Navbar from '@/Components/Layout/Navbar'
+import Footer from '@/Components/Layout/Footer'
+import { SITE } from '@/lib/constants'
+
+const LAST_UPDATED = '22 de abril de 2026'
+
+const COOKIE_TABLE = [
+    {
+        name: 'neuralrift_session',
+        type: 'Sesión',
+        purpose: 'Mantiene la sesión activa del usuario autenticado.',
+        duration: 'Sesión',
+    },
+    {
+        name: 'XSRF-TOKEN',
+        type: 'Seguridad',
+        purpose: 'Protección contra ataques CSRF en formularios.',
+        duration: 'Sesión',
+    },
+    {
+        name: 'nr_lang',
+        type: 'Preferencia',
+        purpose: 'Recuerda el idioma seleccionado (ES / EN).',
+        duration: '1 año',
+    },
+]
+
+export default function Cookies() {
+    return (
+        <>
+            <Head title={`Política de Cookies — ${SITE.name}`}>
+                <meta
+                    name="description"
+                    content="Política de cookies de NeuralRift. Qué cookies usamos y para qué."
+                />
+            </Head>
+
+            <Navbar />
+
+            <main id="main-content" className="min-h-screen bg-nr-bg pt-[70px]">
+                {/* Hero */}
+                <section className="relative overflow-hidden border-b border-white/[0.05]">
+                    <div
+                        className="pointer-events-none absolute inset-0"
+                        style={{
+                            background:
+                                'radial-gradient(ellipse 70% 50% at 10% 50%, rgba(124,106,247,0.10) 0%, transparent 65%)',
+                        }}
+                    />
+                    <div className="relative z-10 mx-auto max-w-3xl px-6 py-16 md:px-12">
+                        {/* Breadcrumb */}
+                        <nav className="mb-6 flex items-center gap-2 font-mono text-xs text-nr-faint">
+                            <Link href="/" className="transition-colors hover:text-nr-muted">
+                                Inicio
+                            </Link>
+                            <span>›</span>
+                            <span className="text-nr-muted">Cookies</span>
+                        </nav>
+
+                        <motion.div
+                            initial={{ opacity: 0, y: 14 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.4 }}
+                        >
+                            <span className="mb-3 block font-mono text-xs uppercase tracking-widest text-nr-accent">
+                                Legal
+                            </span>
+                            <h1 className="font-display text-4xl font-black text-nr-text md:text-5xl">
+                                Política de Cookies
+                            </h1>
+                            <p className="mt-3 text-sm text-nr-faint">
+                                Última actualización: {LAST_UPDATED}
+                            </p>
+                        </motion.div>
+                    </div>
+                </section>
+
+                {/* Content */}
+                <div className="mx-auto max-w-3xl px-6 py-14 md:px-12">
+                    <div className="space-y-10 text-sm leading-relaxed text-nr-muted">
+                        <Section title="¿Qué son las cookies?">
+                            <p>
+                                Las cookies son pequeños archivos de texto que los sitios web
+                                almacenan en tu navegador. Permiten que el sitio recuerde tus
+                                preferencias y mejore tu experiencia de uso.
+                            </p>
+                        </Section>
+
+                        <Section title="Cookies que usamos">
+                            <p className="mb-6">
+                                NeuralRift usa exclusivamente cookies técnicas y de preferencia,
+                                estrictamente necesarias para el funcionamiento del sitio.{' '}
+                                <strong className="text-nr-text">
+                                    No usamos cookies de publicidad, rastreo ni analítica de
+                                    terceros.
+                                </strong>
+                            </p>
+
+                            {/* Table */}
+                            <div className="overflow-x-auto">
+                                <table className="w-full border-collapse text-xs">
+                                    <thead>
+                                        <tr className="border-b border-white/[0.08]">
+                                            <th className="py-3 pr-4 text-left font-semibold text-nr-faint uppercase tracking-wider">
+                                                Cookie
+                                            </th>
+                                            <th className="py-3 pr-4 text-left font-semibold text-nr-faint uppercase tracking-wider">
+                                                Tipo
+                                            </th>
+                                            <th className="py-3 pr-4 text-left font-semibold text-nr-faint uppercase tracking-wider">
+                                                Propósito
+                                            </th>
+                                            <th className="py-3 text-left font-semibold text-nr-faint uppercase tracking-wider">
+                                                Duración
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {COOKIE_TABLE.map(row => (
+                                            <tr
+                                                key={row.name}
+                                                className="border-b border-white/[0.04]"
+                                            >
+                                                <td className="py-3 pr-4 font-mono text-nr-accent">
+                                                    {row.name}
+                                                </td>
+                                                <td className="py-3 pr-4 text-nr-text">
+                                                    {row.type}
+                                                </td>
+                                                <td className="py-3 pr-4">{row.purpose}</td>
+                                                <td className="py-3 text-nr-text">{row.duration}</td>
+                                            </tr>
+                                        ))}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </Section>
+
+                        <Section title="Cómo controlar las cookies">
+                            <p>
+                                Puedes controlar y eliminar las cookies desde la configuración de tu
+                                navegador. Ten en cuenta que deshabilitar ciertas cookies puede
+                                afectar la funcionalidad del sitio.
+                            </p>
+                            <ul className="mt-4 space-y-2 pl-4">
+                                <Item>
+                                    <a
+                                        href="https://support.google.com/chrome/answer/95647"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="text-nr-accent transition-colors hover:text-nr-accent/80"
+                                    >
+                                        Google Chrome
+                                    </a>
+                                </Item>
+                                <Item>
+                                    <a
+                                        href="https://support.mozilla.org/es/kb/habilitar-y-deshabilitar-cookies-sitios-web-rastrear-preferencias"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="text-nr-accent transition-colors hover:text-nr-accent/80"
+                                    >
+                                        Mozilla Firefox
+                                    </a>
+                                </Item>
+                                <Item>
+                                    <a
+                                        href="https://support.apple.com/es-es/guide/safari/sfri11471/mac"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="text-nr-accent transition-colors hover:text-nr-accent/80"
+                                    >
+                                        Safari
+                                    </a>
+                                </Item>
+                            </ul>
+                        </Section>
+
+                        <Section title="Cambios en esta política">
+                            <p>
+                                Podemos actualizar esta política cuando sea necesario. La fecha de
+                                última actualización siempre aparece en la cabecera de esta página.
+                            </p>
+                        </Section>
+
+                        <Section title="Contacto">
+                            <p>
+                                Si tienes preguntas sobre nuestra política de cookies, escríbenos a{' '}
+                                <a
+                                    href="mailto:hola@neuralrift.com"
+                                    className="text-nr-accent transition-colors hover:text-nr-accent/80"
+                                >
+                                    hola@neuralrift.com
+                                </a>
+                                .
+                            </p>
+                        </Section>
+                    </div>
+
+                    {/* Back link */}
+                    <div className="mt-14 border-t border-white/[0.06] pt-8">
+                        <Link
+                            href="/"
+                            className="text-sm text-nr-faint transition-colors hover:text-nr-muted"
+                        >
+                            ← Volver al inicio
+                        </Link>
+                    </div>
+                </div>
+            </main>
+
+            <Footer />
+        </>
+    )
+}
+
+function Section({
+    title,
+    children,
+}: {
+    title: string
+    children: React.ReactNode
+}) {
+    return (
+        <motion.section
+            initial={{ opacity: 0, y: 10 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.4 }}
+        >
+            <h2 className="mb-4 font-display text-xl font-bold text-nr-text">{title}</h2>
+            {children}
+        </motion.section>
+    )
+}
+
+function Item({ children }: { children: React.ReactNode }) {
+    return (
+        <li className="flex gap-2">
+            <span className="mt-0.5 flex-shrink-0 text-nr-accent">·</span>
+            <span>{children}</span>
+        </li>
+    )
+}

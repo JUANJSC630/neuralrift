@@ -76,7 +76,7 @@ export default function BlogShow({ post, related, schema, lang = 'es' }: Props) 
                                 <>
                                     <span>›</span>
                                     <Link
-                                        href={`/categorias/${post.category.slug}`}
+                                        href={`/categoria/${post.category.slug}`}
                                         className="transition-colors hover:text-nr-muted"
                                     >
                                         {post.category.name}

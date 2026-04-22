@@ -45,6 +45,12 @@ Route::prefix('en')->name('en.')->group(function () {
 Route::get('/categorias',        [CategoryController::class, 'index'])->name('categories.index');
 Route::get('/categoria/{slug}',  [CategoryController::class, 'show'])->name('category.show');
 
+// Legal
+Route::get('/privacidad', fn() => Inertia::render('Legal/Privacy'))->name('legal.privacy');
+Route::get('/terminos',   fn() => Inertia::render('Legal/Terms'))->name('legal.terms');
+Route::get('/cookies',    fn() => Inertia::render('Legal/Cookies'))->name('legal.cookies');
+Route::get('/afiliados',  fn() => Inertia::render('Legal/Affiliates'))->name('legal.affiliates');
+
 // Newsletter
 Route::post('/newsletter/subscribe', [NewsletterController::class, 'subscribe'])->name('newsletter.subscribe');
 Route::get('/newsletter/confirm/{token}', [NewsletterController::class, 'confirm'])->name('newsletter.confirm');

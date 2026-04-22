@@ -8,6 +8,13 @@ const SOCIAL_LINKS = [
     // { label: 'YouTube', href: 'https://youtube.com/@...' },
 ]
 
+const LEGAL_LINKS = [
+    { label: 'Privacidad', href: '/privacidad' },
+    { label: 'Términos', href: '/terminos' },
+    { label: 'Cookies', href: '/cookies' },
+    { label: 'Afiliados', href: '/afiliados' },
+]
+
 export default function Footer() {
     return (
         <footer className="mt-24 border-t border-white/[0.06] bg-nr-bg3">
@@ -63,14 +70,14 @@ export default function Footer() {
                             Legal
                         </h4>
                         <ul className="space-y-2.5">
-                            {['Privacidad', 'Términos', 'Cookies', 'Afiliados'].map(l => (
-                                <li key={l}>
-                                    <a
-                                        href="#"
+                            {LEGAL_LINKS.map(l => (
+                                <li key={l.href}>
+                                    <Link
+                                        href={l.href}
                                         className="text-sm text-nr-muted transition-colors hover:text-nr-text"
                                     >
-                                        {l}
-                                    </a>
+                                        {l.label}
+                                    </Link>
                                 </li>
                             ))}
                         </ul>
