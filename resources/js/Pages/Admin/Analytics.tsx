@@ -42,7 +42,13 @@ const SOURCE_LABELS: Record<string, string> = {
     referral: 'Referencia',
 }
 
-const CustomTooltip = ({ active, payload, label }: any) => {
+interface TooltipProps {
+    active?: boolean
+    payload?: { value: number }[]
+    label?: string
+}
+
+const CustomTooltip = ({ active, payload, label }: TooltipProps) => {
     if (!active || !payload?.length) return null
     return (
         <div className="glass-strong rounded-xl px-3 py-2 text-xs shadow-xl">

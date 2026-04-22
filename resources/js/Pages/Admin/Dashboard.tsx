@@ -66,7 +66,13 @@ function KpiCard({
     )
 }
 
-function CustomTooltip({ active, payload, label }: any) {
+interface TooltipProps {
+    active?: boolean
+    payload?: { value: number }[]
+    label?: string
+}
+
+function CustomTooltip({ active, payload, label }: TooltipProps) {
     if (!active || !payload?.length) return null
     return (
         <div className="glass rounded-lg px-3 py-2 text-xs">

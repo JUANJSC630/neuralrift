@@ -2,7 +2,7 @@ import { Link } from '@inertiajs/react'
 import { useState, useEffect } from 'react'
 import { cn } from '@/lib/utils'
 import { useLocale } from '@/hooks/useLocale'
-import { getNavLinks, LOCALE_ROUTES, altLocale } from '@/lib/i18n'
+import { getNavLinks, LOCALE_ROUTES } from '@/lib/i18n'
 import CustomCursor from '@/Components/Layout/CustomCursor'
 
 export default function Navbar() {
@@ -39,8 +39,6 @@ export default function Navbar() {
         // Default
         return locale === 'es' ? '/en' : '/'
     }
-
-    const other = altLocale(locale)
 
     return (
         <>

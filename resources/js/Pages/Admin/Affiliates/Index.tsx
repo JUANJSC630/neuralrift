@@ -2,15 +2,14 @@ import AdminLayout from '@/Components/Layout/AdminLayout'
 import { Head, useForm, router } from '@inertiajs/react'
 import { useState } from 'react'
 import { cn } from '@/lib/utils'
+import type { RequestPayload } from '@inertiajs/core'
 import type { Affiliate } from '@/types'
 
 interface Props {
     affiliates: (Affiliate & { clicks_count: number })[]
 }
 
-const inputCls = `w-full bg-nr-bg border border-white/[0.08] rounded-lg px-3 py-2
-                  text-sm text-nr-text outline-none focus:border-nr-accent/40
-                  transition-colors placeholder-nr-faint/40`
+const inputCls = `w-full bg-nr-bg border border-white/[0.08] rounded-lg px-3 py-2 text-sm text-nr-text outline-none focus:border-nr-accent/40 transition-colors placeholder-nr-faint/40`
 
 export default function AffiliatesIndex({ affiliates }: Props) {
     const [editing, setEditing] = useState<Affiliate | null>(null)
@@ -75,7 +74,7 @@ export default function AffiliatesIndex({ affiliates }: Props) {
     }
 
     const toggleActive = (aff: Affiliate) => {
-        router.put(`/admin/affiliates/${aff.id}`, { ...aff, active: !aff.active } as any)
+        router.put(`/admin/affiliates/${aff.id}`, { ...aff, active: !aff.active } as RequestPayload)
     }
 
     const deleteAffiliate = (aff: Affiliate) => {

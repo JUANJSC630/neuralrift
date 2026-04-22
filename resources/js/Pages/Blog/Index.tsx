@@ -21,7 +21,7 @@ interface Props {
     lang: 'es' | 'en'
 }
 
-export default function BlogIndex({ posts, filters, lang }: Props) {
+export default function BlogIndex({ posts, filters }: Props) {
     const { categories } = usePage<PageProps>().props
     const { locale, t, localePath } = useLocale()
     const [search, setSearch] = useState(filters.search ?? '')

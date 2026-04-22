@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useMemo, useRef } from 'react'
 
 interface Heading {
     id: string
@@ -11,17 +11,12 @@ interface Props {
 }
 
 export default function TableOfContents({ content }: Props) {
-    const [headings, setHeadings] = useState<Heading[]>([])
-    const [activeId, setActiveId] = useState<string>('')
-    const observerRef = useRef<IntersectionObserver | null>(null)
-
-    // Parse headings from rendered HTML string
-    useEffect(() => {
+    const headings = useMemo<Heading[]>(() => {
+        if (typeof window === 'undefined') return []
         const parser = new DOMParser()
         const doc = parser.parseFromString(content, 'text/html')
         const nodes = doc.querySelectorAll('h2, h3')
         const items: Heading[] = []
-
         nodes.forEach((node, i) => {
             const id = node.id || `heading-${i}`
             items.push({
@@ -30,9 +25,10 @@ export default function TableOfContents({ content }: Props) {
                 level: parseInt(node.tagName[1]),
             })
         })
-
-        setHeadings(items)
+        return items
     }, [content])
+    const [activeId, setActiveId] = useState<string>('')
+    const observerRef = useRef<IntersectionObserver | null>(null)
 
     // Assign IDs to live DOM nodes and set up IntersectionObserver
     useEffect(() => {
