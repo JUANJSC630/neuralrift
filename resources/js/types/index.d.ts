@@ -110,6 +110,7 @@ export interface SharedProps {
     auth: { user: User | null }
     site: { name: string; tagline: string; twitter: string; description: string }
     categories: Category[]
+    locale: 'es' | 'en'
     flash: { success?: string; error?: string }
     [key: string]: unknown
 }

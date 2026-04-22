@@ -27,6 +27,7 @@ class HandleInertiaRequests extends Middleware
                 ...(new Ziggy)->toArray(),
                 'location' => $request->url(),
             ],
+            'locale' => fn () => app()->getLocale(),
             'site' => [
                 'name'        => 'NeuralRift',
                 'tagline'     => 'El futuro de la IA empieza aquí',

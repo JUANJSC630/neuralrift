@@ -3,16 +3,19 @@ import { motion } from 'framer-motion'
 import Navbar from '@/Components/Layout/Navbar'
 import Footer from '@/Components/Layout/Footer'
 import { SITE } from '@/lib/constants'
-
-const LAST_UPDATED = '22 de abril de 2026'
+import { useLocale } from '@/hooks/useLocale'
 
 export default function Privacy() {
+    const { locale, t, localePath } = useLocale()
+    const isEn = locale === 'en'
+    const LAST_UPDATED = isEn ? 'April 22, 2026' : '22 de abril de 2026'
+
     return (
         <>
-            <Head title={`Política de Privacidad — ${SITE.name}`}>
+            <Head title={`${isEn ? 'Privacy Policy' : 'Política de Privacidad'} — ${SITE.name}`}>
                 <meta
                     name="description"
-                    content="Política de privacidad de NeuralRift. Cómo recopilamos, usamos y protegemos tu información."
+                    content={isEn ? 'NeuralRift privacy policy. How we collect, use and protect your information.' : 'Política de privacidad de NeuralRift. Cómo recopilamos, usamos y protegemos tu información.'}
                 />
             </Head>
 
@@ -31,11 +34,11 @@ export default function Privacy() {
                     <div className="relative z-10 mx-auto max-w-3xl px-6 py-16 md:px-12">
                         {/* Breadcrumb */}
                         <nav className="mb-6 flex items-center gap-2 font-mono text-xs text-nr-faint">
-                            <Link href="/" className="transition-colors hover:text-nr-muted">
-                                Inicio
+                            <Link href={localePath('/')} className="transition-colors hover:text-nr-muted">
+                                {t('post.home')}
                             </Link>
                             <span>›</span>
-                            <span className="text-nr-muted">Privacidad</span>
+                            <span className="text-nr-muted">{t('footer.privacy')}</span>
                         </nav>
 
                         <motion.div
@@ -47,10 +50,10 @@ export default function Privacy() {
                                 Legal
                             </span>
                             <h1 className="font-display text-4xl font-black text-nr-text md:text-5xl">
-                                Política de Privacidad
+                                {isEn ? 'Privacy Policy' : 'Política de Privacidad'}
                             </h1>
                             <p className="mt-3 text-sm text-nr-faint">
-                                Última actualización: {LAST_UPDATED}
+                                {isEn ? 'Last updated:' : 'Última actualización:'} {LAST_UPDATED}
                             </p>
                         </motion.div>
                     </div>
@@ -110,7 +113,7 @@ export default function Privacy() {
                                 sitio. No usamos cookies de seguimiento de terceros ni publicidad
                                 comportamental. Consulta nuestra{' '}
                                 <Link
-                                    href="/cookies"
+                                    href={isEn ? '/en/cookies' : '/cookies'}
                                     className="text-nr-accent transition-colors hover:text-nr-accent/80"
                                 >
                                     Política de Cookies
@@ -158,10 +161,10 @@ export default function Privacy() {
                     {/* Back link */}
                     <div className="mt-14 border-t border-white/[0.06] pt-8">
                         <Link
-                            href="/"
+                            href={localePath('/')}
                             className="text-sm text-nr-faint transition-colors hover:text-nr-muted"
                         >
-                            ← Volver al inicio
+                            {t('misc.back_home')}
                         </Link>
                     </div>
                 </div>

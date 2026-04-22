@@ -23,33 +23,44 @@ Route::get('/sitemap.xml', [SeoController::class, 'sitemap']);
 Route::get('/feed.xml',    [SeoController::class, 'rss']);
 Route::get('/robots.txt',  [SeoController::class, 'robots']);
 
-// ── PÚBLICAS ─────────────────────────────────────────────
+// ── PÚBLICAS — ES (default) ──────────────────────────────
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/sobre-mi', fn() => Inertia::render('About'))->name('about');
 Route::get('/herramientas', [AffiliateController::class, 'index'])->name('tools');
 Route::get('/herramientas/{slug}/click', [AffiliateController::class, 'click'])->name('tools.click');
 
-// Blog ES
 Route::prefix('blog')->name('blog.')->group(function () {
     Route::get('/',        [PostController::class, 'index'])->name('index');
     Route::get('/{slug}',  [PostController::class, 'show'])->name('show');
 });
 
-// Blog EN
-Route::prefix('en')->name('en.')->group(function () {
-    Route::get('/blog',        [PostController::class, 'indexEn'])->name('blog.index');
-    Route::get('/blog/{slug}', [PostController::class, 'showEn'])->name('blog.show');
-});
-
-// Categorías
 Route::get('/categorias',        [CategoryController::class, 'index'])->name('categories.index');
 Route::get('/categoria/{slug}',  [CategoryController::class, 'show'])->name('category.show');
 
-// Legal
 Route::get('/privacidad', fn() => Inertia::render('Legal/Privacy'))->name('legal.privacy');
 Route::get('/terminos',   fn() => Inertia::render('Legal/Terms'))->name('legal.terms');
 Route::get('/cookies',    fn() => Inertia::render('Legal/Cookies'))->name('legal.cookies');
 Route::get('/afiliados',  fn() => Inertia::render('Legal/Affiliates'))->name('legal.affiliates');
+
+// ── PÚBLICAS — EN (mirror) ──────────────────────────────
+Route::prefix('en')->name('en.')->group(function () {
+    Route::get('/',      [HomeController::class, 'index'])->name('home');
+    Route::get('/about', fn() => Inertia::render('About'))->name('about');
+    Route::get('/tools', [AffiliateController::class, 'index'])->name('tools');
+
+    Route::prefix('blog')->name('blog.')->group(function () {
+        Route::get('/',        [PostController::class, 'index'])->name('index');
+        Route::get('/{slug}',  [PostController::class, 'show'])->name('show');
+    });
+
+    Route::get('/categories',       [CategoryController::class, 'index'])->name('categories.index');
+    Route::get('/category/{slug}',  [CategoryController::class, 'show'])->name('category.show');
+
+    Route::get('/privacy',    fn() => Inertia::render('Legal/Privacy'))->name('legal.privacy');
+    Route::get('/terms',      fn() => Inertia::render('Legal/Terms'))->name('legal.terms');
+    Route::get('/cookies',    fn() => Inertia::render('Legal/Cookies'))->name('legal.cookies');
+    Route::get('/affiliates', fn() => Inertia::render('Legal/Affiliates'))->name('legal.affiliates');
+});
 
 // Newsletter
 Route::post('/newsletter/subscribe', [NewsletterController::class, 'subscribe'])->name('newsletter.subscribe');

@@ -5,6 +5,7 @@ import Footer from '@/Components/Layout/Footer'
 import MeshBackground from '@/Components/Layout/MeshBackground'
 import NewsletterWidget from '@/Components/Blog/NewsletterWidget'
 import { SITE } from '@/lib/constants'
+import { useLocale } from '@/hooks/useLocale'
 
 const SKILLS = [
     'IA Generativa',
@@ -17,20 +18,22 @@ const SKILLS = [
     'TypeScript',
 ]
 
-const STATS = [
-    { value: '50+', label: 'Artículos publicados' },
-    { value: '5K+', label: 'Lectores mensuales' },
-    { value: '500+', label: 'Suscriptores' },
-    { value: '20+', label: 'Países' },
-]
-
 export default function About() {
+    const { t } = useLocale()
+
+    const STATS = [
+        { value: '50+', label: t('about.stats.articles') },
+        { value: '5K+', label: t('about.stats.readers') },
+        { value: '500+', label: t('about.stats.subscribers') },
+        { value: '20+', label: t('about.stats.countries') },
+    ]
+
     return (
         <>
-            <Head title={`Sobre mí — ${SITE.name}`}>
+            <Head title={`${t('nav.about')} — ${SITE.name}`}>
                 <meta
                     name="description"
-                    content="Desarrollador y apasionado de la IA. Escribo sobre tecnología, herramientas y negocios digitales."
+                    content={t('about.bio')}
                 />
             </Head>
 
@@ -64,15 +67,13 @@ export default function About() {
                                 transition={{ duration: 0.4, delay: 0.1 }}
                             >
                                 <span className="mb-3 block font-mono text-xs uppercase tracking-widest text-nr-accent">
-                                    Hola, soy
+                                    {t('about.greeting')}
                                 </span>
                                 <h1 className="text-gradient mb-2 pb-4 font-display text-4xl font-black md:text-5xl">
                                     Juan Jose
                                 </h1>
                                 <p className="mb-5 text-lg leading-relaxed text-nr-muted">
-                                    Desarrollador y apasionado de la IA desde Colombia. Escribo
-                                    sobre tecnología, herramientas y cómo monetizar en la era de la
-                                    inteligencia artificial.
+                                    {t('about.bio')}
                                 </p>
 
                                 <div className="flex flex-wrap gap-3">
@@ -123,23 +124,12 @@ export default function About() {
                         viewport={{ once: true }}
                     >
                         <h2 className="mb-6 font-display text-2xl font-bold text-nr-text">
-                            Por qué NeuralRift
+                            {t('about.why_title')}
                         </h2>
                         <div className="space-y-4 leading-relaxed text-nr-muted">
-                            <p>
-                                Empecé NeuralRift porque me frustré con el ruido que rodea a la
-                                inteligencia artificial. Demasiado hype, demasiadas promesas vacías,
-                                muy poco análisis honesto.
-                            </p>
-                            <p>
-                                Como desarrollador, tengo acceso directo a estas herramientas y
-                                puedo evaluarlas técnicamente — no solo marketinescamente. Aquí
-                                encontrarás análisis reales basados en uso real.
-                            </p>
-                            <p>
-                                El objetivo es simple: ayudarte a navegar la revolución de la IA sin
-                                perder tiempo ni dinero en herramientas que no valen la pena.
-                            </p>
+                            <p>{t('about.why_p1')}</p>
+                            <p>{t('about.why_p2')}</p>
+                            <p>{t('about.why_p3')}</p>
                         </div>
                     </motion.div>
 
@@ -150,7 +140,7 @@ export default function About() {
                         viewport={{ once: true }}
                     >
                         <h2 className="mb-6 font-display text-2xl font-bold text-nr-text">
-                            Áreas de expertise
+                            {t('about.skills_title')}
                         </h2>
                         <div className="flex flex-wrap gap-2">
                             {SKILLS.map((skill, i) => (
@@ -176,12 +166,10 @@ export default function About() {
                         className="glass rounded-2xl p-8 text-center"
                     >
                         <h2 className="mb-3 font-display text-2xl font-bold text-nr-text">
-                            ¿Colaboraciones?
+                            {t('about.collab_title')}
                         </h2>
                         <p className="mx-auto mb-6 max-w-md text-sm leading-relaxed text-nr-muted">
-                            Estoy abierto a reviews patrocinadas, colaboraciones y menciones de
-                            herramientas que realmente valgan la pena. Solo trabajo con productos
-                            que usaría yo mismo.
+                            {t('about.collab_text')}
                         </p>
                         <a
                             href="mailto:hola@neuralrift.com"

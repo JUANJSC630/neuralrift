@@ -5,6 +5,7 @@ import Navbar from '@/Components/Layout/Navbar'
 import Footer from '@/Components/Layout/Footer'
 import PostCard from '@/Components/Blog/PostCard'
 import { CATEGORY_COLORS, SITE } from '@/lib/constants'
+import { useLocale } from '@/hooks/useLocale'
 import type { Post, Category, PaginatedData, PageProps } from '@/types'
 
 interface Filters {
@@ -20,19 +21,20 @@ interface Props {
     lang: 'es' | 'en'
 }
 
-const SORT_OPTIONS = [
-    { value: 'recent', label: 'Más recientes' },
-    { value: 'popular', label: 'Más populares' },
-    { value: 'shortest', label: 'Más cortos' },
-]
-
 export default function BlogIndex({ posts, filters, lang }: Props) {
     const { categories } = usePage<PageProps>().props
+    const { locale, t, localePath } = useLocale()
     const [search, setSearch] = useState(filters.search ?? '')
-    const isEn = lang === 'en'
+    const blogPath = localePath('/blog')
+
+    const SORT_OPTIONS = [
+        { value: 'recent', label: t('blog.sort_recent') },
+        { value: 'popular', label: t('blog.sort_popular') },
+        { value: 'shortest', label: t('blog.sort_shortest') },
+    ]
 
     const navigate = (params: Partial<Filters & { search?: string }>) => {
-        router.get('/blog', { ...filters, ...params }, { preserveState: true })
+        router.get(blogPath, { ...filters, ...params }, { preserveState: true })
     }
 
     const handleSearch = (e: React.FormEvent) => {
@@ -42,7 +44,7 @@ export default function BlogIndex({ posts, filters, lang }: Props) {
 
     const clearFilters = () => {
         setSearch('')
-        router.get('/blog', {}, { preserveState: false })
+        router.get(blogPath, {}, { preserveState: false })
     }
 
     const hasActiveFilters = !!(filters.search || filters.tag || filters.category)
@@ -52,7 +54,7 @@ export default function BlogIndex({ posts, filters, lang }: Props) {
             <Head title={`Blog — ${SITE.name}`}>
                 <meta
                     name="description"
-                    content="Artículos en profundidad sobre IA, herramientas y estrategias."
+                    content={t('blog.subtitle')}
                 />
             </Head>
 
@@ -69,15 +71,13 @@ export default function BlogIndex({ posts, filters, lang }: Props) {
                             transition={{ duration: 0.5 }}
                         >
                             <span className="font-mono text-xs uppercase tracking-widest text-nr-accent">
-                                {isEn ? 'All articles' : 'Todos los artículos'} · {posts.total}
+                                {t('blog.all_articles')} · {posts.total}
                             </span>
                             <h1 className="mt-2 font-display text-5xl font-black text-nr-text md:text-6xl">
                                 Blog
                             </h1>
                             <p className="mt-3 max-w-xl text-lg text-nr-muted">
-                                {isEn
-                                    ? 'Guides, analysis and strategies about the AI world.'
-                                    : 'Guías, análisis y estrategias sobre el mundo de la IA.'}
+                                {t('blog.subtitle')}
                             </p>
                         </motion.div>
                     </div>
@@ -91,14 +91,14 @@ export default function BlogIndex({ posts, filters, lang }: Props) {
                                 type="text"
                                 value={search}
                                 onChange={e => setSearch(e.target.value)}
-                                placeholder={isEn ? 'Search articles...' : 'Buscar artículos...'}
+                                placeholder={t('blog.search_placeholder')}
                                 className="glass flex-1 rounded-xl px-4 py-2.5 text-sm text-nr-text placeholder-nr-faint outline-none transition-colors focus:border-nr-accent/50"
                             />
                             <button
                                 type="submit"
                                 className="rounded-xl bg-gradient-to-r from-nr-accent to-nr-accent-dark px-5 py-2.5 text-sm font-semibold text-white transition-all duration-200 hover:-translate-y-0.5"
                             >
-                                {isEn ? 'Search' : 'Buscar'}
+                                {t('blog.search')}
                             </button>
                         </form>
 
@@ -130,11 +130,12 @@ export default function BlogIndex({ posts, filters, lang }: Props) {
                                         : 'glass text-nr-faint hover:text-nr-muted'
                                 }`}
                             >
-                                Todas
+                                {t('blog.all_categories')}
                             </button>
                             {categories.map((cat: Category) => {
                                 const color = CATEGORY_COLORS[cat.name] ?? cat.color ?? '#7C6AF7'
                                 const isActive = filters.category === cat.slug
+                                const catName = locale === 'en' && cat.name_en ? cat.name_en : cat.name
                                 return (
                                     <button
                                         key={cat.id}
@@ -154,7 +155,7 @@ export default function BlogIndex({ posts, filters, lang }: Props) {
                                                   }
                                         }
                                     >
-                                        {cat.name}
+                                        {catName}
                                     </button>
                                 )
                             })}
@@ -163,7 +164,7 @@ export default function BlogIndex({ posts, filters, lang }: Props) {
                                     onClick={clearFilters}
                                     className="glass rounded-full px-3 py-1.5 text-xs text-nr-faint transition-colors hover:text-nr-red"
                                 >
-                                    ✕ Limpiar
+                                    {t('blog.clear_filters')}
                                 </button>
                             )}
                         </div>
@@ -186,7 +187,7 @@ export default function BlogIndex({ posts, filters, lang }: Props) {
                     ) : (
                         <div className="py-24 text-center text-nr-faint">
                             <div className="mb-4 text-4xl opacity-20">◈</div>
-                            <p>No se encontraron artículos.</p>
+                            <p>{t('blog.no_results')}</p>
                         </div>
                     )}
 

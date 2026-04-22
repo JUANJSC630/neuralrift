@@ -11,13 +11,17 @@ class HomeController extends Controller
 {
     public function index(): Response
     {
+        $lang = app()->getLocale();
+
         $featured = Post::published()
             ->featured()
+            ->forLang($lang)
             ->with(['category', 'author', 'tags'])
             ->latest('published_at')
             ->first();
 
         $recent = Post::published()
+            ->forLang($lang)
             ->with(['category', 'author'])
             ->when($featured, fn($q) => $q->where('id', '!=', $featured->id))
             ->latest('published_at')
@@ -25,10 +29,11 @@ class HomeController extends Controller
             ->get();
 
         $popular = Post::published()
+            ->forLang($lang)
             ->with(['category'])
             ->orderByDesc('views_count')
             ->take(4)
-            ->get(['id', 'title', 'slug', 'cover_image', 'views_count', 'read_time', 'published_at', 'category_id']);
+            ->get(['id', 'title', 'title_en', 'slug', 'slug_en', 'cover_image', 'views_count', 'read_time', 'published_at', 'category_id', 'lang']);
 
         $affiliates = Affiliate::active()
             ->featured()

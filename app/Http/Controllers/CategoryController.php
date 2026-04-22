@@ -22,15 +22,18 @@ class CategoryController extends Controller
     public function show(string $slug): Response
     {
         $category = Category::where('slug', $slug)->firstOrFail();
+        $lang = app()->getLocale();
 
         $posts = $category->posts()
             ->published()
+            ->forLang($lang)
             ->with(['author', 'tags'])
             ->latest('published_at')
             ->paginate(12);
 
         $featured = $category->posts()
             ->published()
+            ->forLang($lang)
             ->featured()
             ->with(['author'])
             ->latest('published_at')

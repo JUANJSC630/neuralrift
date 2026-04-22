@@ -9,6 +9,7 @@ import PostCardFeatured from '@/Components/Blog/PostCardFeatured'
 import AffiliateWidget from '@/Components/Blog/AffiliateWidget'
 import NewsletterWidget from '@/Components/Blog/NewsletterWidget'
 import { SITE } from '@/lib/constants'
+import { useLocale } from '@/hooks/useLocale'
 import type { Post, Affiliate } from '@/types'
 
 interface Props {
@@ -23,6 +24,13 @@ const ROTATING_WORDS = [
     'Modelos de Lenguaje',
     'Automatización IA',
     'El Futuro Digital',
+]
+
+const ROTATING_WORDS_EN = [
+    'Artificial Intelligence',
+    'Language Models',
+    'AI Automation',
+    'The Digital Future',
 ]
 
 const NODES = [
@@ -47,13 +55,15 @@ const SVG_LINES = [
 
 export default function Home({ featured, recent, affiliates }: Props) {
     const [wordIndex, setWordIndex] = useState(0)
+    const { locale, t, localePath } = useLocale()
+    const words = locale === 'en' ? ROTATING_WORDS_EN : ROTATING_WORDS
 
     useEffect(() => {
         const interval = setInterval(() => {
-            setWordIndex(i => (i + 1) % ROTATING_WORDS.length)
+            setWordIndex(i => (i + 1) % words.length)
         }, 2800)
         return () => clearInterval(interval)
-    }, [])
+    }, [words.length])
 
     return (
         <>
@@ -132,7 +142,7 @@ export default function Home({ featured, recent, affiliates }: Props) {
                         >
                             <span className="h-1.5 w-1.5 animate-glow-pulse rounded-full bg-nr-gold" />
                             <span className="text-xs font-semibold uppercase tracking-widest text-nr-gold">
-                                Nuevo artículo publicado hoy
+                                {t('home.badge')}
                             </span>
                         </motion.div>
 
@@ -143,7 +153,7 @@ export default function Home({ featured, recent, affiliates }: Props) {
                             transition={{ duration: 0.5, delay: 0.15 }}
                             className="mb-6 font-display text-5xl font-black leading-[1.06] tracking-tight text-nr-text md:text-7xl lg:text-[82px]"
                         >
-                            El futuro de{' '}
+                            {t('home.headline_prefix')}{' '}
                             <motion.span
                                 key={wordIndex}
                                 initial={{ opacity: 0, y: 8 }}
@@ -153,17 +163,17 @@ export default function Home({ featured, recent, affiliates }: Props) {
                                 className="text-nr-accent"
                                 aria-hidden="true"
                             >
-                                {ROTATING_WORDS[wordIndex]}
+                                {words[wordIndex]}
                             </motion.span>
                             {/* sr-only live region — static element so screen readers pick up changes */}
                             <span className="sr-only" aria-live="polite" aria-atomic="true">
-                                {ROTATING_WORDS[wordIndex]}
+                                {words[wordIndex]}
                             </span>
                             <span className="animate-blink font-thin text-nr-accent opacity-80">
                                 |
                             </span>
                             <br />
-                            empieza aquí
+                            {t('home.headline_suffix')}
                         </motion.h1>
 
                         {/* Subheadline */}
@@ -173,8 +183,7 @@ export default function Home({ featured, recent, affiliates }: Props) {
                             transition={{ duration: 0.5, delay: 0.25 }}
                             className="mx-auto mb-10 max-w-[60ch] text-lg leading-[1.7] text-nr-muted md:text-xl"
                         >
-                            Guías en profundidad, reviews honestas y estrategias para navegar la
-                            revolución de la IA. Semanalmente, sin ruido.
+                            {t('home.subheadline')}
                         </motion.p>
 
                         {/* CTAs */}
@@ -185,16 +194,16 @@ export default function Home({ featured, recent, affiliates }: Props) {
                             className="flex flex-col items-center justify-center gap-4 sm:flex-row"
                         >
                             <Link
-                                href="/blog"
+                                href={localePath('/blog')}
                                 className="glow-accent hover:glow-accent-lg w-full rounded-full bg-gradient-to-r from-nr-accent to-nr-accent-dark px-10 py-4 text-center font-semibold text-white transition-all duration-300 hover:-translate-y-0.5 sm:w-auto"
                             >
-                                Explorar artículos →
+                                {t('home.cta_blog')}
                             </Link>
                             <a
                                 href="#newsletter"
                                 className="glass w-full rounded-full px-10 py-4 text-center font-medium text-nr-text transition-all duration-300 hover:bg-white/[0.08] sm:w-auto"
                             >
-                                Newsletter gratuita ✉
+                                {t('home.cta_newsletter')}
                             </a>
                         </motion.div>
 
@@ -225,17 +234,17 @@ export default function Home({ featured, recent, affiliates }: Props) {
                     <div className="mb-10 flex items-center justify-between">
                         <div>
                             <h2 className="font-display text-3xl font-bold leading-tight text-nr-text">
-                                Artículos recientes
+                                {t('home.recent_title')}
                             </h2>
                             <p className="mt-1 text-sm text-nr-muted">
-                                Lo último del mundo de la IA
+                                {t('home.recent_subtitle')}
                             </p>
                         </div>
                         <Link
-                            href="/blog"
+                            href={localePath('/blog')}
                             className="text-sm font-medium text-nr-accent transition-colors hover:text-nr-accent/80"
                         >
-                            Ver todos →
+                            {t('home.view_all')}
                         </Link>
                     </div>
 
@@ -255,12 +264,12 @@ export default function Home({ featured, recent, affiliates }: Props) {
 
                     {/* "Ver todos" button — visible on mobile below grid */}
                     <div className="mt-8 flex justify-center md:hidden">
-                        <a
-                            href="/blog"
+                        <Link
+                            href={localePath('/blog')}
                             className="glass rounded-full px-6 py-3 text-sm font-medium text-nr-accent transition-colors hover:text-nr-accent/80"
                         >
-                            Ver todos los artículos →
-                        </a>
+                            {t('home.view_all_articles')}
+                        </Link>
                     </div>
                 </section>
 
@@ -270,14 +279,13 @@ export default function Home({ featured, recent, affiliates }: Props) {
                         <div className="mx-auto max-w-7xl px-6 md:px-12">
                             <div className="mb-12 text-center">
                                 <span className="mb-3 block font-mono text-xs uppercase tracking-widest text-nr-accent">
-                                    Herramientas que uso
+                                    {t('home.tools_label')}
                                 </span>
                                 <h2 className="font-display text-3xl font-bold leading-tight text-nr-text">
-                                    Las mejores herramientas IA
+                                    {t('home.tools_title')}
                                 </h2>
                                 <p className="mx-auto mt-2 max-w-lg text-sm text-nr-muted">
-                                    Solo recomiendo herramientas que uso personalmente. Algunos
-                                    links son de afiliado.
+                                    {t('home.tools_subtitle')}
                                 </p>
                             </div>
 

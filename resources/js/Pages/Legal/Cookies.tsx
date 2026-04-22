@@ -3,37 +3,40 @@ import { motion } from 'framer-motion'
 import Navbar from '@/Components/Layout/Navbar'
 import Footer from '@/Components/Layout/Footer'
 import { SITE } from '@/lib/constants'
-
-const LAST_UPDATED = '22 de abril de 2026'
-
-const COOKIE_TABLE = [
-    {
-        name: 'neuralrift_session',
-        type: 'Sesión',
-        purpose: 'Mantiene la sesión activa del usuario autenticado.',
-        duration: 'Sesión',
-    },
-    {
-        name: 'XSRF-TOKEN',
-        type: 'Seguridad',
-        purpose: 'Protección contra ataques CSRF en formularios.',
-        duration: 'Sesión',
-    },
-    {
-        name: 'nr_lang',
-        type: 'Preferencia',
-        purpose: 'Recuerda el idioma seleccionado (ES / EN).',
-        duration: '1 año',
-    },
-]
+import { useLocale } from '@/hooks/useLocale'
 
 export default function Cookies() {
+    const { locale, t, localePath } = useLocale()
+    const isEn = locale === 'en'
+    const LAST_UPDATED = isEn ? 'April 22, 2026' : '22 de abril de 2026'
+
+    const COOKIE_TABLE = [
+        {
+            name: 'neuralrift_session',
+            type: isEn ? 'Session' : 'Sesión',
+            purpose: isEn ? 'Keeps the authenticated user session active.' : 'Mantiene la sesión activa del usuario autenticado.',
+            duration: isEn ? 'Session' : 'Sesión',
+        },
+        {
+            name: 'XSRF-TOKEN',
+            type: isEn ? 'Security' : 'Seguridad',
+            purpose: isEn ? 'Protection against CSRF attacks on forms.' : 'Protección contra ataques CSRF en formularios.',
+            duration: isEn ? 'Session' : 'Sesión',
+        },
+        {
+            name: 'nr_lang',
+            type: isEn ? 'Preference' : 'Preferencia',
+            purpose: isEn ? 'Remembers the selected language (ES / EN).' : 'Recuerda el idioma seleccionado (ES / EN).',
+            duration: isEn ? '1 year' : '1 año',
+        },
+    ]
+
     return (
         <>
-            <Head title={`Política de Cookies — ${SITE.name}`}>
+            <Head title={`${isEn ? 'Cookie Policy' : 'Política de Cookies'} — ${SITE.name}`}>
                 <meta
                     name="description"
-                    content="Política de cookies de NeuralRift. Qué cookies usamos y para qué."
+                    content={isEn ? 'NeuralRift cookie policy. What cookies we use and why.' : 'Política de cookies de NeuralRift. Qué cookies usamos y para qué.'}
                 />
             </Head>
 
@@ -52,11 +55,11 @@ export default function Cookies() {
                     <div className="relative z-10 mx-auto max-w-3xl px-6 py-16 md:px-12">
                         {/* Breadcrumb */}
                         <nav className="mb-6 flex items-center gap-2 font-mono text-xs text-nr-faint">
-                            <Link href="/" className="transition-colors hover:text-nr-muted">
-                                Inicio
+                            <Link href={localePath('/')} className="transition-colors hover:text-nr-muted">
+                                {t('post.home')}
                             </Link>
                             <span>›</span>
-                            <span className="text-nr-muted">Cookies</span>
+                            <span className="text-nr-muted">{t('footer.cookies')}</span>
                         </nav>
 
                         <motion.div
@@ -68,10 +71,10 @@ export default function Cookies() {
                                 Legal
                             </span>
                             <h1 className="font-display text-4xl font-black text-nr-text md:text-5xl">
-                                Política de Cookies
+                                {isEn ? 'Cookie Policy' : 'Política de Cookies'}
                             </h1>
                             <p className="mt-3 text-sm text-nr-faint">
-                                Última actualización: {LAST_UPDATED}
+                                {isEn ? 'Last updated:' : 'Última actualización:'} {LAST_UPDATED}
                             </p>
                         </motion.div>
                     </div>
@@ -202,10 +205,10 @@ export default function Cookies() {
                     {/* Back link */}
                     <div className="mt-14 border-t border-white/[0.06] pt-8">
                         <Link
-                            href="/"
+                            href={localePath('/')}
                             className="text-sm text-nr-faint transition-colors hover:text-nr-muted"
                         >
-                            ← Volver al inicio
+                            {t('misc.back_home')}
                         </Link>
                     </div>
                 </div>

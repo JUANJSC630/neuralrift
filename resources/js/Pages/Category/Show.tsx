@@ -5,6 +5,7 @@ import Footer from '@/Components/Layout/Footer'
 import PostCard from '@/Components/Blog/PostCard'
 import PostCardFeatured from '@/Components/Blog/PostCardFeatured'
 import { CATEGORY_COLORS, SITE } from '@/lib/constants'
+import { useLocale } from '@/hooks/useLocale'
 import type { Category, Post, PaginatedData } from '@/types'
 
 interface Props {
@@ -15,13 +16,17 @@ interface Props {
 
 export default function CategoryShow({ category, posts, featured }: Props) {
     const color = CATEGORY_COLORS[category.name] ?? category.color ?? '#7C6AF7'
+    const { locale, t, localePath } = useLocale()
+    const isEn = locale === 'en'
+    const catName = isEn && category.name_en ? category.name_en : category.name
+    const catDesc = isEn && category.description_en ? category.description_en : category.description
 
     return (
         <>
-            <Head title={`${category.name} — ${SITE.name}`}>
+            <Head title={`${catName} — ${SITE.name}`}>
                 <meta
                     name="description"
-                    content={category.description ?? `Artículos de ${category.name}`}
+                    content={catDesc ?? `${catName} articles`}
                 />
             </Head>
 
@@ -39,15 +44,15 @@ export default function CategoryShow({ category, posts, featured }: Props) {
                     <div className="relative z-10 mx-auto max-w-7xl px-6 py-16 md:px-12">
                         {/* Breadcrumb */}
                         <nav className="mb-6 flex items-center gap-2 font-mono text-xs text-nr-faint">
-                            <Link href="/" className="transition-colors hover:text-nr-muted">
-                                Inicio
+                            <Link href={localePath('/')} className="transition-colors hover:text-nr-muted">
+                                {t('post.home')}
                             </Link>
                             <span>›</span>
-                            <Link href="/blog" className="transition-colors hover:text-nr-muted">
-                                Blog
+                            <Link href={localePath('/blog')} className="transition-colors hover:text-nr-muted">
+                                {t('post.blog')}
                             </Link>
                             <span>›</span>
-                            <span style={{ color }}>{category.name}</span>
+                            <span style={{ color }}>{catName}</span>
                         </nav>
 
                         <div className="flex flex-wrap items-center gap-5">
@@ -60,16 +65,16 @@ export default function CategoryShow({ category, posts, featured }: Props) {
                                     className="font-display text-4xl font-black md:text-5xl"
                                     style={{ color }}
                                 >
-                                    {category.name}
+                                    {catName}
                                 </motion.h1>
-                                {category.description && (
+                                {catDesc && (
                                     <p className="mt-2 max-w-lg text-nr-muted">
-                                        {category.description}
+                                        {catDesc}
                                     </p>
                                 )}
                             </div>
                             <span className="glass shrink-0 rounded-lg px-3 py-1.5 font-mono text-xs text-nr-faint">
-                                {posts.total} artículos
+                                {posts.total} {t('category.articles_count')}
                             </span>
                         </div>
                     </div>

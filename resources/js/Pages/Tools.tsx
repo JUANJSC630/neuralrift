@@ -5,6 +5,7 @@ import Navbar from '@/Components/Layout/Navbar'
 import Footer from '@/Components/Layout/Footer'
 import AffiliateWidget from '@/Components/Blog/AffiliateWidget'
 import { SITE } from '@/lib/constants'
+import { useLocale } from '@/hooks/useLocale'
 import type { Affiliate } from '@/types'
 
 interface Props {
@@ -15,15 +16,16 @@ interface Props {
 export default function Tools({ affiliates, grouped }: Props) {
     const categories = Object.keys(grouped).filter(Boolean)
     const [active, setActive] = useState<string | null>(null)
+    const { t } = useLocale()
 
     const displayed = active ? (grouped[active] ?? []) : affiliates
 
     return (
         <>
-            <Head title={`Herramientas IA — ${SITE.name}`}>
+            <Head title={`${t('tools.title')} — ${SITE.name}`}>
                 <meta
                     name="description"
-                    content="Las mejores herramientas de inteligencia artificial. Reviews honestas y links de afiliado."
+                    content={t('tools.subtitle')}
                 />
             </Head>
 
@@ -34,14 +36,13 @@ export default function Tools({ affiliates, grouped }: Props) {
                     {/* Header */}
                     <div className="mb-12 text-center">
                         <span className="mb-3 block font-mono text-xs uppercase tracking-widest text-nr-accent">
-                            Herramientas recomendadas
+                            {t('tools.label')}
                         </span>
                         <h1 className="mb-4 font-display text-4xl font-black text-nr-text md:text-5xl">
-                            Las mejores herramientas IA
+                            {t('tools.title')}
                         </h1>
                         <p className="mx-auto max-w-xl text-nr-muted">
-                            Solo recomiendo herramientas que uso o he probado personalmente. Algunos
-                            links son de afiliado.
+                            {t('tools.subtitle')}
                         </p>
                     </div>
 
@@ -56,7 +57,7 @@ export default function Tools({ affiliates, grouped }: Props) {
                                         : 'glass text-nr-faint hover:text-nr-muted'
                                 }`}
                             >
-                                Todas ({affiliates.length})
+                                {t('tools.all')} ({affiliates.length})
                             </button>
                             {categories.map(cat => (
                                 <button
@@ -91,15 +92,13 @@ export default function Tools({ affiliates, grouped }: Props) {
                     ) : (
                         <div className="py-24 text-center text-nr-faint">
                             <div className="mb-4 text-4xl opacity-20">⚡</div>
-                            <p>Próximamente...</p>
+                            <p>...</p>
                         </div>
                     )}
 
                     {/* Disclaimer */}
                     <p className="mx-auto mt-16 max-w-lg text-center text-xs leading-relaxed text-nr-faint">
-                        Este sitio contiene links de afiliado. Si compras a través de ellos recibo
-                        una comisión sin costo adicional para ti. Solo recomiendo productos que uso
-                        o he evaluado personalmente.
+                        {t('footer.affiliate_disclosure')}
                     </p>
                 </section>
             </main>

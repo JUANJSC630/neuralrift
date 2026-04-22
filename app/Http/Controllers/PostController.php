@@ -12,9 +12,12 @@ class PostController extends Controller
 {
     public function index(Request $request): Response
     {
+        $lang = app()->getLocale();
+        $isEn = $lang === 'en';
+
         $query = Post::published()
             ->with(['category', 'author', 'tags'])
-            ->forLang('es');
+            ->forLang($lang);
 
         if ($request->category) {
             $query->whereHas('category', fn($q) => $q->where('slug', $request->category));
@@ -23,9 +26,10 @@ class PostController extends Controller
             $query->whereHas('tags', fn($q) => $q->where('slug', $request->tag));
         }
         if ($request->search) {
-            $query->where(fn($q) => $q
-                ->where('title', 'like', "%{$request->search}%")
-                ->orWhere('excerpt', 'like', "%{$request->search}%")
+            $search = $request->search;
+            $query->where(fn($q) => $isEn
+                ? $q->where('title_en', 'like', "%{$search}%")->orWhere('title', 'like', "%{$search}%")
+                : $q->where('title', 'like', "%{$search}%")->orWhere('excerpt', 'like', "%{$search}%")
             );
         }
 
@@ -40,20 +44,26 @@ class PostController extends Controller
         return Inertia::render('Blog/Index', [
             'posts'   => $posts,
             'filters' => $request->only(['category', 'tag', 'search', 'sort']),
-            'lang'    => 'es',
+            'lang'    => $lang,
         ]);
     }
 
     public function show(string $slug): Response
     {
+        $lang = app()->getLocale();
+        $isEn = $lang === 'en';
+
+        $slugColumn = $isEn ? 'slug_en' : 'slug';
+
         $post = Post::published()
-            ->where('slug', $slug)
+            ->where($slugColumn, $slug)
             ->with(['category', 'author', 'tags', 'affiliates'])
             ->firstOrFail();
 
         $related = Post::published()
             ->where('id', '!=', $post->id)
             ->where('category_id', $post->category_id)
+            ->forLang($lang)
             ->with(['category', 'author'])
             ->latest('published_at')
             ->take(3)
@@ -61,11 +71,14 @@ class PostController extends Controller
 
         $post->increment('views_count');
 
+        $title = $isEn && $post->title_en ? $post->title_en : $post->title;
+        $desc  = $isEn && $post->excerpt_en ? $post->excerpt_en : $post->excerpt;
+
         $schema = [
             '@context'      => 'https://schema.org',
             '@type'         => 'BlogPosting',
-            'headline'      => $post->title,
-            'description'   => $post->excerpt,
+            'headline'      => $title,
+            'description'   => $desc,
             'datePublished' => $post->published_at?->toIso8601String(),
             'dateModified'  => $post->updated_at->toIso8601String(),
             'author'        => [
@@ -82,52 +95,7 @@ class PostController extends Controller
             'post'    => $post,
             'related' => $related,
             'schema'  => $schema,
-        ]);
-    }
-
-    public function indexEn(Request $request): Response
-    {
-        $query = Post::published()
-            ->with(['category', 'author', 'tags'])
-            ->forLang('en');
-
-        if ($request->search) {
-            $query->where(fn($q) => $q
-                ->where('title_en', 'like', "%{$request->search}%")
-                ->orWhere('title',   'like', "%{$request->search}%")
-            );
-        }
-
-        $posts = $query->latest('published_at')->paginate(12)->withQueryString();
-
-        return Inertia::render('Blog/Index', [
-            'posts'   => $posts,
-            'filters' => $request->only(['search', 'sort']),
-            'lang'    => 'en',
-        ]);
-    }
-
-    public function showEn(string $slug): Response
-    {
-        $post = Post::published()
-            ->where('slug_en', $slug)
-            ->with(['category', 'author', 'tags', 'affiliates'])
-            ->firstOrFail();
-
-        $post->increment('views_count');
-
-        $related = Post::published()
-            ->where('id', '!=', $post->id)
-            ->where('category_id', $post->category_id)
-            ->with(['category', 'author'])
-            ->latest('published_at')
-            ->take(3)
-            ->get();
-
-        return Inertia::render('Blog/Show', [
-            'post'    => $post,
-            'related' => $related,
-            'lang'    => 'en',
+            'lang'    => $lang,
         ]);
     }
 }

@@ -12,6 +12,7 @@ import ShareButtons from '@/Components/Blog/ShareButtons'
 import { formatDate, readTime } from '@/lib/utils'
 import { renderContent } from '@/lib/tiptap'
 import { CATEGORY_COLORS, SITE } from '@/lib/constants'
+import { useLocale } from '@/hooks/useLocale'
 import type { Post } from '@/types'
 
 interface Props {
@@ -25,11 +26,14 @@ export default function BlogShow({ post, related, schema, lang = 'es' }: Props) 
     const catColor = post.category
         ? (CATEGORY_COLORS[post.category.name] ?? post.category.color ?? '#7C6AF7')
         : '#7C6AF7'
+    const { locale, t, localePath } = useLocale()
+    const isEn = locale === 'en'
 
-    const title = lang === 'en' && post.title_en ? post.title_en : post.title
-    const raw = lang === 'en' && post.content_en ? post.content_en : post.content
+    const title = isEn && post.title_en ? post.title_en : post.title
+    const raw = isEn && post.content_en ? post.content_en : post.content
     const content = renderContent(raw)
-    const excerpt = lang === 'en' && post.excerpt_en ? post.excerpt_en : post.excerpt
+    const excerpt = isEn && post.excerpt_en ? post.excerpt_en : post.excerpt
+    const catName = isEn && post.category?.name_en ? post.category.name_en : post.category?.name
 
     const postUrl =
         typeof window !== 'undefined' ? window.location.href : `${SITE.url}/blog/${post.slug}`
@@ -65,21 +69,21 @@ export default function BlogShow({ post, related, schema, lang = 'es' }: Props) 
                     <div className="relative z-10 mx-auto max-w-7xl px-6 py-16 md:px-12">
                         {/* Breadcrumb */}
                         <nav className="mb-6 flex items-center gap-2 font-mono text-xs text-nr-faint">
-                            <Link href="/" className="transition-colors hover:text-nr-muted">
-                                Inicio
+                            <Link href={localePath('/')} className="transition-colors hover:text-nr-muted">
+                                {t('post.home')}
                             </Link>
                             <span>›</span>
-                            <Link href="/blog" className="transition-colors hover:text-nr-muted">
-                                Blog
+                            <Link href={localePath('/blog')} className="transition-colors hover:text-nr-muted">
+                                {t('post.blog')}
                             </Link>
                             {post.category && (
                                 <>
                                     <span>›</span>
                                     <Link
-                                        href={`/categoria/${post.category.slug}`}
+                                        href={isEn ? `/en/category/${post.category.slug}` : `/categoria/${post.category.slug}`}
                                         className="transition-colors hover:text-nr-muted"
                                     >
-                                        {post.category.name}
+                                        {catName}
                                     </Link>
                                 </>
                             )}
@@ -98,12 +102,12 @@ export default function BlogShow({ post, related, schema, lang = 'es' }: Props) 
                                                 color: catColor,
                                             }}
                                         >
-                                            {post.category.name}
+                                            {catName}
                                         </span>
                                     )}
                                     {post.featured && (
                                         <span className="rounded-full border border-nr-gold/20 bg-nr-gold/10 px-3 py-1 text-xs font-semibold text-nr-gold">
-                                            ★ Destacado
+                                            {t('post.featured')}
                                         </span>
                                     )}
                                     {post.lang === 'both' && lang === 'es' && post.slug_en && (
@@ -112,6 +116,14 @@ export default function BlogShow({ post, related, schema, lang = 'es' }: Props) 
                                             className="glass rounded-full border-nr-cyan/20 px-3 py-1 text-xs font-semibold text-nr-cyan transition-colors hover:border-nr-cyan/40"
                                         >
                                             🌐 EN
+                                        </Link>
+                                    )}
+                                    {post.lang === 'both' && lang === 'en' && (
+                                        <Link
+                                            href={`/blog/${post.slug}`}
+                                            className="glass rounded-full border-nr-accent/20 px-3 py-1 text-xs font-semibold text-nr-accent transition-colors hover:border-nr-accent/40"
+                                        >
+                                            🌐 ES
                                         </Link>
                                     )}
                                 </div>
@@ -145,7 +157,7 @@ export default function BlogShow({ post, related, schema, lang = 'es' }: Props) 
                                         ⏱ {readTime(post.read_time)}
                                     </span>
                                     <span className="font-mono text-xs text-nr-faint">
-                                        👁 {post.views_count.toLocaleString()} vistas
+                                        👁 {post.views_count.toLocaleString()} {t('post.views')}
                                     </span>
                                 </div>
 
@@ -193,7 +205,7 @@ export default function BlogShow({ post, related, schema, lang = 'es' }: Props) 
                                     {post.tags.map(tag => (
                                         <Link
                                             key={tag.id}
-                                            href={`/blog?tag=${tag.slug}`}
+                                            href={`${localePath('/blog')}?tag=${tag.slug}`}
                                             className="glass rounded-full px-3 py-1 text-xs text-nr-faint transition-colors hover:text-nr-muted"
                                         >
                                             #{tag.name}
@@ -225,7 +237,7 @@ export default function BlogShow({ post, related, schema, lang = 'es' }: Props) 
                             {/* Share footer */}
                             <div className="mt-12 flex flex-wrap items-center justify-between gap-4 border-t border-white/[0.06] pt-8">
                                 <span className="text-sm text-nr-faint">
-                                    ¿Te resultó útil? Compártelo
+                                    {t('post.share_cta')}
                                 </span>
                                 <ShareButtons url={postUrl} title={title} />
                             </div>
@@ -263,7 +275,7 @@ export default function BlogShow({ post, related, schema, lang = 'es' }: Props) 
                             {restAffiliates.length > 0 && (
                                 <section className="mt-12 border-t border-white/[0.06] pt-10">
                                     <h2 className="mb-6 font-display text-xl font-bold text-nr-text">
-                                        Herramientas mencionadas
+                                        {t('post.tools_mentioned')}
                                     </h2>
                                     <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                                         {restAffiliates.map(affiliate => (
@@ -285,10 +297,10 @@ export default function BlogShow({ post, related, schema, lang = 'es' }: Props) 
                                 {/* Newsletter compact */}
                                 <div className="rounded-2xl border border-white/[0.08] bg-nr-surface p-5">
                                     <p className="mb-1 text-sm font-semibold text-nr-text">
-                                        ¿Te gusta el contenido?
+                                        {t('post.sidebar_newsletter_title')}
                                     </p>
                                     <p className="mb-4 text-xs text-nr-faint">
-                                        Únete a la newsletter semanal de IA.
+                                        {t('post.sidebar_newsletter_text')}
                                     </p>
                                     <form
                                         onSubmit={e => e.preventDefault()}
@@ -298,19 +310,19 @@ export default function BlogShow({ post, related, schema, lang = 'es' }: Props) 
                                             htmlFor="sidebar-newsletter-email"
                                             className="sr-only"
                                         >
-                                            Tu dirección de email
+                                            Email
                                         </label>
                                         <input
                                             id="sidebar-newsletter-email"
                                             type="email"
-                                            placeholder="tu@email.com"
+                                            placeholder={t('newsletter.placeholder')}
                                             className="glass w-full rounded-lg px-3 py-2 text-sm text-nr-text placeholder-nr-faint outline-none transition-colors focus:border-nr-accent/50"
                                         />
                                         <button
                                             type="submit"
                                             className="w-full rounded-lg bg-gradient-to-r from-nr-accent to-nr-accent-dark py-2 text-sm font-semibold text-white transition-all duration-200 hover:-translate-y-0.5"
                                         >
-                                            Suscribirse
+                                            {t('post.sidebar_subscribe')}
                                         </button>
                                     </form>
                                 </div>
@@ -329,7 +341,7 @@ export default function BlogShow({ post, related, schema, lang = 'es' }: Props) 
                     <section className="mx-auto max-w-7xl px-6 pb-24 md:px-12">
                         <div className="border-t border-white/[0.06] pt-16">
                             <h2 className="mb-8 font-display text-2xl font-bold text-nr-text">
-                                Artículos relacionados
+                                {t('post.related')}
                             </h2>
                             <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
                                 {related.map((p, i) => (

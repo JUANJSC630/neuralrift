@@ -1,14 +1,20 @@
 import { Link } from '@inertiajs/react'
 import { formatDate, readTime } from '@/lib/utils'
 import { CATEGORY_COLORS } from '@/lib/constants'
+import { useLocale } from '@/hooks/useLocale'
 import type { Post } from '@/types'
 
 export default function PostCard({ post }: { post: Post }) {
     const catColor = post.category ? (CATEGORY_COLORS[post.category.name] ?? '#7C6AF7') : '#7C6AF7'
+    const { locale, t, localePath } = useLocale()
+    const isEn = locale === 'en'
+    const slug = isEn && post.slug_en ? post.slug_en : post.slug
+    const title = isEn && post.title_en ? post.title_en : post.title
+    const excerpt = isEn && post.excerpt_en ? post.excerpt_en : post.excerpt
 
     return (
         <Link
-            href={`/blog/${post.slug}`}
+            href={`${localePath('/blog')}/${slug}`}
             className="glass group block h-full overflow-hidden rounded-2xl transition-[transform,border-color] duration-300 will-change-transform hover:-translate-y-1 hover:border-white/[0.18]"
         >
             {/* Imagen */}
@@ -62,13 +68,13 @@ export default function PostCard({ post }: { post: Post }) {
 
                 {/* Título */}
                 <h3 className="mb-3 line-clamp-2 font-display text-lg font-bold leading-snug text-nr-text transition-colors duration-300 group-hover:text-nr-accent">
-                    {post.title}
+                    {title}
                 </h3>
 
                 {/* Excerpt */}
-                {post.excerpt && (
+                {excerpt && (
                     <p className="mb-4 line-clamp-2 text-sm leading-relaxed text-nr-muted">
-                        {post.excerpt}
+                        {excerpt}
                     </p>
                 )}
 
@@ -78,7 +84,7 @@ export default function PostCard({ post }: { post: Post }) {
                     <span className="text-white/10">·</span>
                     <span>{readTime(post.read_time)}</span>
                     <span className="text-white/10">·</span>
-                    <span>{post.views_count.toLocaleString()} vistas</span>
+                    <span>{post.views_count.toLocaleString()} {t('postcard.views')}</span>
                 </div>
             </div>
         </Link>

@@ -1,21 +1,17 @@
 import { Link } from '@inertiajs/react'
-import { NAV_LINKS, SITE } from '@/lib/constants'
+import { SITE } from '@/lib/constants'
+import { useLocale } from '@/hooks/useLocale'
+import { getNavLinks, getLegalLinks } from '@/lib/i18n'
 
 const SOCIAL_LINKS = [
     { label: 'Twitter/X', href: `https://twitter.com/${SITE.twitter.replace('@', '')}` },
-    // LinkedIn and YouTube — add URLs when available
-    // { label: 'LinkedIn', href: 'https://linkedin.com/in/...' },
-    // { label: 'YouTube', href: 'https://youtube.com/@...' },
-]
-
-const LEGAL_LINKS = [
-    { label: 'Privacidad', href: '/privacidad' },
-    { label: 'Términos', href: '/terminos' },
-    { label: 'Cookies', href: '/cookies' },
-    { label: 'Afiliados', href: '/afiliados' },
 ]
 
 export default function Footer() {
+    const { locale, t } = useLocale()
+    const navLinks = getNavLinks(locale)
+    const legalLinks = getLegalLinks(locale)
+
     return (
         <footer className="mt-24 border-t border-white/[0.06] bg-nr-bg3">
             <div className="mx-auto max-w-7xl px-6 py-16 md:px-12">
@@ -26,8 +22,7 @@ export default function Footer() {
                             NeuralRift
                         </div>
                         <p className="max-w-sm text-sm leading-relaxed text-nr-muted">
-                            Guías en profundidad, reviews honestas y estrategias para navegar la
-                            revolución de la IA. Sin ruido, sin hype.
+                            {t('footer.tagline')}
                         </p>
                         {/* Social */}
                         <div className="mt-6 flex gap-3">
@@ -48,10 +43,10 @@ export default function Footer() {
                     {/* Links */}
                     <div>
                         <h4 className="mb-4 text-xs font-semibold uppercase tracking-widest text-nr-faint">
-                            Navegación
+                            {t('footer.navigation')}
                         </h4>
                         <ul className="space-y-2.5">
-                            {NAV_LINKS.map(link => (
+                            {navLinks.map(link => (
                                 <li key={link.href}>
                                     <Link
                                         href={link.href}
@@ -67,10 +62,10 @@ export default function Footer() {
                     {/* Legal */}
                     <div>
                         <h4 className="mb-4 text-xs font-semibold uppercase tracking-widest text-nr-faint">
-                            Legal
+                            {t('footer.legal')}
                         </h4>
                         <ul className="space-y-2.5">
-                            {LEGAL_LINKS.map(l => (
+                            {legalLinks.map(l => (
                                 <li key={l.href}>
                                     <Link
                                         href={l.href}
@@ -82,28 +77,27 @@ export default function Footer() {
                             ))}
                         </ul>
                         <p className="mt-6 text-xs leading-relaxed text-nr-faint">
-                            Este blog contiene links de afiliado. Si compras a través de ellos
-                            recibo una comisión sin costo adicional para ti.
+                            {t('footer.affiliate_disclosure')}
                         </p>
                     </div>
                 </div>
 
                 <div className="mt-12 flex flex-col items-center justify-between gap-4 border-t border-white/[0.05] pt-8 md:flex-row">
                     <p className="text-xs text-nr-faint">
-                        © {new Date().getFullYear()} NeuralRift. Hecho con ☕ desde Colombia.
+                        © {new Date().getFullYear()} NeuralRift. {t('footer.made')}
                     </p>
                     <div className="flex items-center gap-4">
                         <a
                             href="/feed.xml"
                             className="text-xs text-nr-faint transition-colors hover:text-nr-orange"
                         >
-                            RSS Feed
+                            {t('misc.rss')}
                         </a>
                         <a
                             href="/sitemap.xml"
                             className="text-xs text-nr-faint transition-colors hover:text-nr-text"
                         >
-                            Sitemap
+                            {t('misc.sitemap')}
                         </a>
                     </div>
                 </div>

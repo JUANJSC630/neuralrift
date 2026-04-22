@@ -3,16 +3,19 @@ import { motion } from 'framer-motion'
 import Navbar from '@/Components/Layout/Navbar'
 import Footer from '@/Components/Layout/Footer'
 import { SITE } from '@/lib/constants'
-
-const LAST_UPDATED = '22 de abril de 2026'
+import { useLocale } from '@/hooks/useLocale'
 
 export default function Terms() {
+    const { locale, t, localePath } = useLocale()
+    const isEn = locale === 'en'
+    const LAST_UPDATED = isEn ? 'April 22, 2026' : '22 de abril de 2026'
+
     return (
         <>
-            <Head title={`Términos de Uso — ${SITE.name}`}>
+            <Head title={`${isEn ? 'Terms of Use' : 'Términos de Uso'} — ${SITE.name}`}>
                 <meta
                     name="description"
-                    content="Términos y condiciones de uso de NeuralRift. Reglas y limitaciones del sitio."
+                    content={isEn ? 'NeuralRift terms of use. Rules and limitations of the site.' : 'Términos y condiciones de uso de NeuralRift. Reglas y limitaciones del sitio.'}
                 />
             </Head>
 
@@ -31,11 +34,11 @@ export default function Terms() {
                     <div className="relative z-10 mx-auto max-w-3xl px-6 py-16 md:px-12">
                         {/* Breadcrumb */}
                         <nav className="mb-6 flex items-center gap-2 font-mono text-xs text-nr-faint">
-                            <Link href="/" className="transition-colors hover:text-nr-muted">
-                                Inicio
+                            <Link href={localePath('/')} className="transition-colors hover:text-nr-muted">
+                                {t('post.home')}
                             </Link>
                             <span>›</span>
-                            <span className="text-nr-muted">Términos</span>
+                            <span className="text-nr-muted">{t('footer.terms')}</span>
                         </nav>
 
                         <motion.div
@@ -47,10 +50,10 @@ export default function Terms() {
                                 Legal
                             </span>
                             <h1 className="font-display text-4xl font-black text-nr-text md:text-5xl">
-                                Términos de Uso
+                                {isEn ? 'Terms of Use' : 'Términos de Uso'}
                             </h1>
                             <p className="mt-3 text-sm text-nr-faint">
-                                Última actualización: {LAST_UPDATED}
+                                {isEn ? 'Last updated:' : 'Última actualización:'} {LAST_UPDATED}
                             </p>
                         </motion.div>
                     </div>
@@ -165,10 +168,10 @@ export default function Terms() {
                     {/* Back link */}
                     <div className="mt-14 border-t border-white/[0.06] pt-8">
                         <Link
-                            href="/"
+                            href={localePath('/')}
                             className="text-sm text-nr-faint transition-colors hover:text-nr-muted"
                         >
-                            ← Volver al inicio
+                            {t('misc.back_home')}
                         </Link>
                     </div>
                 </div>
