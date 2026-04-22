@@ -81,7 +81,7 @@ export default function Login({
                                     autoComplete="username"
                                     autoFocus
                                     onChange={e => setData('email', e.target.value)}
-                                    className="glass w-full rounded-xl border border-white/[0.08] bg-transparent px-4 py-3 text-sm text-nr-text placeholder-nr-faint/40 outline-none transition-colors focus:border-nr-accent/60"
+                                    className="glass w-full rounded-xl bg-transparent px-4 py-3 text-sm text-nr-text placeholder-nr-faint/40 outline-none transition-colors focus:border-nr-accent/60"
                                     placeholder="tu@email.com"
                                 />
                                 {errors.email && (
@@ -114,7 +114,7 @@ export default function Login({
                                     value={data.password}
                                     autoComplete="current-password"
                                     onChange={e => setData('password', e.target.value)}
-                                    className="glass w-full rounded-xl border border-white/[0.08] bg-transparent px-4 py-3 text-sm text-nr-text placeholder-nr-faint/40 outline-none transition-colors focus:border-nr-accent/60"
+                                    className="glass w-full rounded-xl bg-transparent px-4 py-3 text-sm text-nr-text placeholder-nr-faint/40 outline-none transition-colors focus:border-nr-accent/60"
                                     placeholder="••••••••"
                                 />
                                 {errors.password && (
@@ -142,7 +142,7 @@ export default function Login({
                             <button
                                 type="submit"
                                 disabled={processing}
-                                className="mt-1 w-full rounded-xl bg-gradient-to-r from-nr-accent to-[#6d58f0] py-3 text-sm font-semibold text-white shadow-lg shadow-nr-accent/20 transition-all duration-200 hover:-translate-y-0.5 disabled:translate-y-0 disabled:opacity-50"
+                                className="mt-1 w-full rounded-xl bg-gradient-to-r from-nr-accent to-nr-accent-dark py-3 text-sm font-semibold text-white shadow-lg shadow-nr-accent/20 transition-all duration-200 will-change-transform hover:-translate-y-0.5 disabled:translate-y-0 disabled:opacity-50"
                             >
                                 {processing ? (
                                     <span className="flex items-center justify-center gap-2">

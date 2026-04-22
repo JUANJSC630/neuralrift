@@ -1,8 +1,3 @@
-import InputError from '@/Components/InputError'
-import InputLabel from '@/Components/InputLabel'
-import PrimaryButton from '@/Components/PrimaryButton'
-import TextInput from '@/Components/TextInput'
-import GuestLayout from '@/Layouts/GuestLayout'
 import { Head, Link, useForm } from '@inertiajs/react'
 import { FormEventHandler } from 'react'
 
@@ -16,98 +11,173 @@ export default function Register() {
 
     const submit: FormEventHandler = e => {
         e.preventDefault()
-
         post(route('register'), {
             onFinish: () => reset('password', 'password_confirmation'),
         })
     }
 
     return (
-        <GuestLayout>
-            <Head title="Register" />
+        <>
+            <Head title="Crear cuenta — NeuralRift" />
 
-            <form onSubmit={submit}>
-                <div>
-                    <InputLabel htmlFor="name" value="Name" />
+            <div className="relative flex min-h-screen items-center justify-center overflow-hidden bg-nr-bg px-4">
+                <div
+                    className="pointer-events-none absolute inset-0"
+                    style={{
+                        background: `
+                            radial-gradient(ellipse 60% 50% at 20% 20%, rgba(124,106,247,0.18) 0%, transparent 60%),
+                            radial-gradient(ellipse 50% 40% at 80% 75%, rgba(6,182,212,0.12) 0%, transparent 55%)
+                        `,
+                    }}
+                />
+                <div className="noise pointer-events-none absolute inset-0 opacity-40" />
 
-                    <TextInput
-                        id="name"
-                        name="name"
-                        value={data.name}
-                        className="mt-1 block w-full"
-                        autoComplete="name"
-                        isFocused={true}
-                        onChange={e => setData('name', e.target.value)}
-                        required
-                    />
+                <div className="relative w-full max-w-sm">
+                    <div className="mb-8 text-center">
+                        <Link
+                            href="/"
+                            className="inline-block font-display text-2xl font-black tracking-tight"
+                        >
+                            <span className="text-gradient">NeuralRift</span>
+                        </Link>
+                        <p className="mt-2 text-sm text-nr-faint">Panel de administración</p>
+                    </div>
 
-                    <InputError message={errors.name} className="mt-2" />
-                </div>
-
-                <div className="mt-4">
-                    <InputLabel htmlFor="email" value="Email" />
-
-                    <TextInput
-                        id="email"
-                        type="email"
-                        name="email"
-                        value={data.email}
-                        className="mt-1 block w-full"
-                        autoComplete="username"
-                        onChange={e => setData('email', e.target.value)}
-                        required
-                    />
-
-                    <InputError message={errors.email} className="mt-2" />
-                </div>
-
-                <div className="mt-4">
-                    <InputLabel htmlFor="password" value="Password" />
-
-                    <TextInput
-                        id="password"
-                        type="password"
-                        name="password"
-                        value={data.password}
-                        className="mt-1 block w-full"
-                        autoComplete="new-password"
-                        onChange={e => setData('password', e.target.value)}
-                        required
-                    />
-
-                    <InputError message={errors.password} className="mt-2" />
-                </div>
-
-                <div className="mt-4">
-                    <InputLabel htmlFor="password_confirmation" value="Confirm Password" />
-
-                    <TextInput
-                        id="password_confirmation"
-                        type="password"
-                        name="password_confirmation"
-                        value={data.password_confirmation}
-                        className="mt-1 block w-full"
-                        autoComplete="new-password"
-                        onChange={e => setData('password_confirmation', e.target.value)}
-                        required
-                    />
-
-                    <InputError message={errors.password_confirmation} className="mt-2" />
-                </div>
-
-                <div className="mt-4 flex items-center justify-end">
-                    <Link
-                        href={route('login')}
-                        className="rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                    <div
+                        className="glass-strong rounded-2xl border border-white/[0.1] p-8"
+                        style={{
+                            boxShadow:
+                                '0 0 60px rgba(124,106,247,0.08), 0 24px 48px rgba(0,0,0,0.4)',
+                        }}
                     >
-                        Already registered?
-                    </Link>
+                        <h1 className="mb-6 font-display text-xl font-bold text-nr-text">
+                            Crear cuenta
+                        </h1>
 
-                    <PrimaryButton className="ms-4" disabled={processing}>
-                        Register
-                    </PrimaryButton>
+                        <form onSubmit={submit} className="space-y-5">
+                            <div>
+                                <label
+                                    htmlFor="name"
+                                    className="mb-2 block text-xs font-medium uppercase tracking-wider text-nr-faint"
+                                >
+                                    Nombre
+                                </label>
+                                <input
+                                    id="name"
+                                    type="text"
+                                    name="name"
+                                    value={data.name}
+                                    autoComplete="name"
+                                    autoFocus
+                                    onChange={e => setData('name', e.target.value)}
+                                    className="glass w-full rounded-xl bg-transparent px-4 py-3 text-sm text-nr-text placeholder-nr-faint/40 outline-none transition-colors focus:border-nr-accent/60"
+                                    placeholder="Tu nombre"
+                                    required
+                                />
+                                {errors.name && (
+                                    <p className="mt-1.5 text-xs text-nr-red">{errors.name}</p>
+                                )}
+                            </div>
+
+                            <div>
+                                <label
+                                    htmlFor="email"
+                                    className="mb-2 block text-xs font-medium uppercase tracking-wider text-nr-faint"
+                                >
+                                    Email
+                                </label>
+                                <input
+                                    id="email"
+                                    type="email"
+                                    name="email"
+                                    value={data.email}
+                                    autoComplete="username"
+                                    onChange={e => setData('email', e.target.value)}
+                                    className="glass w-full rounded-xl bg-transparent px-4 py-3 text-sm text-nr-text placeholder-nr-faint/40 outline-none transition-colors focus:border-nr-accent/60"
+                                    placeholder="tu@email.com"
+                                    required
+                                />
+                                {errors.email && (
+                                    <p className="mt-1.5 text-xs text-nr-red">{errors.email}</p>
+                                )}
+                            </div>
+
+                            <div>
+                                <label
+                                    htmlFor="password"
+                                    className="mb-2 block text-xs font-medium uppercase tracking-wider text-nr-faint"
+                                >
+                                    Contraseña
+                                </label>
+                                <input
+                                    id="password"
+                                    type="password"
+                                    name="password"
+                                    value={data.password}
+                                    autoComplete="new-password"
+                                    onChange={e => setData('password', e.target.value)}
+                                    className="glass w-full rounded-xl bg-transparent px-4 py-3 text-sm text-nr-text placeholder-nr-faint/40 outline-none transition-colors focus:border-nr-accent/60"
+                                    placeholder="••••••••"
+                                    required
+                                />
+                                {errors.password && (
+                                    <p className="mt-1.5 text-xs text-nr-red">{errors.password}</p>
+                                )}
+                            </div>
+
+                            <div>
+                                <label
+                                    htmlFor="password_confirmation"
+                                    className="mb-2 block text-xs font-medium uppercase tracking-wider text-nr-faint"
+                                >
+                                    Confirmar contraseña
+                                </label>
+                                <input
+                                    id="password_confirmation"
+                                    type="password"
+                                    name="password_confirmation"
+                                    value={data.password_confirmation}
+                                    autoComplete="new-password"
+                                    onChange={e => setData('password_confirmation', e.target.value)}
+                                    className="glass w-full rounded-xl bg-transparent px-4 py-3 text-sm text-nr-text placeholder-nr-faint/40 outline-none transition-colors focus:border-nr-accent/60"
+                                    placeholder="••••••••"
+                                    required
+                                />
+                                {errors.password_confirmation && (
+                                    <p className="mt-1.5 text-xs text-nr-red">
+                                        {errors.password_confirmation}
+                                    </p>
+                                )}
+                            </div>
+
+                            <button
+                                type="submit"
+                                disabled={processing}
+                                className="mt-1 w-full rounded-xl bg-gradient-to-r from-nr-accent to-nr-accent-dark py-3 text-sm font-semibold text-white shadow-lg shadow-nr-accent/20 transition-all duration-200 will-change-transform hover:-translate-y-0.5 disabled:translate-y-0 disabled:opacity-50"
+                            >
+                                {processing ? (
+                                    <span className="flex items-center justify-center gap-2">
+                                        <span className="h-4 w-4 animate-spin rounded-full border-2 border-white/30 border-t-white" />
+                                        Creando cuenta...
+                                    </span>
+                                ) : (
+                                    'Crear cuenta'
+                                )}
+                            </button>
+                        </form>
+                    </div>
+
+                    <p className="mt-6 text-center text-xs text-nr-faint">
+                        ¿Ya tienes cuenta?{' '}
+                        <Link
+                            href={route('login')}
+                            className="text-nr-accent transition-colors hover:text-nr-accent/80"
+                        >
+                            Acceder →
+                        </Link>
+                    </p>
                 </div>
-            </form>
-        </GuestLayout>
+            </div>
+        </>
     )
 }
