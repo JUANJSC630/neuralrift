@@ -69,18 +69,28 @@ export default function BlogShow({ post, related, schema, lang = 'es' }: Props) 
                     <div className="relative z-10 mx-auto max-w-7xl px-6 py-16 md:px-12">
                         {/* Breadcrumb */}
                         <nav className="mb-6 flex items-center gap-2 font-mono text-xs text-nr-faint">
-                            <Link href={localePath('/')} className="transition-colors hover:text-nr-muted">
+                            <Link
+                                href={localePath('/')}
+                                className="transition-colors hover:text-nr-muted"
+                            >
                                 {t('post.home')}
                             </Link>
                             <span>›</span>
-                            <Link href={localePath('/blog')} className="transition-colors hover:text-nr-muted">
+                            <Link
+                                href={localePath('/blog')}
+                                className="transition-colors hover:text-nr-muted"
+                            >
                                 {t('post.blog')}
                             </Link>
                             {post.category && (
                                 <>
                                     <span>›</span>
                                     <Link
-                                        href={isEn ? `/en/category/${post.category.slug}` : `/categoria/${post.category.slug}`}
+                                        href={
+                                            isEn
+                                                ? `/en/category/${post.category.slug}`
+                                                : `/categoria/${post.category.slug}`
+                                        }
                                         className="transition-colors hover:text-nr-muted"
                                     >
                                         {catName}
@@ -236,9 +246,7 @@ export default function BlogShow({ post, related, schema, lang = 'es' }: Props) 
 
                             {/* Share footer */}
                             <div className="mt-12 flex flex-wrap items-center justify-between gap-4 border-t border-white/[0.06] pt-8">
-                                <span className="text-sm text-nr-faint">
-                                    {t('post.share_cta')}
-                                </span>
+                                <span className="text-sm text-nr-faint">{t('post.share_cta')}</span>
                                 <ShareButtons url={postUrl} title={title} />
                             </div>
 

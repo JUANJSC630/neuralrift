@@ -15,7 +15,11 @@ export default function Terms() {
             <Head title={`${isEn ? 'Terms of Use' : 'Términos de Uso'} — ${SITE.name}`}>
                 <meta
                     name="description"
-                    content={isEn ? 'NeuralRift terms of use. Rules and limitations of the site.' : 'Términos y condiciones de uso de NeuralRift. Reglas y limitaciones del sitio.'}
+                    content={
+                        isEn
+                            ? 'NeuralRift terms of use. Rules and limitations of the site.'
+                            : 'Términos y condiciones de uso de NeuralRift. Reglas y limitaciones del sitio.'
+                    }
                 />
             </Head>
 
@@ -34,7 +38,10 @@ export default function Terms() {
                     <div className="relative z-10 mx-auto max-w-3xl px-6 py-16 md:px-12">
                         {/* Breadcrumb */}
                         <nav className="mb-6 flex items-center gap-2 font-mono text-xs text-nr-faint">
-                            <Link href={localePath('/')} className="transition-colors hover:text-nr-muted">
+                            <Link
+                                href={localePath('/')}
+                                className="transition-colors hover:text-nr-muted"
+                            >
                                 {t('post.home')}
                             </Link>
                             <span>›</span>
@@ -95,8 +102,8 @@ export default function Terms() {
                         <Section title="3. Exactitud de la información">
                             <p>
                                 El contenido de NeuralRift tiene fines informativos y educativos. Me
-                                esfuerzo por mantenerlo actualizado y preciso, pero el campo de la IA
-                                evoluciona rápidamente. No garantizo que toda la información esté
+                                esfuerzo por mantenerlo actualizado y preciso, pero el campo de la
+                                IA evoluciona rápidamente. No garantizo que toda la información esté
                                 libre de errores u omisiones.
                             </p>
                             <p className="mt-3">
@@ -182,13 +189,7 @@ export default function Terms() {
     )
 }
 
-function Section({
-    title,
-    children,
-}: {
-    title: string
-    children: React.ReactNode
-}) {
+function Section({ title, children }: { title: string; children: React.ReactNode }) {
     return (
         <motion.section
             initial={{ opacity: 0, y: 10 }}

@@ -31,8 +31,10 @@ export default function Navbar() {
         if (locale === 'en' && path.startsWith('/en/blog/')) return path.replace('/en', '')
 
         // Category: /categoria/slug ↔ /en/category/slug
-        if (locale === 'es' && path.startsWith('/categoria/')) return `/en/category/${path.split('/').pop()}`
-        if (locale === 'en' && path.startsWith('/en/category/')) return `/categoria/${path.split('/').pop()}`
+        if (locale === 'es' && path.startsWith('/categoria/'))
+            return `/en/category/${path.split('/').pop()}`
+        if (locale === 'en' && path.startsWith('/en/category/'))
+            return `/categoria/${path.split('/').pop()}`
 
         // Default
         return locale === 'es' ? '/en' : '/'

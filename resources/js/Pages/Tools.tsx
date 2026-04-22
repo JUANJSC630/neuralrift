@@ -23,10 +23,7 @@ export default function Tools({ affiliates, grouped }: Props) {
     return (
         <>
             <Head title={`${t('tools.title')} — ${SITE.name}`}>
-                <meta
-                    name="description"
-                    content={t('tools.subtitle')}
-                />
+                <meta name="description" content={t('tools.subtitle')} />
             </Head>
 
             <Navbar />
@@ -41,9 +38,7 @@ export default function Tools({ affiliates, grouped }: Props) {
                         <h1 className="mb-4 font-display text-4xl font-black text-nr-text md:text-5xl">
                             {t('tools.title')}
                         </h1>
-                        <p className="mx-auto max-w-xl text-nr-muted">
-                            {t('tools.subtitle')}
-                        </p>
+                        <p className="mx-auto max-w-xl text-nr-muted">{t('tools.subtitle')}</p>
                     </div>
 
                     {/* Category filter pills */}

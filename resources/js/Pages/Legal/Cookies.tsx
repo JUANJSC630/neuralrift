@@ -14,19 +14,25 @@ export default function Cookies() {
         {
             name: 'neuralrift_session',
             type: isEn ? 'Session' : 'Sesión',
-            purpose: isEn ? 'Keeps the authenticated user session active.' : 'Mantiene la sesión activa del usuario autenticado.',
+            purpose: isEn
+                ? 'Keeps the authenticated user session active.'
+                : 'Mantiene la sesión activa del usuario autenticado.',
             duration: isEn ? 'Session' : 'Sesión',
         },
         {
             name: 'XSRF-TOKEN',
             type: isEn ? 'Security' : 'Seguridad',
-            purpose: isEn ? 'Protection against CSRF attacks on forms.' : 'Protección contra ataques CSRF en formularios.',
+            purpose: isEn
+                ? 'Protection against CSRF attacks on forms.'
+                : 'Protección contra ataques CSRF en formularios.',
             duration: isEn ? 'Session' : 'Sesión',
         },
         {
             name: 'nr_lang',
             type: isEn ? 'Preference' : 'Preferencia',
-            purpose: isEn ? 'Remembers the selected language (ES / EN).' : 'Recuerda el idioma seleccionado (ES / EN).',
+            purpose: isEn
+                ? 'Remembers the selected language (ES / EN).'
+                : 'Recuerda el idioma seleccionado (ES / EN).',
             duration: isEn ? '1 year' : '1 año',
         },
     ]
@@ -36,7 +42,11 @@ export default function Cookies() {
             <Head title={`${isEn ? 'Cookie Policy' : 'Política de Cookies'} — ${SITE.name}`}>
                 <meta
                     name="description"
-                    content={isEn ? 'NeuralRift cookie policy. What cookies we use and why.' : 'Política de cookies de NeuralRift. Qué cookies usamos y para qué.'}
+                    content={
+                        isEn
+                            ? 'NeuralRift cookie policy. What cookies we use and why.'
+                            : 'Política de cookies de NeuralRift. Qué cookies usamos y para qué.'
+                    }
                 />
             </Head>
 
@@ -55,7 +65,10 @@ export default function Cookies() {
                     <div className="relative z-10 mx-auto max-w-3xl px-6 py-16 md:px-12">
                         {/* Breadcrumb */}
                         <nav className="mb-6 flex items-center gap-2 font-mono text-xs text-nr-faint">
-                            <Link href={localePath('/')} className="transition-colors hover:text-nr-muted">
+                            <Link
+                                href={localePath('/')}
+                                className="transition-colors hover:text-nr-muted"
+                            >
                                 {t('post.home')}
                             </Link>
                             <span>›</span>
@@ -106,16 +119,16 @@ export default function Cookies() {
                                 <table className="w-full border-collapse text-xs">
                                     <thead>
                                         <tr className="border-b border-white/[0.08]">
-                                            <th className="py-3 pr-4 text-left font-semibold text-nr-faint uppercase tracking-wider">
+                                            <th className="py-3 pr-4 text-left font-semibold uppercase tracking-wider text-nr-faint">
                                                 Cookie
                                             </th>
-                                            <th className="py-3 pr-4 text-left font-semibold text-nr-faint uppercase tracking-wider">
+                                            <th className="py-3 pr-4 text-left font-semibold uppercase tracking-wider text-nr-faint">
                                                 Tipo
                                             </th>
-                                            <th className="py-3 pr-4 text-left font-semibold text-nr-faint uppercase tracking-wider">
+                                            <th className="py-3 pr-4 text-left font-semibold uppercase tracking-wider text-nr-faint">
                                                 Propósito
                                             </th>
-                                            <th className="py-3 text-left font-semibold text-nr-faint uppercase tracking-wider">
+                                            <th className="py-3 text-left font-semibold uppercase tracking-wider text-nr-faint">
                                                 Duración
                                             </th>
                                         </tr>
@@ -133,7 +146,9 @@ export default function Cookies() {
                                                     {row.type}
                                                 </td>
                                                 <td className="py-3 pr-4">{row.purpose}</td>
-                                                <td className="py-3 text-nr-text">{row.duration}</td>
+                                                <td className="py-3 text-nr-text">
+                                                    {row.duration}
+                                                </td>
                                             </tr>
                                         ))}
                                     </tbody>
@@ -219,13 +234,7 @@ export default function Cookies() {
     )
 }
 
-function Section({
-    title,
-    children,
-}: {
-    title: string
-    children: React.ReactNode
-}) {
+function Section({ title, children }: { title: string; children: React.ReactNode }) {
     return (
         <motion.section
             initial={{ opacity: 0, y: 10 }}

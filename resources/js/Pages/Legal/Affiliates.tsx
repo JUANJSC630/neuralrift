@@ -15,7 +15,11 @@ export default function AffiliatesPolicy() {
             <Head title={`${isEn ? 'Affiliate Policy' : 'Política de Afiliados'} — ${SITE.name}`}>
                 <meta
                     name="description"
-                    content={isEn ? 'NeuralRift affiliate policy. Transparency about commissions and how we select the tools we recommend.' : 'Política de afiliados de NeuralRift. Transparencia sobre comisiones y cómo seleccionamos las herramientas que recomendamos.'}
+                    content={
+                        isEn
+                            ? 'NeuralRift affiliate policy. Transparency about commissions and how we select the tools we recommend.'
+                            : 'Política de afiliados de NeuralRift. Transparencia sobre comisiones y cómo seleccionamos las herramientas que recomendamos.'
+                    }
                 />
             </Head>
 
@@ -34,7 +38,10 @@ export default function AffiliatesPolicy() {
                     <div className="relative z-10 mx-auto max-w-3xl px-6 py-16 md:px-12">
                         {/* Breadcrumb */}
                         <nav className="mb-6 flex items-center gap-2 font-mono text-xs text-nr-faint">
-                            <Link href={localePath('/')} className="transition-colors hover:text-nr-muted">
+                            <Link
+                                href={localePath('/')}
+                                className="transition-colors hover:text-nr-muted"
+                            >
                                 {t('post.home')}
                             </Link>
                             <span>›</span>
@@ -94,12 +101,12 @@ export default function AffiliatesPolicy() {
                         </Section>
 
                         <Section title="Cómo seleccionamos las herramientas">
-                            <p>
-                                Solo recomiendo herramientas que cumplen todos estos criterios:
-                            </p>
+                            <p>Solo recomiendo herramientas que cumplen todos estos criterios:</p>
                             <ul className="mt-4 space-y-2 pl-4">
                                 <Item>
-                                    <strong className="text-nr-text">Las he usado personalmente</strong>{' '}
+                                    <strong className="text-nr-text">
+                                        Las he usado personalmente
+                                    </strong>{' '}
                                     o las he evaluado en profundidad antes de recomendarlas.
                                 </Item>
                                 <Item>
@@ -192,13 +199,7 @@ export default function AffiliatesPolicy() {
     )
 }
 
-function Section({
-    title,
-    children,
-}: {
-    title: string
-    children: React.ReactNode
-}) {
+function Section({ title, children }: { title: string; children: React.ReactNode }) {
     return (
         <motion.section
             initial={{ opacity: 0, y: 10 }}

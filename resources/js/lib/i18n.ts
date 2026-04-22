@@ -114,7 +114,7 @@ const translations = {
     'about.why_title': { es: 'Por qué NeuralRift', en: 'Why NeuralRift' },
     'about.why_p1': {
         es: 'Empecé NeuralRift porque me frustré con el ruido que rodea a la inteligencia artificial. Demasiado hype, demasiadas promesas vacías, muy poco análisis honesto.',
-        en: "I started NeuralRift because I was frustrated with the noise surrounding artificial intelligence. Too much hype, too many empty promises, too little honest analysis.",
+        en: 'I started NeuralRift because I was frustrated with the noise surrounding artificial intelligence. Too much hype, too many empty promises, too little honest analysis.',
     },
     'about.why_p2': {
         es: 'Como desarrollador, tengo acceso directo a estas herramientas y puedo evaluarlas técnicamente — no solo marketinescamente. Aquí encontrarás análisis reales basados en uso real.',
@@ -138,20 +138,32 @@ const translations = {
     // ── Newsletter ───────────────────────────────────
     'newsletter.label': { es: 'Newsletter gratuita', en: 'Free newsletter' },
     'newsletter.title_1': { es: 'La IA no espera.', en: "AI doesn't wait." },
-    'newsletter.title_2': { es: 'Tú tampoco deberías.', en: "Neither should you." },
+    'newsletter.title_2': { es: 'Tú tampoco deberías.', en: 'Neither should you.' },
     'newsletter.subtitle': {
         es: 'Cada semana: un artículo en profundidad, una herramienta que vale la pena y una estrategia que puedes aplicar hoy. Sin spam.',
-        en: "Every week: an in-depth article, a tool worth trying and a strategy you can apply today. No spam.",
+        en: 'Every week: an in-depth article, a tool worth trying and a strategy you can apply today. No spam.',
     },
     'newsletter.benefit_1': { es: '📖 1 artículo semanal', en: '📖 1 weekly article' },
     'newsletter.benefit_2': { es: '🛠 Herramientas IA', en: '🛠 AI tools' },
-    'newsletter.benefit_3': { es: '💰 Estrategias de monetización', en: '💰 Monetization strategies' },
-    'newsletter.success': { es: '¡Genial! Revisa tu email para confirmar.', en: 'Great! Check your email to confirm.' },
-    'newsletter.error': { es: 'Algo salió mal. Intenta de nuevo.', en: 'Something went wrong. Try again.' },
+    'newsletter.benefit_3': {
+        es: '💰 Estrategias de monetización',
+        en: '💰 Monetization strategies',
+    },
+    'newsletter.success': {
+        es: '¡Genial! Revisa tu email para confirmar.',
+        en: 'Great! Check your email to confirm.',
+    },
+    'newsletter.error': {
+        es: 'Algo salió mal. Intenta de nuevo.',
+        en: 'Something went wrong. Try again.',
+    },
     'newsletter.placeholder': { es: 'tu@email.com', en: 'you@email.com' },
     'newsletter.sending': { es: 'Enviando...', en: 'Sending...' },
     'newsletter.submit': { es: 'Suscribirme →', en: 'Subscribe →' },
-    'newsletter.no_spam': { es: 'Sin spam. Baja cuando quieras.', en: 'No spam. Unsubscribe anytime.' },
+    'newsletter.no_spam': {
+        es: 'Sin spam. Baja cuando quieras.',
+        en: 'No spam. Unsubscribe anytime.',
+    },
 
     // ── PostCard ──────────────────────────────────────
     'postcard.views': { es: 'vistas', en: 'views' },
@@ -224,9 +236,15 @@ export const LOCALE_ROUTES: Record<string, Record<string, string>> = {
 export function getNavLinks(locale: Locale) {
     return [
         { label: t('nav.blog', locale), href: localePath('/blog', locale) },
-        { label: t('nav.categories', locale), href: locale === 'es' ? '/categorias' : '/en/categories' },
+        {
+            label: t('nav.categories', locale),
+            href: locale === 'es' ? '/categorias' : '/en/categories',
+        },
         { label: t('nav.tools', locale), href: locale === 'es' ? '/herramientas' : '/en/tools' },
-        { label: t('nav.newsletter', locale), href: locale === 'es' ? '/#newsletter' : '/en#newsletter' },
+        {
+            label: t('nav.newsletter', locale),
+            href: locale === 'es' ? '/#newsletter' : '/en#newsletter',
+        },
         { label: t('nav.about', locale), href: locale === 'es' ? '/sobre-mi' : '/en/about' },
     ]
 }
@@ -236,9 +254,15 @@ export function getNavLinks(locale: Locale) {
  */
 export function getLegalLinks(locale: Locale) {
     return [
-        { label: t('footer.privacy', locale), href: locale === 'es' ? '/privacidad' : '/en/privacy' },
+        {
+            label: t('footer.privacy', locale),
+            href: locale === 'es' ? '/privacidad' : '/en/privacy',
+        },
         { label: t('footer.terms', locale), href: locale === 'es' ? '/terminos' : '/en/terms' },
         { label: t('footer.cookies', locale), href: locale === 'es' ? '/cookies' : '/en/cookies' },
-        { label: t('footer.affiliates', locale), href: locale === 'es' ? '/afiliados' : '/en/affiliates' },
+        {
+            label: t('footer.affiliates', locale),
+            href: locale === 'es' ? '/afiliados' : '/en/affiliates',
+        },
     ]
 }

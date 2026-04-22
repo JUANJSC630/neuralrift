@@ -31,10 +31,7 @@ export default function About() {
     return (
         <>
             <Head title={`${t('nav.about')} — ${SITE.name}`}>
-                <meta
-                    name="description"
-                    content={t('about.bio')}
-                />
+                <meta name="description" content={t('about.bio')} />
             </Head>
 
             <Navbar />

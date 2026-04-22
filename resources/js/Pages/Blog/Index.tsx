@@ -52,10 +52,7 @@ export default function BlogIndex({ posts, filters, lang }: Props) {
     return (
         <>
             <Head title={`Blog — ${SITE.name}`}>
-                <meta
-                    name="description"
-                    content={t('blog.subtitle')}
-                />
+                <meta name="description" content={t('blog.subtitle')} />
             </Head>
 
             <Navbar />
@@ -135,7 +132,8 @@ export default function BlogIndex({ posts, filters, lang }: Props) {
                             {categories.map((cat: Category) => {
                                 const color = CATEGORY_COLORS[cat.name] ?? cat.color ?? '#7C6AF7'
                                 const isActive = filters.category === cat.slug
-                                const catName = locale === 'en' && cat.name_en ? cat.name_en : cat.name
+                                const catName =
+                                    locale === 'en' && cat.name_en ? cat.name_en : cat.name
                                 return (
                                     <button
                                         key={cat.id}

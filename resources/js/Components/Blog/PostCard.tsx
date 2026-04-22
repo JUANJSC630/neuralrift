@@ -84,7 +84,9 @@ export default function PostCard({ post }: { post: Post }) {
                     <span className="text-white/10">·</span>
                     <span>{readTime(post.read_time)}</span>
                     <span className="text-white/10">·</span>
-                    <span>{post.views_count.toLocaleString()} {t('postcard.views')}</span>
+                    <span>
+                        {post.views_count.toLocaleString()} {t('postcard.views')}
+                    </span>
                 </div>
             </div>
         </Link>

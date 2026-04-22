@@ -15,7 +15,11 @@ export default function Privacy() {
             <Head title={`${isEn ? 'Privacy Policy' : 'Política de Privacidad'} — ${SITE.name}`}>
                 <meta
                     name="description"
-                    content={isEn ? 'NeuralRift privacy policy. How we collect, use and protect your information.' : 'Política de privacidad de NeuralRift. Cómo recopilamos, usamos y protegemos tu información.'}
+                    content={
+                        isEn
+                            ? 'NeuralRift privacy policy. How we collect, use and protect your information.'
+                            : 'Política de privacidad de NeuralRift. Cómo recopilamos, usamos y protegemos tu información.'
+                    }
                 />
             </Head>
 
@@ -34,7 +38,10 @@ export default function Privacy() {
                     <div className="relative z-10 mx-auto max-w-3xl px-6 py-16 md:px-12">
                         {/* Breadcrumb */}
                         <nav className="mb-6 flex items-center gap-2 font-mono text-xs text-nr-faint">
-                            <Link href={localePath('/')} className="transition-colors hover:text-nr-muted">
+                            <Link
+                                href={localePath('/')}
+                                className="transition-colors hover:text-nr-muted"
+                            >
                                 {t('post.home')}
                             </Link>
                             <span>›</span>
@@ -69,7 +76,9 @@ export default function Privacy() {
                             </p>
                             <ul className="mt-4 space-y-2 pl-4">
                                 <Item>
-                                    <strong className="text-nr-text">Suscripción al newsletter:</strong>{' '}
+                                    <strong className="text-nr-text">
+                                        Suscripción al newsletter:
+                                    </strong>{' '}
                                     solo tu dirección de correo electrónico, que usamos para
                                     enviarte el contenido al que te suscribiste.
                                 </Item>
@@ -88,13 +97,17 @@ export default function Privacy() {
 
                         <Section title="2. Cómo usamos tu información">
                             <ul className="space-y-2 pl-4">
-                                <Item>Enviarte el newsletter al que te suscribiste voluntariamente.</Item>
+                                <Item>
+                                    Enviarte el newsletter al que te suscribiste voluntariamente.
+                                </Item>
                                 <Item>Mejorar el contenido y la experiencia del sitio.</Item>
-                                <Item>Analizar qué artículos son más útiles para los lectores.</Item>
+                                <Item>
+                                    Analizar qué artículos son más útiles para los lectores.
+                                </Item>
                             </ul>
                             <p className="mt-4">
-                                Nunca vendemos, alquilamos ni compartimos tu información personal con
-                                terceros con fines comerciales.
+                                Nunca vendemos, alquilamos ni compartimos tu información personal
+                                con terceros con fines comerciales.
                             </p>
                         </Section>
 
@@ -175,13 +188,7 @@ export default function Privacy() {
     )
 }
 
-function Section({
-    title,
-    children,
-}: {
-    title: string
-    children: React.ReactNode
-}) {
+function Section({ title, children }: { title: string; children: React.ReactNode }) {
     return (
         <motion.section
             initial={{ opacity: 0, y: 10 }}

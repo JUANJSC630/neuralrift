@@ -24,10 +24,7 @@ export default function CategoryShow({ category, posts, featured }: Props) {
     return (
         <>
             <Head title={`${catName} — ${SITE.name}`}>
-                <meta
-                    name="description"
-                    content={catDesc ?? `${catName} articles`}
-                />
+                <meta name="description" content={catDesc ?? `${catName} articles`} />
             </Head>
 
             <Navbar />
@@ -44,11 +41,17 @@ export default function CategoryShow({ category, posts, featured }: Props) {
                     <div className="relative z-10 mx-auto max-w-7xl px-6 py-16 md:px-12">
                         {/* Breadcrumb */}
                         <nav className="mb-6 flex items-center gap-2 font-mono text-xs text-nr-faint">
-                            <Link href={localePath('/')} className="transition-colors hover:text-nr-muted">
+                            <Link
+                                href={localePath('/')}
+                                className="transition-colors hover:text-nr-muted"
+                            >
                                 {t('post.home')}
                             </Link>
                             <span>›</span>
-                            <Link href={localePath('/blog')} className="transition-colors hover:text-nr-muted">
+                            <Link
+                                href={localePath('/blog')}
+                                className="transition-colors hover:text-nr-muted"
+                            >
                                 {t('post.blog')}
                             </Link>
                             <span>›</span>
@@ -68,9 +71,7 @@ export default function CategoryShow({ category, posts, featured }: Props) {
                                     {catName}
                                 </motion.h1>
                                 {catDesc && (
-                                    <p className="mt-2 max-w-lg text-nr-muted">
-                                        {catDesc}
-                                    </p>
+                                    <p className="mt-2 max-w-lg text-nr-muted">{catDesc}</p>
                                 )}
                             </div>
                             <span className="glass shrink-0 rounded-lg px-3 py-1.5 font-mono text-xs text-nr-faint">
