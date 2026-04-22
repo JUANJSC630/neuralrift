@@ -25,6 +25,26 @@ const ROTATING_WORDS = [
     'El Futuro Digital',
 ]
 
+const NODES = [
+    { x: '11%', y: '22%', size: 6, color: '#7C6AF7', delay: 0 },
+    { x: '80%', y: '12%', size: 3, color: '#06B6D4', delay: 0.4 },
+    { x: '90%', y: '65%', size: 4, color: '#7C6AF7', delay: 0.8 },
+    { x: '7%', y: '75%', size: 3, color: '#06B6D4', delay: 1.2 },
+    { x: '54%', y: '85%', size: 5, color: '#7C6AF7', delay: 0.6 },
+    { x: '70%', y: '38%', size: 3, color: '#06B6D4', delay: 1.0 },
+    { x: '33%', y: '55%', size: 4, color: '#7C6AF7', delay: 0.2 },
+    { x: '44%', y: '18%', size: 3, color: '#06B6D4', delay: 1.4 },
+]
+
+const SVG_LINES = [
+    ['11%', '22%', '33%', '55%'],
+    ['33%', '55%', '54%', '85%'],
+    ['80%', '12%', '70%', '38%'],
+    ['70%', '38%', '90%', '65%'],
+    ['44%', '18%', '70%', '38%'],
+    ['33%', '55%', '70%', '38%'],
+]
+
 export default function Home({ featured, recent, affiliates }: Props) {
     const [wordIndex, setWordIndex] = useState(0)
 
@@ -53,6 +73,56 @@ export default function Home({ featured, recent, affiliates }: Props) {
                                     overflow-hidden bg-nr-bg pt-[70px]"
                 >
                     <MeshBackground />
+
+                    {/* Constellation nodes */}
+                    <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
+                        {/* SVG connector lines — desktop only */}
+                        <svg
+                            className="absolute inset-0 w-full h-full hidden md:block"
+                            style={{ opacity: 0.10 }}
+                        >
+                            {SVG_LINES.map(([x1, y1, x2, y2], i) => (
+                                <line
+                                    key={i}
+                                    x1={x1}
+                                    y1={y1}
+                                    x2={x2}
+                                    y2={y2}
+                                    stroke="#7C6AF7"
+                                    strokeWidth="1"
+                                />
+                            ))}
+                        </svg>
+
+                        {/* Floating nodes */}
+                        {NODES.map((node, i) => (
+                            <motion.div
+                                key={i}
+                                className="absolute rounded-full"
+                                style={{
+                                    left: node.x,
+                                    top: node.y,
+                                    width: node.size * 2,
+                                    height: node.size * 2,
+                                    background: node.color,
+                                    boxShadow: `0 0 ${node.size * 4}px ${node.color}80`,
+                                    transform: 'translate(-50%, -50%)',
+                                }}
+                                initial={{ opacity: 0, scale: 0 }}
+                                animate={{
+                                    opacity: [0.4, 0.9, 0.4],
+                                    scale: [1, 1.2, 1],
+                                    y: [0, -8, 0],
+                                }}
+                                transition={{
+                                    duration: 4,
+                                    delay: node.delay,
+                                    repeat: Infinity,
+                                    ease: 'easeInOut',
+                                }}
+                            />
+                        ))}
+                    </div>
 
                     {/* Contenido hero */}
                     <div className="relative z-10 text-center max-w-4xl mx-auto px-6">
@@ -193,6 +263,17 @@ export default function Home({ featured, recent, affiliates }: Props) {
                                 <PostCard post={post} />
                             </motion.div>
                         ))}
+                    </div>
+
+                    {/* "Ver todos" button — visible on mobile below grid */}
+                    <div className="flex justify-center mt-8 md:hidden">
+                        <a
+                            href="/blog"
+                            className="px-6 py-3 glass rounded-full text-sm font-medium
+                                       text-nr-accent hover:text-nr-accent/80 transition-colors"
+                        >
+                            Ver todos los artículos →
+                        </a>
                     </div>
                 </section>
 

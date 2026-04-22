@@ -3,8 +3,8 @@ import type { Affiliate } from '@/types'
 export default function AffiliateWidget({ affiliate }: { affiliate: Affiliate }) {
     return (
         <div
-            className="bg-nr-surface rounded-2xl p-5 border border-white/[0.06]
-                        hover:border-white/[0.14] hover:-translate-y-1
+            className="glass rounded-2xl p-5 hover:border-white/[0.18]
+                        hover:-translate-y-1 will-change-transform
                         transition-[transform,border-color] duration-300 flex flex-col h-full group"
         >
             {/* Header */}

@@ -18,7 +18,7 @@ export default {
                     // Backgrounds
                     bg: "#080B12",
                     bg2: "#090c14",
-                    bg3: "#0c101c",
+                    bg3: "#070a11",
                     surface: "#111827",
                     // Accents
                     accent: "#7C6AF7",
@@ -32,15 +32,15 @@ export default {
                     // Text
                     text: "#F1F5F9",
                     muted: "#94A3B8",
-                    faint: "#6B7C94",
+                    faint: "#6B7280",
                     // Glows (para box-shadow)
                     glow: "rgba(124,106,247,0.28)",
                     "glow-cyan": "rgba(6,182,212,0.22)",
                 },
             },
             fontFamily: {
-                display: ['"Archivo"', ...defaultTheme.fontFamily.sans],
-                sans: ['"Figtree"', ...defaultTheme.fontFamily.sans],
+                display: ['"Playfair Display"', 'Georgia', ...defaultTheme.fontFamily.serif],
+                sans: ['"DM Sans"', 'system-ui', ...defaultTheme.fontFamily.sans],
                 mono: ['"JetBrains Mono"', ...defaultTheme.fontFamily.mono],
             },
             borderRadius: {

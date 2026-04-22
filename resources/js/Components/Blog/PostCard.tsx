@@ -9,9 +9,10 @@ export default function PostCard({ post }: { post: Post }) {
     return (
         <Link
             href={`/blog/${post.slug}`}
-            className="group block bg-nr-surface rounded-2xl overflow-hidden
-                         border border-white/[0.06] hover:border-white/[0.14]
-                         hover:-translate-y-1 transition-[transform,border-color] duration-300 h-full"
+            className="group block glass rounded-2xl overflow-hidden
+                         hover:border-white/[0.18]
+                         hover:-translate-y-1 will-change-transform
+                         transition-[transform,border-color] duration-300 h-full"
         >
             {/* Imagen */}
             <div

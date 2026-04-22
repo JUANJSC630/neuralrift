@@ -41,7 +41,7 @@ export default function Navbar() {
                     href="/"
                     className="font-display text-xl font-black tracking-tight flex-shrink-0"
                 >
-                    <span className="text-nr-accent">NeuralRift</span>
+                    <span className="text-gradient">NeuralRift</span>
                 </Link>
 
                 {/* Links desktop */}

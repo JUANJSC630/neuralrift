@@ -30,8 +30,7 @@ export default function NewsletterWidget() {
 
     return (
         <div
-            className="bg-nr-surface rounded-3xl p-10 md:p-14 text-center
-                        border border-white/[0.08]"
+            className="glass rounded-3xl p-10 md:p-14 text-center"
         >
             <div>
                 <span

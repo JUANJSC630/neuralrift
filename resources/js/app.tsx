@@ -18,6 +18,7 @@ createInertiaApp({
         }
 
         createRoot(el).render(<App {...props} />)
+        document.body.classList.add('cursor-ready')
     },
     progress: {
         color: '#4B5563',

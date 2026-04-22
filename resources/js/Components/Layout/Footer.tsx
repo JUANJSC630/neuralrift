@@ -1,5 +1,12 @@
 import { Link } from '@inertiajs/react'
-import { NAV_LINKS } from '@/lib/constants'
+import { NAV_LINKS, SITE } from '@/lib/constants'
+
+const SOCIAL_LINKS = [
+    { label: 'Twitter/X', href: `https://twitter.com/${SITE.twitter.replace('@', '')}` },
+    // LinkedIn and YouTube — add URLs when available
+    // { label: 'LinkedIn', href: 'https://linkedin.com/in/...' },
+    // { label: 'YouTube', href: 'https://youtube.com/@...' },
+]
 
 export default function Footer() {
     return (
@@ -8,7 +15,7 @@ export default function Footer() {
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-12">
                     {/* Brand */}
                     <div className="md:col-span-2">
-                        <div className="font-display text-2xl font-black text-nr-accent mb-3">
+                        <div className="font-display text-2xl font-black text-gradient mb-3">
                             NeuralRift
                         </div>
                         <p className="text-sm text-nr-muted leading-relaxed max-w-sm">
@@ -17,15 +24,17 @@ export default function Footer() {
                         </p>
                         {/* Social */}
                         <div className="flex gap-3 mt-6">
-                            {['Twitter/X', 'LinkedIn', 'YouTube'].map(s => (
+                            {SOCIAL_LINKS.map(s => (
                                 <a
-                                    key={s}
-                                    href="#"
+                                    key={s.label}
+                                    href={s.href}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
                                     className="px-3 py-1.5 glass rounded-lg text-xs text-nr-faint
                                               hover:text-nr-accent hover:border-nr-accent/30
                                               transition-all duration-200"
                                 >
-                                    {s}
+                                    {s.label}
                                 </a>
                             ))}
                         </div>
