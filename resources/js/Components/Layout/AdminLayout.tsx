@@ -1,8 +1,16 @@
-import { Link, usePage } from '@inertiajs/react'
-import { useState } from 'react'
+import { Link, router, usePage } from '@inertiajs/react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { ADMIN_NAV } from '@/lib/constants'
 import { cn } from '@/lib/utils'
 import type { PageProps } from '@/types'
+
+/* ── Toast notification type ─────────────────────────── */
+interface Toast {
+    id: string
+    type: 'success' | 'error'
+    message: string
+    editUrl?: string | null
+}
 
 interface Props {
     children: React.ReactNode
@@ -12,8 +20,82 @@ interface Props {
 export default function AdminLayout({ children, title }: Props) {
     const { auth, flash } = usePage<PageProps>().props
     const [collapsed, setCollapsed] = useState(false)
+    const [toasts, setToasts] = useState<Toast[]>([])
+    const pollingRef = useRef<ReturnType<typeof setInterval> | null>(null)
+    const seenIdsRef = useRef<Set<string>>(new Set())
 
     const currentPath = typeof window !== 'undefined' ? window.location.pathname : ''
+
+    /* ── Remove toast after delay ─────────────────────── */
+    const removeToast = useCallback((id: string) => {
+        setToasts(prev => prev.filter(t => t.id !== id))
+    }, [])
+
+    const addToast = useCallback(
+        (toast: Toast) => {
+            setToasts(prev => [...prev, toast])
+            setTimeout(() => removeToast(toast.id), 8000)
+        },
+        [removeToast],
+    )
+
+    /* ── Poll for notifications ───────────────────────── */
+    useEffect(() => {
+        if (typeof window === 'undefined') return
+
+        const poll = async () => {
+            try {
+                const res = await fetch('/admin/notifications/unread', {
+                    credentials: 'same-origin',
+                    headers: { Accept: 'application/json' },
+                })
+                if (!res.ok) return
+                const data = await res.json()
+
+                for (const n of data.notifications ?? []) {
+                    if (seenIdsRef.current.has(n.id)) continue
+                    seenIdsRef.current.add(n.id)
+
+                    if (n.type === 'ai_generation_success') {
+                        addToast({
+                            id: n.id,
+                            type: 'success',
+                            message: n.message,
+                            editUrl: n.edit_url,
+                        })
+                    } else if (n.type === 'ai_generation_failed') {
+                        addToast({
+                            id: n.id,
+                            type: 'error',
+                            message: n.message,
+                        })
+                    }
+
+                    // Mark as read
+                    fetch(`/admin/notifications/${n.id}/read`, {
+                        method: 'POST',
+                        credentials: 'same-origin',
+                        headers: {
+                            'X-CSRF-TOKEN':
+                                document.querySelector<HTMLMetaElement>('meta[name="csrf-token"]')
+                                    ?.content ?? '',
+                            Accept: 'application/json',
+                        },
+                    })
+                }
+            } catch {
+                // Silently ignore fetch errors
+            }
+        }
+
+        // Poll every 5 seconds
+        poll()
+        pollingRef.current = setInterval(poll, 5000)
+
+        return () => {
+            if (pollingRef.current) clearInterval(pollingRef.current)
+        }
+    }, [addToast])
 
     return (
         <div className="admin-layout flex h-screen overflow-hidden bg-nr-bg font-sans">
@@ -111,6 +193,11 @@ export default function AdminLayout({ children, title }: Props) {
                                 ✓ {flash.success}
                             </span>
                         )}
+                        {flash?.error && (
+                            <span className="rounded-lg border border-nr-red/20 bg-nr-red/10 px-3 py-1.5 text-xs text-nr-red">
+                                ✕ {flash.error}
+                            </span>
+                        )}
                         <Link
                             href="/"
                             target="_blank"
@@ -130,6 +217,57 @@ export default function AdminLayout({ children, title }: Props) {
                 {/* Content */}
                 <main className="flex-1 overflow-y-auto p-6">{children}</main>
             </div>
+
+            {/* Toast notifications */}
+            {toasts.length > 0 && (
+                <div className="fixed bottom-6 right-6 z-50 flex flex-col gap-3">
+                    {toasts.map(toast => (
+                        <div
+                            key={toast.id}
+                            className={cn(
+                                'flex max-w-sm items-start gap-3 rounded-xl border px-4 py-3 shadow-lg backdrop-blur-sm',
+                                'animate-in slide-in-from-right duration-300',
+                                toast.type === 'success'
+                                    ? 'border-nr-green/20 bg-nr-green/10'
+                                    : 'border-nr-red/20 bg-nr-red/10',
+                            )}
+                        >
+                            <span
+                                className={cn(
+                                    'mt-0.5 text-sm',
+                                    toast.type === 'success' ? 'text-nr-green' : 'text-nr-red',
+                                )}
+                            >
+                                {toast.type === 'success' ? '✓' : '✕'}
+                            </span>
+                            <div className="flex-1">
+                                <p
+                                    className={cn(
+                                        'text-xs font-medium',
+                                        toast.type === 'success' ? 'text-nr-green' : 'text-nr-red',
+                                    )}
+                                >
+                                    {toast.message}
+                                </p>
+                                {toast.editUrl && (
+                                    <Link
+                                        href={toast.editUrl}
+                                        className="mt-1 inline-block text-[11px] font-semibold text-nr-accent underline decoration-nr-accent/30 underline-offset-2 hover:decoration-nr-accent"
+                                    >
+                                        Revisar borrador →
+                                    </Link>
+                                )}
+                            </div>
+                            <button
+                                onClick={() => removeToast(toast.id)}
+                                className="mt-0.5 text-xs text-nr-faint transition-colors hover:text-nr-muted"
+                            >
+                                ✕
+                            </button>
+                        </div>
+                    ))}
+                </div>
+            )}
         </div>
     )
 }

@@ -67,12 +67,12 @@ export default function PostCardFeatured({ post }: { post: Post }) {
                             </span>
                         )}
                         {(post.lang === 'es' || post.lang === 'both') && (
-                            <span className="rounded border border-nr-accent/30 bg-nr-accent/20 px-2 py-0.5 font-mono text-[10px] text-nr-accent">
+                            <span className="rounded border border-nr-accent/30 bg-nr-bg/80 px-2 py-0.5 font-mono text-[10px] text-nr-accent backdrop-blur-sm">
                                 ES
                             </span>
                         )}
                         {(post.lang === 'en' || post.lang === 'both') && (
-                            <span className="rounded border border-nr-cyan/30 bg-nr-cyan/20 px-2 py-0.5 font-mono text-[10px] text-nr-cyan">
+                            <span className="rounded border border-nr-cyan/30 bg-nr-bg/80 px-2 py-0.5 font-mono text-[10px] text-nr-cyan backdrop-blur-sm">
                                 EN
                             </span>
                         )}

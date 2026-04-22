@@ -17,6 +17,8 @@ use App\Http\Controllers\Admin\UploadController;
 use App\Http\Controllers\Admin\AnalyticsController;
 use App\Http\Controllers\Admin\NewsletterController as AdminNewsletterController;
 use App\Http\Controllers\Admin\SettingsController;
+use App\Http\Controllers\Admin\AIGeneratorController;
+use App\Http\Controllers\Admin\NotificationController;
 
 // ── SEO ──────────────────────────────────────────────────
 Route::get('/sitemap.xml', [SeoController::class, 'sitemap']);
@@ -81,6 +83,19 @@ Route::middleware(['auth', 'verified', 'admin'])
     Route::resource('posts', AdminPostController::class);
     Route::post('/posts/{post}/publish',   [AdminPostController::class, 'publish'])->name('posts.publish');
     Route::post('/posts/{post}/duplicate', [AdminPostController::class, 'duplicate'])->name('posts.duplicate');
+
+    // AI Generator
+    Route::get('/ai-generator', [AIGeneratorController::class, 'index'])
+        ->name('ai-generator');
+    Route::post('/ai-generator/generate', [AIGeneratorController::class, 'generate'])
+        ->name('ai-generator.generate')
+        ->middleware('throttle:5,1');
+
+    // Notifications (polling for AI job status)
+    Route::get('/notifications/unread', [NotificationController::class, 'unread'])
+        ->name('notifications.unread');
+    Route::post('/notifications/{id}/read', [NotificationController::class, 'markRead'])
+        ->name('notifications.markRead');
 
     // Upload de imágenes desde editor
     Route::post('/upload/image', [UploadController::class, 'image'])->name('upload.image');

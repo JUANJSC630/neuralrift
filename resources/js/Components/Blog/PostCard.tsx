@@ -38,12 +38,12 @@ export default function PostCard({ post }: { post: Post }) {
                 {/* Lang badge */}
                 <div className="absolute right-3 top-3 flex gap-1.5">
                     {(post.lang === 'es' || post.lang === 'both') && (
-                        <span className="rounded border border-nr-accent/30 bg-nr-accent/20 px-2 py-0.5 font-mono text-[10px] font-semibold text-nr-accent">
+                        <span className="rounded border border-nr-accent/30 bg-nr-bg/80 px-2 py-0.5 font-mono text-[10px] font-semibold text-nr-accent backdrop-blur-sm">
                             ES
                         </span>
                     )}
                     {(post.lang === 'en' || post.lang === 'both') && (
-                        <span className="rounded border border-nr-cyan/30 bg-nr-cyan/20 px-2 py-0.5 font-mono text-[10px] font-semibold text-nr-cyan">
+                        <span className="rounded border border-nr-cyan/30 bg-nr-bg/80 px-2 py-0.5 font-mono text-[10px] font-semibold text-nr-cyan backdrop-blur-sm">
                             EN
                         </span>
                     )}
