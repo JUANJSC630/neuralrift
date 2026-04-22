@@ -1,0 +1,7 @@
+public/
+bootstrap/ssr/
+vendor/
+node_modules/
+storage/
+*.lock
+package-lock.json

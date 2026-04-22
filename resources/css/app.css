@@ -1,0 +1,278 @@
+/* resources/css/app.css */
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+    :root {
+        --accent: #7c6af7;
+        --accent-glow: rgba(124, 106, 247, 0.28);
+        --cyan: #06b6d4;
+        --cyan-glow: rgba(6, 182, 212, 0.22);
+    }
+
+    * {
+        @apply border-white/[0.07];
+    }
+
+    html {
+        scroll-behavior: smooth;
+    }
+
+    body {
+        @apply bg-nr-bg text-nr-text font-sans antialiased;
+        cursor: none;
+        font-feature-settings: "kern" 1, "liga" 1, "ss01" 1;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+        font-kerning: normal;
+        text-rendering: optimizeLegibility;
+    }
+
+    /* El admin no usa cursor personalizado — restaurar cursor del sistema */
+    .admin-layout,
+    .admin-layout * {
+        cursor: auto !important;
+    }
+    .admin-layout button,
+    .admin-layout a,
+    .admin-layout [role="button"],
+    .admin-layout select,
+    .admin-layout label[for],
+    .admin-layout input[type="checkbox"],
+    .admin-layout input[type="radio"],
+    .admin-layout input[type="file"] {
+        cursor: pointer !important;
+    }
+    .admin-layout input,
+    .admin-layout textarea {
+        cursor: text !important;
+    }
+
+    /* Scrollbar personalizado */
+    ::-webkit-scrollbar {
+        width: 4px;
+        height: 4px;
+    }
+    ::-webkit-scrollbar-track {
+        background: transparent;
+    }
+    ::-webkit-scrollbar-thumb {
+        background: rgba(124, 106, 247, 0.3);
+        border-radius: 2px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+        background: rgba(124, 106, 247, 0.6);
+    }
+}
+
+@layer components {
+    /* Glassmorphism reutilizable */
+    .glass {
+        @apply bg-white/[0.04] backdrop-blur-xl border border-white/[0.08];
+    }
+    .glass-md {
+        @apply bg-[rgba(17,24,39,0.6)] backdrop-blur-xl border border-white/[0.08];
+    }
+    .glass-strong {
+        @apply bg-[rgba(17,24,39,0.85)] backdrop-blur-2xl border border-white/[0.12];
+    }
+
+    /* Texto gradiente accent */
+    .text-gradient {
+        @apply bg-gradient-to-r from-nr-accent to-nr-cyan bg-clip-text text-transparent;
+    }
+    .text-gradient-gold {
+        @apply bg-gradient-to-r from-nr-gold to-nr-orange bg-clip-text text-transparent;
+    }
+
+    /* Glow effects */
+    .glow-accent {
+        box-shadow: 0 0 20px var(--accent-glow);
+    }
+    .glow-accent-lg {
+        box-shadow: 0 0 40px var(--accent-glow),
+            0 0 80px rgba(124, 106, 247, 0.1);
+    }
+    .glow-cyan {
+        box-shadow: 0 0 20px var(--cyan-glow);
+    }
+
+    /* Borde gradiente animado */
+    .border-gradient-animated {
+        background: linear-gradient(
+            135deg,
+            rgba(124, 106, 247, 0.7),
+            rgba(6, 182, 212, 0.55),
+            rgba(124, 106, 247, 0.7)
+        );
+        background-size: 200% 200%;
+        animation: gradBorder 4s linear infinite;
+        padding: 1px;
+        border-radius: 18px;
+    }
+
+    /* ── Post content renderer ──────────────────────────────────────── */
+    .nr-prose {
+        @apply text-nr-muted leading-relaxed text-[1.05rem];
+        max-width: none;
+    }
+
+    /* Constrain only text content — code blocks, images, tables get full width */
+    .nr-prose > p,
+    .nr-prose > ul,
+    .nr-prose > ol,
+    .nr-prose > blockquote {
+        max-width: 70ch;
+    }
+
+    .nr-prose h1,
+    .nr-prose h2,
+    .nr-prose h3,
+    .nr-prose h4 {
+        @apply font-display font-bold text-nr-text mt-10 mb-4 leading-tight;
+    }
+    .nr-prose h1 { @apply text-3xl md:text-4xl; }
+    .nr-prose h2 { @apply text-2xl md:text-3xl; }
+    .nr-prose h3 { @apply text-xl md:text-2xl; }
+    .nr-prose h4 { @apply text-lg; }
+
+    .nr-prose p { @apply mb-5 leading-[1.8]; }
+
+    .nr-prose strong { @apply text-nr-text font-semibold; }
+    .nr-prose em     { @apply text-nr-accent/90 italic; }
+    .nr-prose s      { @apply line-through opacity-60; }
+    .nr-prose mark   { background: rgba(124,106,247,0.25); color: #c4b5fd; border-radius: 3px; padding: 0 3px; }
+
+    .nr-prose a {
+        @apply text-nr-accent underline underline-offset-2 decoration-nr-accent/40;
+        transition: color 0.15s, text-decoration-color 0.15s;
+    }
+    .nr-prose a:hover {
+        @apply text-white decoration-white/40;
+    }
+
+    .nr-prose ul,
+    .nr-prose ol {
+        @apply pl-6 mb-5 space-y-1.5;
+    }
+    .nr-prose ul { list-style: disc; }
+    .nr-prose ol { list-style: decimal; }
+    .nr-prose li { @apply text-nr-muted leading-relaxed; }
+    .nr-prose li::marker { @apply text-nr-accent; }
+
+    .nr-prose blockquote {
+        @apply px-5 py-3 my-6 italic text-nr-muted bg-nr-accent/[0.06]
+               border border-nr-accent/10 rounded-lg;
+    }
+    .nr-prose blockquote p { @apply mb-0; }
+
+    .nr-prose code {
+        background: rgba(255,255,255,0.07);
+        @apply text-nr-cyan rounded px-1.5 py-0.5 text-sm font-mono;
+    }
+    .nr-prose pre {
+        background: rgba(0,0,0,0.45);
+        @apply rounded-xl p-5 my-6 overflow-x-auto border border-white/[0.06];
+    }
+    .nr-prose pre code {
+        background: transparent;
+        @apply text-[0.875rem] text-[#cdd6f4] p-0;
+    }
+
+    .nr-prose img {
+        @apply rounded-xl my-8 w-full object-cover;
+    }
+
+    .nr-prose hr {
+        @apply my-10 border-white/[0.08];
+    }
+
+    .nr-prose table {
+        @apply my-6 text-sm;
+        display: block;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        border-collapse: collapse;
+        min-width: 100%;
+    }
+    .nr-prose th {
+        @apply px-4 py-2.5 text-left text-nr-faint font-semibold border-b border-white/10 whitespace-nowrap;
+    }
+    .nr-prose td {
+        @apply px-4 py-2.5 text-nr-muted border-b border-white/[0.05];
+    }
+
+    /* Text alignment (from TextAlign extension) */
+    .nr-prose [style*="text-align: center"],
+    .nr-prose .text-center { text-align: center; }
+    .nr-prose [style*="text-align: right"],
+    .nr-prose .text-right  { text-align: right; }
+
+    /* Cursor personalizado */
+    .cursor-dot {
+        @apply fixed w-3 h-3 rounded-full pointer-events-none z-[9999];
+        background: var(--accent);
+        mix-blend-mode: screen;
+        transition: transform 0.15s ease, opacity 0.15s ease;
+    }
+    .cursor-ring {
+        @apply fixed rounded-full pointer-events-none z-[9998];
+        width: 40px;
+        height: 40px;
+        border: 1px solid rgba(124, 106, 247, 0.5);
+        /* Sin transition en transform — el JS rAF ya hace el lerp suave.
+           Transition solo para width/height/border (cambios de hover) */
+        transition: width 0.25s ease, height 0.25s ease, border-color 0.25s ease;
+        top: 0;
+        left: 0;
+    }
+}
+
+/* Tiptap / ProseMirror resets */
+.ProseMirror:focus { outline: none; }
+.ProseMirror > * + * { margin-top: 0.75em; }
+
+/* highlight.js dark tokens */
+.hljs-keyword, .hljs-selector-tag { color: #c792ea; }
+.hljs-string, .hljs-attr          { color: #c3e88d; }
+.hljs-number, .hljs-literal       { color: #f78c6c; }
+.hljs-comment                     { color: #546e7a; font-style: italic; }
+.hljs-function, .hljs-title       { color: #82aaff; }
+.hljs-variable, .hljs-name        { color: #f07178; }
+.hljs-built_in, .hljs-type        { color: #ffcb6b; }
+.hljs-tag                         { color: #f07178; }
+
+@layer utilities {
+    /* Noise texture overlay */
+    .noise {
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.88' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.038'/%3E%3C/svg%3E");
+        background-size: 128px 128px;
+    }
+
+    /* Mesh gradient backgrounds */
+    .mesh-bg {
+        background: radial-gradient(
+                ellipse 80% 55% at 15% 12%,
+                rgba(124, 106, 247, 0.2) 0%,
+                transparent 58%
+            ),
+            radial-gradient(
+                ellipse 55% 45% at 85% 18%,
+                rgba(6, 182, 212, 0.14) 0%,
+                transparent 52%
+            ),
+            radial-gradient(
+                ellipse 50% 65% at 48% 92%,
+                rgba(124, 106, 247, 0.1) 0%,
+                transparent 60%
+            ),
+            radial-gradient(
+                ellipse 65% 38% at 92% 72%,
+                rgba(6, 182, 212, 0.08) 0%,
+                transparent 50%
+            );
+    }
+}
