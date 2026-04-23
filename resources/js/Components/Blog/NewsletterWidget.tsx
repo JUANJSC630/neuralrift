@@ -22,6 +22,7 @@ export default function NewsletterWidget({ compact = false }: NewsletterWidgetPr
             '/newsletter/subscribe',
             { email, lang: document.documentElement.lang || 'es' },
             {
+                preserveScroll: true,
                 onSuccess: () => {
                     setSent(true)
                     setLoading(false)
