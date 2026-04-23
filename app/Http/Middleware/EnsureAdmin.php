@@ -11,7 +11,7 @@ class EnsureAdmin
     public function handle(Request $request, Closure $next): Response
     {
         if ($request->user()?->role !== 'admin') {
-            if ($request->header('X-Inertia')) {
+            if ($request->expectsJson() || $request->header('X-Inertia')) {
                 abort(403);
             }
 

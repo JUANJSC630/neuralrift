@@ -160,7 +160,10 @@ export default function PostEdit({ post, categories, tags, affiliates }: Props) 
             const res = await fetch('/admin/upload/image', {
                 method: 'POST',
                 credentials: 'same-origin',
-                headers: xsrf ? { 'X-XSRF-TOKEN': decodeURIComponent(xsrf) } : {},
+                headers: {
+                    Accept: 'application/json',
+                    ...(xsrf ? { 'X-XSRF-TOKEN': decodeURIComponent(xsrf) } : {}),
+                },
                 body: form,
             })
             if (!res.ok || !res.headers.get('content-type')?.includes('application/json')) {
