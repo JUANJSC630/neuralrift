@@ -22,7 +22,18 @@ export default function AdminLayout({ children, title }: Props) {
     const [collapsed, setCollapsed] = useState(false)
     const [toasts, setToasts] = useState<Toast[]>([])
     const pollingRef = useRef<ReturnType<typeof setInterval> | null>(null)
-    const seenIdsRef = useRef<Set<string>>(new Set())
+
+    // Persist seen IDs in sessionStorage so Inertia SPA navigations don't re-show toasts
+    const seenIdsRef = useRef<Set<string>>(new Set(
+        typeof window !== 'undefined'
+            ? JSON.parse(sessionStorage.getItem('nr_seen_notif') ?? '[]')
+            : []
+    ))
+
+    const markSeen = (id: string) => {
+        seenIdsRef.current.add(id)
+        sessionStorage.setItem('nr_seen_notif', JSON.stringify([...seenIdsRef.current]))
+    }
 
     const currentPath = typeof window !== 'undefined' ? window.location.pathname : ''
 
@@ -39,9 +50,25 @@ export default function AdminLayout({ children, title }: Props) {
         [removeToast],
     )
 
-    /* ── Poll for notifications ───────────────────────── */
+    // Flash → toast (auto-dismiss)
+    const flashRef = useRef<string | null>(null)
+    useEffect(() => {
+        if (flash?.success && flash.success !== flashRef.current) {
+            flashRef.current = flash.success
+            addToast({ id: `flash-${Date.now()}`, type: 'success', message: flash.success })
+        }
+        if (flash?.error && flash.error !== flashRef.current) {
+            flashRef.current = flash.error
+            addToast({ id: `flash-${Date.now()}`, type: 'error', message: flash.error })
+        }
+    }, [flash?.success, flash?.error, addToast])
     useEffect(() => {
         if (typeof window === 'undefined') return
+
+        const getXsrf = () => {
+            const match = document.cookie.match(/(^|;\s*)XSRF-TOKEN=([^;]+)/)
+            return match ? decodeURIComponent(match[2]) : ''
+        }
 
         const poll = async () => {
             try {
@@ -54,7 +81,7 @@ export default function AdminLayout({ children, title }: Props) {
 
                 for (const n of data.notifications ?? []) {
                     if (seenIdsRef.current.has(n.id)) continue
-                    seenIdsRef.current.add(n.id)
+                    markSeen(n.id)
 
                     if (n.type === 'ai_generation_success') {
                         addToast({
@@ -71,14 +98,12 @@ export default function AdminLayout({ children, title }: Props) {
                         })
                     }
 
-                    // Mark as read
+                    // Mark as read on the server
                     fetch(`/admin/notifications/${n.id}/read`, {
                         method: 'POST',
                         credentials: 'same-origin',
                         headers: {
-                            'X-CSRF-TOKEN':
-                                document.querySelector<HTMLMetaElement>('meta[name="csrf-token"]')
-                                    ?.content ?? '',
+                            'X-XSRF-TOKEN': getXsrf(),
                             Accept: 'application/json',
                         },
                     })
@@ -188,16 +213,6 @@ export default function AdminLayout({ children, title }: Props) {
                 <header className="flex h-16 flex-shrink-0 items-center justify-between border-b border-white/[0.06] bg-nr-bg2/50 px-6">
                     <h1 className="text-base font-semibold text-nr-text">{title ?? 'Dashboard'}</h1>
                     <div className="flex items-center gap-3">
-                        {flash?.success && (
-                            <span className="rounded-lg border border-nr-green/20 bg-nr-green/10 px-3 py-1.5 text-xs text-nr-green">
-                                ✓ {flash.success}
-                            </span>
-                        )}
-                        {flash?.error && (
-                            <span className="rounded-lg border border-nr-red/20 bg-nr-red/10 px-3 py-1.5 text-xs text-nr-red">
-                                ✕ {flash.error}
-                            </span>
-                        )}
                         <Link
                             href="/"
                             target="_blank"
