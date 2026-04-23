@@ -22,12 +22,18 @@ createInertiaApp({
     resolve: name =>
         resolvePageComponent(`./Pages/${name}.tsx`, import.meta.glob('./Pages/**/*.tsx')),
     setup({ el, App, props }) {
+        const tree = (
+            <Sentry.ErrorBoundary fallback={() => <></>} showDialog={false}>
+                <App {...props} />
+            </Sentry.ErrorBoundary>
+        )
+
         if (import.meta.env.SSR) {
-            hydrateRoot(el, <App {...props} />)
+            hydrateRoot(el, tree)
             return
         }
 
-        createRoot(el).render(<App {...props} />)
+        createRoot(el).render(tree)
         document.body.classList.add('cursor-ready')
     },
     progress: {

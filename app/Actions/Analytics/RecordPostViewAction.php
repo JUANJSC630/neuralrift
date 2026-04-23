@@ -46,6 +46,8 @@ class RecordPostViewAction
                 'error'   => $e->getMessage(),
             ]);
 
+            \Sentry\captureException($e);
+
             return false;
         }
     }

@@ -24,6 +24,17 @@ class SendPostNewsletterJob implements ShouldQueue
         public readonly Post $post,
     ) {}
 
+    public function failed(\Throwable $exception): void
+    {
+        \Sentry\withScope(function (\Sentry\State\Scope $scope) use ($exception): void {
+            $scope->setContext('job', [
+                'post_id' => $this->post->id,
+                'post'    => $this->post->title,
+            ]);
+            \Sentry\captureException($exception);
+        });
+    }
+
     public function handle(): void
     {
         $postLang = $this->post->lang ?? 'es';
@@ -33,7 +44,7 @@ class SendPostNewsletterJob implements ShouldQueue
         if ($postLang !== 'both') {
             $query->where(function ($q) use ($postLang) {
                 $q->where('lang', $postLang)
-                  ->orWhereNull('lang');
+                    ->orWhereNull('lang');
             });
         }
 

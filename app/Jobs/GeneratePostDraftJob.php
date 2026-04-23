@@ -66,6 +66,14 @@ class GeneratePostDraftJob implements ShouldQueue
             'inputs' => $this->inputs,
         ]);
 
+        \Sentry\withScope(function (\Sentry\State\Scope $scope) use ($exception): void {
+            $scope->setContext('job', [
+                'type'  => $this->inputs['post_type'] ?? 'unknown',
+                'topic' => substr($this->inputs['topic'] ?? '', 0, 100),
+            ]);
+            \Sentry\captureException($exception);
+        });
+
         $author = User::find($this->authorId);
         if ($author) {
             $author->notify(new PostDraftFailedNotification(
