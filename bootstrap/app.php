@@ -16,6 +16,7 @@ return Application::configure(basePath: dirname(__DIR__))
 
         $middleware->validateCsrfTokens(except: [
             'admin/notifications/*/read',
+            'admin/upload/image',
         ]);
 
         $middleware->web(append: [
