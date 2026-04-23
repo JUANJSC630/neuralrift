@@ -12,7 +12,7 @@ class UploadController extends Controller
     public function image(Request $request): JsonResponse
     {
         $request->validate([
-            'image' => 'required|image|max:5120',
+            'image' => 'required|image|max:10240',
         ]);
 
         $disk = config('filesystems.media');
