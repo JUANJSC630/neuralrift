@@ -4,8 +4,18 @@ import './bootstrap'
 import { createInertiaApp } from '@inertiajs/react'
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers'
 import { createRoot, hydrateRoot } from 'react-dom/client'
+import * as Sentry from '@sentry/react'
 
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel'
+
+if (import.meta.env.VITE_SENTRY_DSN) {
+    Sentry.init({
+        dsn: import.meta.env.VITE_SENTRY_DSN,
+        environment: import.meta.env.MODE,
+        tracesSampleRate: 0.2,
+        integrations: [Sentry.browserTracingIntegration()],
+    })
+}
 
 createInertiaApp({
     title: title => `${title} - ${appName}`,
