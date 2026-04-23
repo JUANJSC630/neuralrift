@@ -8,7 +8,7 @@ import { useLocale } from '@/hooks/useLocale'
 export default function Terms() {
     const { locale, t, localePath } = useLocale()
     const isEn = locale === 'en'
-    const LAST_UPDATED = isEn ? 'April 22, 2026' : '22 de abril de 2026'
+    const LAST_UPDATED = t('misc.last_updated')
 
     return (
         <>
@@ -60,7 +60,7 @@ export default function Terms() {
                                 {isEn ? 'Terms of Use' : 'Términos de Uso'}
                             </h1>
                             <p className="mt-3 text-sm text-nr-faint">
-                                {isEn ? 'Last updated:' : 'Última actualización:'} {LAST_UPDATED}
+                                {t('misc.last_updated_label')} {LAST_UPDATED}
                             </p>
                         </motion.div>
                     </div>
@@ -162,10 +162,10 @@ export default function Terms() {
                             <p>
                                 Si tienes preguntas sobre estos términos, escríbenos a{' '}
                                 <a
-                                    href="mailto:hola@neuralrift.com"
+                                    href={`mailto:${SITE.email}`}
                                     className="text-nr-accent transition-colors hover:text-nr-accent/80"
                                 >
-                                    hola@neuralrift.com
+                                    {SITE.email}
                                 </a>
                                 .
                             </p>

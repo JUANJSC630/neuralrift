@@ -3,6 +3,7 @@ import { useState, useRef } from 'react'
 import AdminLayout from '@/Components/Layout/AdminLayout'
 import TiptapEditor from '@/Components/Admin/TiptapEditor'
 import ConfirmModal from '@/Components/ConfirmModal'
+import { SITE } from '@/lib/constants'
 import type { Post, Category, Tag, Affiliate } from '@/types'
 
 interface Props {
@@ -70,7 +71,7 @@ function SeoPreview({
 }) {
     const displayTitle = title || 'Título del artículo'
     const displayDesc = description || 'Sin meta descripción configurada.'
-    const url = `neuralrift.io/blog/${slug || 'url-del-articulo'}`
+    const url = `${SITE.url.replace('https://', '')}/blog/${slug || 'url-del-articulo'}`
     const titleOk = title.length >= 30 && title.length <= 70
     const descOk = description.length >= 70 && description.length <= 160
 

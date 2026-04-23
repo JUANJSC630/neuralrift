@@ -101,7 +101,7 @@ class PostController extends Controller
             ],
             'publisher' => [
                 '@type' => 'Organization',
-                'name'  => 'NeuralRift',
+                'name'  => config('site.name'),
             ],
         ];
 

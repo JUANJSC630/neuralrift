@@ -120,7 +120,15 @@ export interface PaginatedData<T> {
 // Shared props injected by HandleInertiaRequests middleware
 export interface SharedProps {
     auth: { user: User | null }
-    site: { name: string; tagline: string; twitter: string; description: string }
+    site: {
+        name: string
+        tagline: string
+        twitter: string
+        description: string
+        url: string
+        email: string
+        author: string
+    }
     categories: Category[]
     locale: 'es' | 'en'
     flash: { success?: string; error?: string }

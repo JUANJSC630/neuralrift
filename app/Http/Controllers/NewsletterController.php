@@ -31,7 +31,7 @@ class NewsletterController extends Controller
         try {
             $this->confirmAction->execute($token);
 
-            return redirect('/')->with('success', '¡Confirmado! Bienvenido a NeuralRift.');
+            return redirect('/')->with('success', '¡Confirmado! Bienvenido a ' . config('site.name') . '.');
         } catch (ModelNotFoundException) {
             return redirect('/')->with('error', 'El link no es válido o ya fue usado.');
         }

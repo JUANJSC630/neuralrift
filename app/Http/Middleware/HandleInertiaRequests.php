@@ -30,10 +30,13 @@ class HandleInertiaRequests extends Middleware
             ],
             'locale' => fn () => app()->getLocale(),
             'site' => [
-                'name'        => 'NeuralRift',
-                'tagline'     => 'Tecnología, IA y herramientas para construir mejor',
-                'twitter'     => '@neuralrift',
-                'description' => 'Guías técnicas, reviews honestas y estrategias para developers y freelancers que quieren construir mejores productos con tecnología e IA.',
+                'name'        => config('site.name'),
+                'tagline'     => config('site.tagline'),
+                'twitter'     => config('site.twitter'),
+                'description' => config('site.description'),
+                'url'         => config('site.url'),
+                'email'       => config('site.email'),
+                'author'      => config('site.author'),
             ],
             'categories' => fn () => Cache::remember('nav_categories', 3600, fn () =>
                 Category::orderBy('order')

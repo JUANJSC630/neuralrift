@@ -76,13 +76,13 @@ export default function BlogShow({
                 <meta property="og:description" content={excerpt ?? ''} />
                 <meta property="og:type" content="article" />
                 <meta property="og:locale" content={isEn ? 'en_US' : 'es_CO'} />
-                <meta property="og:site_name" content="NeuralRift" />
+                <meta property="og:site_name" content={SITE.name} />
                 {canonical && <meta property="og:url" content={canonical} />}
                 {(post.og_image || post.cover_image) && (
                     <meta property="og:image" content={post.og_image || post.cover_image!} />
                 )}
                 <meta name="twitter:card" content="summary_large_image" />
-                <meta name="twitter:site" content="@neuralrift" />
+                <meta name="twitter:site" content={SITE.twitter} />
                 {!post.indexable && <meta name="robots" content="noindex" />}
                 {schema && <script type="application/ld+json">{JSON.stringify(schema)}</script>}
             </Head>

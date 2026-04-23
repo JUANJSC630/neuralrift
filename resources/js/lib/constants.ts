@@ -18,7 +18,9 @@ export const SITE = {
     tagline: 'Tecnología, IA y herramientas para construir mejor',
     taglineEn: 'Tech, AI & tools to build smarter',
     url: 'https://neuralrift.com',
+    email: 'hola@neuralrift.com',
     twitter: '@neuralrift',
+    author: 'Juan Jose',
     description:
         'Guías técnicas, reviews honestas y estrategias para developers y freelancers que quieren construir mejores productos con tecnología e IA.',
     descriptionEn:

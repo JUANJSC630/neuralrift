@@ -20,22 +20,6 @@ interface Props {
     canonical?: string
 }
 
-const ROTATING_WORDS = [
-    'Inteligencia Artificial',
-    'Desarrollo Web',
-    'Automatización',
-    'Freelancing Digital',
-    'Herramientas Tech',
-]
-
-const ROTATING_WORDS_EN = [
-    'Artificial Intelligence',
-    'Web Development',
-    'Automation',
-    'Digital Freelancing',
-    'Tech Tools',
-]
-
 const NODES = [
     { x: '11%', y: '22%', size: 6, color: '#7C6AF7', delay: 0 },
     { x: '80%', y: '12%', size: 3, color: '#06B6D4', delay: 0.4 },
@@ -59,7 +43,13 @@ const SVG_LINES = [
 export default function Home({ featured, recent, affiliates, canonical }: Props) {
     const [wordIndex, setWordIndex] = useState(0)
     const { locale, t, localePath } = useLocale()
-    const words = locale === 'en' ? ROTATING_WORDS_EN : ROTATING_WORDS
+    const words = [
+        t('home.rotating.0'),
+        t('home.rotating.1'),
+        t('home.rotating.2'),
+        t('home.rotating.3'),
+        t('home.rotating.4'),
+    ]
 
     useEffect(() => {
         const interval = setInterval(() => {
@@ -76,19 +66,19 @@ export default function Home({ featured, recent, affiliates, canonical }: Props)
                 <meta property="og:description" content={SITE.description} />
                 <meta property="og:type" content="website" />
                 <meta property="og:locale" content={locale === 'en' ? 'en_US' : 'es_CO'} />
-                <meta property="og:site_name" content="NeuralRift" />
+                <meta property="og:site_name" content={SITE.name} />
                 {canonical && <meta property="og:url" content={canonical} />}
                 <meta name="twitter:card" content="summary_large_image" />
-                <meta name="twitter:site" content="@neuralrift" />
+                <meta name="twitter:site" content={SITE.twitter} />
                 <script type="application/ld+json">
                     {JSON.stringify({
                         '@context': 'https://schema.org',
                         '@type': 'WebSite',
-                        name: 'NeuralRift',
-                        url: 'https://neuralrift.com',
+                        name: SITE.name,
+                        url: SITE.url,
                         potentialAction: {
                             '@type': 'SearchAction',
-                            target: 'https://neuralrift.com/blog?search={search_term_string}',
+                            target: `${SITE.url}/blog?search={search_term_string}`,
                             'query-input': 'required name=search_term_string',
                         },
                     })}

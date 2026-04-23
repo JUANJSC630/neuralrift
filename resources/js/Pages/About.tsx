@@ -67,7 +67,7 @@ export default function About() {
                                     {t('about.greeting')}
                                 </span>
                                 <h1 className="text-gradient mb-2 pb-4 font-display text-4xl font-black md:text-5xl">
-                                    Juan Jose
+                                    {SITE.author}
                                 </h1>
                                 <p className="mb-5 text-lg leading-relaxed text-nr-muted">
                                     {t('about.bio')}
@@ -169,10 +169,10 @@ export default function About() {
                             {t('about.collab_text')}
                         </p>
                         <a
-                            href="mailto:hola@neuralrift.com"
+                            href={`mailto:${SITE.email}`}
                             className="glow-accent inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-nr-accent to-nr-accent-dark px-6 py-3 text-sm font-semibold text-white transition-all duration-200 will-change-transform hover:-translate-y-0.5"
                         >
-                            ✉ hola@neuralrift.com
+                            ✉ {SITE.email}
                         </a>
                     </motion.div>
 

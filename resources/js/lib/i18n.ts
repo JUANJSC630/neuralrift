@@ -56,9 +56,10 @@ const translations = {
 
     // ── Rotating words (Home hero) ───────────────────
     'home.rotating.0': { es: 'Inteligencia Artificial', en: 'Artificial Intelligence' },
-    'home.rotating.1': { es: 'Modelos de Lenguaje', en: 'Language Models' },
-    'home.rotating.2': { es: 'Automatización IA', en: 'AI Automation' },
-    'home.rotating.3': { es: 'El Futuro Digital', en: 'The Digital Future' },
+    'home.rotating.1': { es: 'Desarrollo Web', en: 'Web Development' },
+    'home.rotating.2': { es: 'Automatización', en: 'Automation' },
+    'home.rotating.3': { es: 'Freelancing Digital', en: 'Digital Freelancing' },
+    'home.rotating.4': { es: 'Herramientas Tech', en: 'Tech Tools' },
 
     // ── Blog listing ─────────────────────────────────
     'blog.all_articles': { es: 'Todos los artículos', en: 'All articles' },
@@ -118,6 +119,21 @@ const translations = {
 
     // ── Category ─────────────────────────────────────
     'category.articles_count': { es: 'artículos', en: 'articles' },
+    'category.explore_label': { es: 'Explorar', en: 'Explore' },
+    'category.title': { es: 'Categorías', en: 'Categories' },
+    'category.subtitle': {
+        es: 'Todos los temas que cubro en NeuralRift, desde modelos de lenguaje hasta automatización.',
+        en: 'All the topics I cover on NeuralRift, from language models to automation.',
+    },
+    'category.meta_description': {
+        es: 'Explora todos los temas de inteligencia artificial y tecnología.',
+        en: 'Explore all artificial intelligence and technology topics.',
+    },
+    'category.view_articles': { es: 'Ver artículos', en: 'View articles' },
+    'category.empty': {
+        es: 'Aún no hay categorías publicadas.',
+        en: 'No categories published yet.',
+    },
 
     // ── Tools page ───────────────────────────────────
     'tools.label': { es: 'Herramientas recomendadas', en: 'Recommended tools' },
@@ -197,6 +213,9 @@ const translations = {
     'misc.view_blog': { es: 'Ver blog ↗', en: 'View blog ↗' },
     'misc.rss': { es: 'RSS Feed', en: 'RSS Feed' },
     'misc.sitemap': { es: 'Sitemap', en: 'Sitemap' },
+    'misc.toc': { es: 'Contenido', en: 'Contents' },
+    'misc.last_updated': { es: '22 de abril de 2026', en: 'April 22, 2026' },
+    'misc.last_updated_label': { es: 'Última actualización:', en: 'Last updated:' },
 } as const
 
 export type TranslationKey = keyof typeof translations

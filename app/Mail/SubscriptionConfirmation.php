@@ -20,8 +20,12 @@ class SubscriptionConfirmation extends Mailable implements ShouldQueue
 
     public function envelope(): Envelope
     {
+        $name = config('site.name');
+
         return new Envelope(
-            subject: 'Confirma tu suscripción a NeuralRift',
+            subject: $this->subscriber->lang === 'en'
+                ? "Confirm your subscription to {$name}"
+                : "Confirma tu suscripción a {$name}",
         );
     }
 

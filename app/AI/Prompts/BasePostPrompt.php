@@ -4,9 +4,15 @@ namespace App\AI\Prompts;
 
 abstract class BasePostPrompt
 {
-    protected string $siteName    = 'NeuralRift';
-    protected string $siteTagline = 'Tecnología, IA y herramientas para construir mejor';
+    protected string $siteName    = '';
+    protected string $siteTagline = '';
     protected string $audience    = 'developers, freelancers y emprendedores en Latinoamérica';
+
+    public function __construct()
+    {
+        $this->siteName    = config('site.name', 'NeuralRift');
+        $this->siteTagline = config('site.tagline', 'Tecnología, IA y herramientas para construir mejor');
+    }
 
     abstract public function build(array $inputs): string;
 

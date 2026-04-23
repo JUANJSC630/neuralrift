@@ -1,4 +1,5 @@
 import { useState, useEffect, useMemo, useRef } from 'react'
+import { useLocale } from '@/hooks/useLocale'
 
 interface Heading {
     id: string
@@ -11,6 +12,7 @@ interface Props {
 }
 
 export default function TableOfContents({ content }: Props) {
+    const { t } = useLocale()
     const headings = useMemo<Heading[]>(() => {
         if (typeof window === 'undefined') return []
         const parser = new DOMParser()
@@ -66,7 +68,7 @@ export default function TableOfContents({ content }: Props) {
     return (
         <div className="glass rounded-2xl p-5">
             <p className="mb-4 font-mono text-xs uppercase tracking-widest text-nr-faint">
-                Contenido
+                {t('misc.toc')}
             </p>
             <nav className="space-y-0.5">
                 {headings.map(heading => (

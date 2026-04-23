@@ -8,7 +8,7 @@ import { useLocale } from '@/hooks/useLocale'
 export default function Cookies() {
     const { locale, t, localePath } = useLocale()
     const isEn = locale === 'en'
-    const LAST_UPDATED = isEn ? 'April 22, 2026' : '22 de abril de 2026'
+    const LAST_UPDATED = t('misc.last_updated')
 
     const COOKIE_TABLE = [
         {
@@ -87,7 +87,7 @@ export default function Cookies() {
                                 {isEn ? 'Cookie Policy' : 'Política de Cookies'}
                             </h1>
                             <p className="mt-3 text-sm text-nr-faint">
-                                {isEn ? 'Last updated:' : 'Última actualización:'} {LAST_UPDATED}
+                                {t('misc.last_updated_label')} {LAST_UPDATED}
                             </p>
                         </motion.div>
                     </div>
@@ -207,10 +207,10 @@ export default function Cookies() {
                             <p>
                                 Si tienes preguntas sobre nuestra política de cookies, escríbenos a{' '}
                                 <a
-                                    href="mailto:hola@neuralrift.com"
+                                    href={`mailto:${SITE.email}`}
                                     className="text-nr-accent transition-colors hover:text-nr-accent/80"
                                 >
-                                    hola@neuralrift.com
+                                    {SITE.email}
                                 </a>
                                 .
                             </p>

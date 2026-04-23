@@ -8,7 +8,7 @@ import { useLocale } from '@/hooks/useLocale'
 export default function Privacy() {
     const { locale, t, localePath } = useLocale()
     const isEn = locale === 'en'
-    const LAST_UPDATED = isEn ? 'April 22, 2026' : '22 de abril de 2026'
+    const LAST_UPDATED = t('misc.last_updated')
 
     return (
         <>
@@ -60,7 +60,7 @@ export default function Privacy() {
                                 {isEn ? 'Privacy Policy' : 'Política de Privacidad'}
                             </h1>
                             <p className="mt-3 text-sm text-nr-faint">
-                                {isEn ? 'Last updated:' : 'Última actualización:'} {LAST_UPDATED}
+                                {t('misc.last_updated_label')} {LAST_UPDATED}
                             </p>
                         </motion.div>
                     </div>
@@ -153,10 +153,10 @@ export default function Privacy() {
                             <p className="mt-4">
                                 Para ejercer cualquiera de estos derechos, escríbenos a{' '}
                                 <a
-                                    href={`mailto:hola@${SITE.url.replace('https://', '')}`}
+                                    href={`mailto:${SITE.email}`}
                                     className="text-nr-accent transition-colors hover:text-nr-accent/80"
                                 >
-                                    hola@neuralrift.com
+                                    {SITE.email}
                                 </a>
                                 .
                             </p>
