@@ -1,4 +1,4 @@
-import { Link } from '@inertiajs/react'
+import { Link, usePage } from '@inertiajs/react'
 import { useState, useEffect } from 'react'
 import { cn } from '@/lib/utils'
 import { useLocale } from '@/hooks/useLocale'
@@ -18,10 +18,20 @@ export default function Navbar() {
     }, [])
 
     // Build the URL for the opposite locale
+    const { alternates } = usePage().props as { alternates?: { es: string; en: string | null } }
+
     const getSwitchUrl = () => {
         if (typeof window === 'undefined') return locale === 'es' ? '/en' : '/'
         const path = window.location.pathname
         const map = LOCALE_ROUTES[locale] ?? {}
+
+        // Use page-provided alternates (e.g. blog posts with different slug_en).
+        // If alternates exist but the target locale URL is null, fall back to homepage
+        // rather than letting the path heuristic produce a broken URL.
+        if (alternates !== undefined) {
+            const target = locale === 'es' ? alternates.en : alternates.es
+            return target ?? (locale === 'es' ? '/en' : '/')
+        }
 
         // Exact match first
         if (map[path]) return map[path]
