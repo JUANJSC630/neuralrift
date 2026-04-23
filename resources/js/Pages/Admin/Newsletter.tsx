@@ -1,4 +1,5 @@
 import AdminLayout from '@/Components/Layout/AdminLayout'
+import ConfirmModal from '@/Components/ConfirmModal'
 import { Head, router } from '@inertiajs/react'
 import { useState } from 'react'
 import { formatDate, cn } from '@/lib/utils'
@@ -20,6 +21,7 @@ interface Props {
 
 export default function Newsletter({ subscribers, totals, filters }: Props) {
     const [search, setSearch] = useState(filters.search ?? '')
+    const [pendingDelete, setPendingDelete] = useState<{ id: number; email: string } | null>(null)
 
     const applyFilter = (key: string, value: string) => {
         router.get(
@@ -38,11 +40,11 @@ export default function Newsletter({ subscribers, totals, filters }: Props) {
     }
 
     const deleteSubscriber = (id: number, email: string) => {
-        if (!confirm(`¿Eliminar a ${email}?`)) return
-        router.delete(`/admin/newsletter/${id}`)
+        setPendingDelete({ id, email })
     }
 
     return (
+        <>
         <AdminLayout title="Newsletter">
             <Head title="Newsletter — Admin" />
 
@@ -209,5 +211,19 @@ export default function Newsletter({ subscribers, totals, filters }: Props) {
                 )}
             </div>
         </AdminLayout>
+
+            <ConfirmModal
+                show={pendingDelete !== null}
+                title="Eliminar suscriptor"
+                message={`¿Eliminar a ${pendingDelete?.email}?`}
+                confirmLabel="Eliminar"
+                variant="danger"
+                onConfirm={() => {
+                    if (pendingDelete) router.delete(`/admin/newsletter/${pendingDelete.id}`)
+                    setPendingDelete(null)
+                }}
+                onCancel={() => setPendingDelete(null)}
+            />
+        </>
     )
 }

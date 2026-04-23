@@ -1,4 +1,5 @@
 import AdminLayout from '@/Components/Layout/AdminLayout'
+import ConfirmModal from '@/Components/ConfirmModal'
 import { Head, useForm, router } from '@inertiajs/react'
 import { useState } from 'react'
 import { cn } from '@/lib/utils'
@@ -14,6 +15,7 @@ const inputCls = `w-full bg-nr-bg border border-white/[0.08] rounded-lg px-3 py-
 export default function AffiliatesIndex({ affiliates }: Props) {
     const [editing, setEditing] = useState<Affiliate | null>(null)
     const [showForm, setShowForm] = useState(false)
+    const [pendingDelete, setPendingDelete] = useState<Affiliate | null>(null)
 
     const { data, setData, post, put, reset, processing } = useForm({
         name: '',
@@ -78,13 +80,13 @@ export default function AffiliatesIndex({ affiliates }: Props) {
     }
 
     const deleteAffiliate = (aff: Affiliate) => {
-        if (!confirm(`¿Eliminar "${aff.name}"?`)) return
-        router.delete(`/admin/affiliates/${aff.id}`)
+        setPendingDelete(aff)
     }
 
     const totalClicks = affiliates.reduce((s, a) => s + a.clicks_count, 0)
 
     return (
+        <>
         <AdminLayout title="Afiliados">
             <Head title="Afiliados — Admin" />
 
@@ -419,5 +421,19 @@ export default function AffiliatesIndex({ affiliates }: Props) {
                 )}
             </div>
         </AdminLayout>
+
+            <ConfirmModal
+                show={pendingDelete !== null}
+                title="Eliminar afiliado"
+                message={`¿Eliminar "${pendingDelete?.name}"?`}
+                confirmLabel="Eliminar"
+                variant="danger"
+                onConfirm={() => {
+                    if (pendingDelete) router.delete(`/admin/affiliates/${pendingDelete.id}`)
+                    setPendingDelete(null)
+                }}
+                onCancel={() => setPendingDelete(null)}
+            />
+        </>
     )
 }

@@ -1,6 +1,7 @@
 import { Head, Link, router } from '@inertiajs/react'
 import { useState } from 'react'
 import AdminLayout from '@/Components/Layout/AdminLayout'
+import ConfirmModal from '@/Components/ConfirmModal'
 import { formatDate } from '@/lib/utils'
 import type { Post, Category, PaginatedData } from '@/types'
 
@@ -32,6 +33,7 @@ const STATUS_LABELS: Record<string, string> = {
 
 export default function PostsIndex({ posts, categories, filters }: Props) {
     const [search, setSearch] = useState(filters.search ?? '')
+    const [pendingDeleteId, setPendingDeleteId] = useState<number | null>(null)
 
     const applyFilter = (key: string, value: string) => {
         router.get(
@@ -47,8 +49,7 @@ export default function PostsIndex({ posts, categories, filters }: Props) {
     }
 
     const handleDelete = (id: number) => {
-        if (!confirm('¿Eliminar este artículo?')) return
-        router.delete(`/admin/posts/${id}`)
+        setPendingDeleteId(id)
     }
 
     const handlePublish = (id: number) => {
@@ -56,6 +57,7 @@ export default function PostsIndex({ posts, categories, filters }: Props) {
     }
 
     return (
+        <>
         <AdminLayout title="Artículos">
             <Head title="Admin — Artículos" />
 
@@ -255,5 +257,19 @@ export default function PostsIndex({ posts, categories, filters }: Props) {
                 )}
             </div>
         </AdminLayout>
+
+            <ConfirmModal
+                show={pendingDeleteId !== null}
+                title="Eliminar artículo"
+                message="¿Eliminar este artículo? Esta acción no se puede deshacer."
+                confirmLabel="Eliminar"
+                variant="danger"
+                onConfirm={() => {
+                    if (pendingDeleteId) router.delete(`/admin/posts/${pendingDeleteId}`)
+                    setPendingDeleteId(null)
+                }}
+                onCancel={() => setPendingDeleteId(null)}
+            />
+        </>
     )
 }

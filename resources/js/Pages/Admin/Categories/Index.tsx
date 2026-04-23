@@ -1,4 +1,5 @@
 import AdminLayout from '@/Components/Layout/AdminLayout'
+import ConfirmModal from '@/Components/ConfirmModal'
 import { Head, useForm, router } from '@inertiajs/react'
 import { useState } from 'react'
 import { cn } from '@/lib/utils'
@@ -26,6 +27,7 @@ const inputCls = `w-full bg-nr-bg border border-white/[0.08] rounded-lg px-3 py-
 export default function CategoriesIndex({ categories }: Props) {
     const [editing, setEditing] = useState<Category | null>(null)
     const [showForm, setShowForm] = useState(false)
+    const [pendingDelete, setPendingDelete] = useState<Category | null>(null)
 
     const { data, setData, post, put, reset, processing, errors } = useForm({
         name: '',
@@ -72,11 +74,11 @@ export default function CategoriesIndex({ categories }: Props) {
     }
 
     const deleteCategory = (cat: Category) => {
-        if (!confirm(`¿Eliminar "${cat.name}"? Los posts quedarán sin categoría.`)) return
-        router.delete(`/admin/categories/${cat.id}`)
+        setPendingDelete(cat)
     }
 
     return (
+        <>
         <AdminLayout title="Categorías">
             <Head title="Categorías — Admin" />
 
@@ -319,5 +321,19 @@ export default function CategoriesIndex({ categories }: Props) {
                 )}
             </div>
         </AdminLayout>
+
+            <ConfirmModal
+                show={pendingDelete !== null}
+                title="Eliminar categoría"
+                message={`¿Eliminar "${pendingDelete?.name}"? Los posts quedarán sin categoría.`}
+                confirmLabel="Eliminar"
+                variant="danger"
+                onConfirm={() => {
+                    if (pendingDelete) router.delete(`/admin/categories/${pendingDelete.id}`)
+                    setPendingDelete(null)
+                }}
+                onCancel={() => setPendingDelete(null)}
+            />
+        </>
     )
 }
