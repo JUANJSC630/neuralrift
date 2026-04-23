@@ -42,9 +42,9 @@ for i in $(seq 1 15); do
     sleep 1
 done
 
-# ── Queue worker ───────────────────────────────────────────
-echo "=== Starting queue worker ==="
-php artisan queue:work --tries=3 --timeout=90 --sleep=3 --max-jobs=500 --max-time=3600 &
+# ── Horizon (manages all queue workers) ───────────────────
+echo "=== Starting Horizon ==="
+php artisan horizon &
 QUEUE_PID=$!
 
 # ── PHP development server ─────────────────────────────────

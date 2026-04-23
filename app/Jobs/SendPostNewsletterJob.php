@@ -16,6 +16,8 @@ class SendPostNewsletterJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
+    public string $queue = 'newsletter';
+
     public int $tries = 3;
 
     public int $backoff = 60;
