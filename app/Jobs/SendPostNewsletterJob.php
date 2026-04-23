@@ -16,15 +16,15 @@ class SendPostNewsletterJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    public string $queue = 'newsletter';
-
     public int $tries = 3;
 
     public int $backoff = 60;
 
     public function __construct(
         public readonly Post $post,
-    ) {}
+    ) {
+        $this->onQueue('newsletter');
+    }
 
     public function failed(\Throwable $exception): void
     {

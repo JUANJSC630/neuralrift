@@ -69,7 +69,7 @@ return [
 
     'prefix' => env(
         'HORIZON_PREFIX',
-        Str::slug(env('APP_NAME', 'laravel'), '_').'_horizon:'
+        Str::slug(env('APP_NAME', 'laravel'), '_') . '_horizon:'
     ),
 
     /*
@@ -212,7 +212,7 @@ return [
         ],
         'supervisor-ai' => [
             'connection' => 'redis',
-            'queue' => ['ai'],
+            'queue' => ['ai-generation'],
             'balance' => 'simple',
             'maxProcesses' => 2,
             'maxTime' => 0,

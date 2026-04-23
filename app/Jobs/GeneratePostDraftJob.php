@@ -18,8 +18,6 @@ class GeneratePostDraftJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    public string $queue = 'ai';
-
     public int $timeout = 120;
     public int $tries   = 2;
     public int $backoff = 30;
@@ -27,7 +25,9 @@ class GeneratePostDraftJob implements ShouldQueue
     public function __construct(
         private readonly array $inputs,
         private readonly int   $authorId,
-    ) {}
+    ) {
+        $this->onQueue('ai-generation');
+    }
 
     public function handle(
         PostGeneratorAgent                   $agent,
