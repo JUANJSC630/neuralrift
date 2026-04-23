@@ -4,11 +4,32 @@ namespace App\Http\Controllers;
 
 use App\Models\Comment;
 use App\Models\Post;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
 class CommentController extends Controller
 {
+    public function index(Post $post): JsonResponse
+    {
+        $comments = $post->approvedComments()
+            ->whereNull('parent_id')
+            ->with(['replies' => function ($q) {
+                $q->approved()
+                    ->with(['replies' => function ($q2) {
+                        $q2->approved()->oldest();
+                    }])
+                    ->oldest();
+            }])
+            ->oldest()
+            ->get();
+
+        return response()->json([
+            'comments' => $comments,
+            'count'    => $post->approvedComments()->count(),
+        ]);
+    }
+
     public function store(Request $request, Post $post): RedirectResponse
     {
         if (! $post->allow_comments || $post->status !== 'published') {
@@ -40,9 +61,9 @@ class CommentController extends Controller
             $depth = $parent->depth + 1;
         }
 
-        // Auto-approve admin/author comments
+        // Auto-approve authenticated users; guests require moderation
         $user = $request->user();
-        $autoApprove = $user && in_array($user->role, ['admin', 'editor']);
+        $autoApprove = (bool) $user;
 
         Comment::create([
             'post_id'      => $post->id,

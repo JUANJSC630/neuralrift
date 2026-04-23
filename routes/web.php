@@ -82,6 +82,7 @@ Route::get('/newsletter/unsubscribe/{token}', [NewsletterController::class, 'uns
 
 // Analytics (AJAX, sin SSR)
 Route::post('/api/views/{post}', [PostViewController::class, 'store'])->name('views.store')->middleware('throttle:10,1');
+Route::get('/api/comments/{post}', [CommentController::class, 'index'])->name('comments.index')->middleware('throttle:60,1');
 
 // ── ADMIN ─────────────────────────────────────────────────
 Route::middleware(['auth', 'verified', 'admin'])

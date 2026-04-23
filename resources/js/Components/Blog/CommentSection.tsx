@@ -1,5 +1,5 @@
 import { useForm, usePage } from '@inertiajs/react'
-import { useState, useRef, type FormEvent } from 'react'
+import { useState, useRef, useEffect, useCallback, type FormEvent } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useLocale } from '@/hooks/useLocale'
 import type { TranslationKey } from '@/lib/i18n'
@@ -41,6 +41,7 @@ interface CommentFormProps {
     parentId?: number | null
     parentAuthor?: string
     onCancel?: () => void
+    onSuccess?: () => void
     isReply?: boolean
 }
 
@@ -49,6 +50,7 @@ function CommentForm({
     parentId = null,
     parentAuthor,
     onCancel,
+    onSuccess: onSuccessCb,
     isReply,
 }: CommentFormProps) {
     const { t } = useLocale()
@@ -70,6 +72,7 @@ function CommentForm({
             onSuccess: () => {
                 reset('body')
                 onCancel?.()
+                onSuccessCb?.()
             },
         })
     }
@@ -260,15 +263,41 @@ interface CommentSectionProps {
 
 export default function CommentSection({
     postId,
-    comments,
-    commentsCount,
+    comments: initialComments,
+    commentsCount: initialCount,
     allowComments,
 }: CommentSectionProps) {
     const { t } = useLocale()
+    const [polledComments, setPolledComments] = useState<CommentType[] | null>(null)
+    const [polledCount, setPolledCount] = useState<number | null>(null)
+
+    const liveComments = polledComments ?? initialComments
+    const liveCount = polledCount ?? initialCount
+
+    // Poll every 30s for new comments
+    const fetchComments = useCallback(() => {
+        fetch(`/api/comments/${postId}`, {
+            headers: { Accept: 'application/json' },
+        })
+            .then(r => (r.ok ? r.json() : null))
+            .then(data => {
+                if (data) {
+                    setPolledComments(data.comments)
+                    setPolledCount(data.count)
+                }
+            })
+            .catch(() => {})
+    }, [postId])
+
+    useEffect(() => {
+        if (!allowComments) return
+        const id = setInterval(fetchComments, 30_000)
+        return () => clearInterval(id)
+    }, [allowComments, fetchComments])
 
     if (!allowComments) return null
 
-    const countLabel = commentsCount === 1 ? t('comments.count_one') : t('comments.count_other')
+    const countLabel = liveCount === 1 ? t('comments.count_one') : t('comments.count_other')
 
     return (
         <section className="mt-12 border-t border-white/[0.06] pt-10" id="comments">
@@ -277,9 +306,9 @@ export default function CommentSection({
                 <h2 className="font-display text-xl font-bold text-nr-text">
                     {t('comments.title')}
                 </h2>
-                {commentsCount > 0 && (
+                {liveCount > 0 && (
                     <span className="glass rounded-full px-3 py-0.5 font-mono text-xs text-nr-faint">
-                        {commentsCount} {countLabel}
+                        {liveCount} {countLabel}
                     </span>
                 )}
             </div>
@@ -287,13 +316,13 @@ export default function CommentSection({
             {/* Comment form */}
             <div className="glass mb-8 rounded-2xl p-5 sm:p-6">
                 <h3 className="mb-4 text-sm font-semibold text-nr-muted">{t('comments.leave')}</h3>
-                <CommentForm postId={postId} />
+                <CommentForm postId={postId} onSuccess={fetchComments} />
             </div>
 
             {/* Comments list */}
-            {comments.length > 0 ? (
+            {liveComments.length > 0 ? (
                 <div className="space-y-6">
-                    {comments.map(comment => (
+                    {liveComments.map(comment => (
                         <CommentItem key={comment.id} comment={comment} postId={postId} />
                     ))}
                 </div>
