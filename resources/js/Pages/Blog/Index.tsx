@@ -105,7 +105,7 @@ export default function BlogIndex({ posts, filters }: Props) {
                                 <button
                                     key={opt.value}
                                     onClick={() => navigate({ sort: opt.value })}
-                                    className={`flex-shrink-0 rounded-lg px-3 py-2 text-xs font-medium transition-colors ${
+                                    className={`flex-shrink-0 rounded-lg px-4 py-2.5 text-sm font-medium transition-colors ${
                                         (filters.sort ?? 'recent') === opt.value
                                             ? 'border border-nr-accent/30 bg-nr-accent/20 text-nr-accent'
                                             : 'glass text-nr-faint hover:text-nr-muted'
@@ -122,7 +122,7 @@ export default function BlogIndex({ posts, filters }: Props) {
                         <div className="mb-10 flex flex-wrap gap-2">
                             <button
                                 onClick={() => navigate({ category: undefined })}
-                                className={`rounded-full px-4 py-1.5 text-xs font-semibold transition-all ${
+                                className={`inline-flex min-h-[44px] items-center rounded-full px-4 py-2 text-sm font-semibold transition-all ${
                                     !filters.category
                                         ? 'border border-nr-accent/30 bg-nr-accent/20 text-nr-accent'
                                         : 'glass text-nr-faint hover:text-nr-muted'
@@ -139,7 +139,7 @@ export default function BlogIndex({ posts, filters }: Props) {
                                     <button
                                         key={cat.id}
                                         onClick={() => navigate({ category: cat.slug })}
-                                        className="rounded-full px-4 py-1.5 text-xs font-semibold transition-all"
+                                        className="inline-flex min-h-[44px] items-center rounded-full px-4 py-2 text-sm font-semibold transition-all"
                                         style={
                                             isActive
                                                 ? {
@@ -161,7 +161,7 @@ export default function BlogIndex({ posts, filters }: Props) {
                             {hasActiveFilters && (
                                 <button
                                     onClick={clearFilters}
-                                    className="glass rounded-full px-3 py-1.5 text-xs text-nr-faint transition-colors hover:text-nr-red"
+                                    className="glass inline-flex min-h-[44px] items-center rounded-full px-4 py-2 text-sm text-nr-faint transition-colors hover:text-nr-red"
                                 >
                                     {t('blog.clear_filters')}
                                 </button>
@@ -192,13 +192,13 @@ export default function BlogIndex({ posts, filters }: Props) {
 
                     {/* Pagination */}
                     {posts.last_page > 1 && (
-                        <div className="mt-12 flex justify-center gap-2">
+                        <div className="mt-12 flex flex-wrap justify-center gap-2">
                             {posts.links.map((link, i) =>
                                 link.url ? (
                                     <button
                                         key={i}
                                         onClick={() => router.get(link.url!)}
-                                        className={`rounded-lg px-4 py-2 text-sm transition-colors ${
+                                        className={`min-h-[44px] rounded-lg px-4 py-2 text-sm transition-colors ${
                                             link.active
                                                 ? 'bg-nr-accent text-white'
                                                 : 'glass text-nr-faint hover:text-nr-muted'

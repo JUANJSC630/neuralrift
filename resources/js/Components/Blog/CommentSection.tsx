@@ -113,7 +113,7 @@ function CommentForm({
                             placeholder={t('comments.name')}
                             value={data.author_name}
                             onChange={e => setData('author_name', e.target.value)}
-                            className="w-full rounded-lg border border-white/[0.08] bg-white/[0.03] px-4 py-2.5 text-sm text-nr-text placeholder:text-nr-faint focus:border-nr-accent/40 focus:outline-none focus:ring-1 focus:ring-nr-accent/20"
+                            className="w-full rounded-lg border border-white/[0.08] bg-white/[0.03] px-4 py-3 text-sm text-nr-text placeholder:text-nr-faint focus:border-nr-accent/40 focus:outline-none focus:ring-1 focus:ring-nr-accent/20"
                             required
                         />
                         {errors.author_name && (
@@ -126,7 +126,7 @@ function CommentForm({
                             placeholder={`${t('comments.email')} (${t('comments.email_hint')})`}
                             value={data.author_email}
                             onChange={e => setData('author_email', e.target.value)}
-                            className="w-full rounded-lg border border-white/[0.08] bg-white/[0.03] px-4 py-2.5 text-sm text-nr-text placeholder:text-nr-faint focus:border-nr-accent/40 focus:outline-none focus:ring-1 focus:ring-nr-accent/20"
+                            className="w-full rounded-lg border border-white/[0.08] bg-white/[0.03] px-4 py-3 text-sm text-nr-text placeholder:text-nr-faint focus:border-nr-accent/40 focus:outline-none focus:ring-1 focus:ring-nr-accent/20"
                             required
                         />
                         {errors.author_email && (
@@ -154,7 +154,7 @@ function CommentForm({
                 <button
                     type="submit"
                     disabled={processing}
-                    className="rounded-lg bg-gradient-to-r from-nr-accent to-nr-accent-dark px-5 py-2 text-sm font-semibold text-white transition-all duration-200 hover:opacity-90 disabled:opacity-50"
+                    className="inline-flex min-h-[44px] items-center rounded-lg bg-gradient-to-r from-nr-accent to-nr-accent-dark px-5 py-2.5 text-sm font-semibold text-white transition-all duration-200 hover:opacity-90 disabled:opacity-50"
                 >
                     {processing
                         ? '...'

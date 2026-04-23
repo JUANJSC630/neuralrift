@@ -46,7 +46,7 @@ export default function Tools({ affiliates, grouped }: Props) {
                         <div className="mb-12 flex flex-wrap justify-center gap-2">
                             <button
                                 onClick={() => setActive(null)}
-                                className={`rounded-full px-5 py-2 text-sm font-semibold transition-all ${
+                                className={`inline-flex min-h-[44px] items-center rounded-full px-5 py-2.5 text-sm font-semibold transition-all ${
                                     !active
                                         ? 'border border-nr-accent/30 bg-nr-accent/20 text-nr-accent'
                                         : 'glass text-nr-faint hover:text-nr-muted'
@@ -58,7 +58,7 @@ export default function Tools({ affiliates, grouped }: Props) {
                                 <button
                                     key={cat}
                                     onClick={() => setActive(cat)}
-                                    className={`rounded-full px-5 py-2 text-sm font-semibold transition-all ${
+                                    className={`inline-flex min-h-[44px] items-center rounded-full px-5 py-2.5 text-sm font-semibold transition-all ${
                                         active === cat
                                             ? 'border border-nr-accent/30 bg-nr-accent/20 text-nr-accent'
                                             : 'glass text-nr-faint hover:text-nr-muted'

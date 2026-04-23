@@ -71,7 +71,7 @@ export default function AffiliateWidget({ affiliate }: { affiliate: Affiliate })
                 href={`/herramientas/${affiliate.slug}/click`}
                 target="_blank"
                 rel="noopener noreferrer nofollow"
-                className="hover:glow-accent mt-auto block rounded-xl border border-nr-accent/25 bg-gradient-to-r from-nr-accent/20 to-nr-cyan/20 py-2.5 text-center text-sm font-semibold text-nr-accent transition-all duration-300 hover:border-transparent hover:from-nr-accent hover:to-nr-accent-dark hover:text-white"
+                className="hover:glow-accent mt-auto flex min-h-[44px] items-center justify-center rounded-xl border border-nr-accent/25 bg-gradient-to-r from-nr-accent/20 to-nr-cyan/20 py-2.5 text-center text-sm font-semibold text-nr-accent transition-all duration-300 hover:border-transparent hover:from-nr-accent hover:to-nr-accent-dark hover:text-white"
             >
                 Ver herramienta →
             </a>

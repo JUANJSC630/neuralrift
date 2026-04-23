@@ -159,7 +159,7 @@ export default function Home({ featured, recent, affiliates, canonical }: Props)
                             initial={{ opacity: 0, y: 14 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.5, delay: 0.05 }}
-                            className="glass mb-8 inline-flex items-center gap-2 rounded-full border border-nr-gold/30 px-4 py-1.5"
+                            className="glass my-8 inline-flex items-center gap-2 rounded-full border border-nr-gold/30 px-4 py-1.5"
                         >
                             <span className="h-1.5 w-1.5 animate-glow-pulse rounded-full bg-nr-gold" />
                             <span className="text-xs font-semibold uppercase tracking-widest text-nr-gold">

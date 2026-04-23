@@ -59,12 +59,12 @@ export default function NewsletterWidget({ compact = false }: NewsletterWidgetPr
                             }}
                             placeholder={t('newsletter.placeholder')}
                             required
-                            className="glass w-full rounded-lg px-3 py-2 text-sm text-nr-text placeholder-nr-faint outline-none transition-colors focus:border-nr-accent/50"
+                            className="glass w-full rounded-lg px-3 py-3 text-sm text-nr-text placeholder-nr-faint outline-none transition-colors focus:border-nr-accent/50"
                         />
                         <button
                             type="submit"
                             disabled={loading}
-                            className="w-full rounded-lg bg-gradient-to-r from-nr-accent to-nr-accent-dark py-2 text-sm font-semibold text-white transition-all duration-200 hover:-translate-y-0.5 disabled:opacity-60"
+                            className="w-full rounded-lg bg-gradient-to-r from-nr-accent to-nr-accent-dark py-3 text-sm font-semibold text-white transition-all duration-200 hover:-translate-y-0.5 disabled:opacity-60"
                         >
                             {loading ? t('newsletter.sending') : t('newsletter.submit')}
                         </button>
@@ -80,7 +80,7 @@ export default function NewsletterWidget({ compact = false }: NewsletterWidgetPr
     }
 
     return (
-        <div className="glass rounded-3xl p-10 text-center md:p-14">
+        <div className="glass rounded-3xl p-6 text-center sm:p-8 md:p-14">
             <div>
                 <span className="mb-4 block font-mono text-xs uppercase tracking-widest text-nr-accent">
                     {t('newsletter.label')}

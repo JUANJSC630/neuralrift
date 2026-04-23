@@ -68,7 +68,7 @@ export default function TableOfContents({ content }: Props) {
             <p className="mb-4 font-mono text-xs uppercase tracking-widest text-nr-faint">
                 Contenido
             </p>
-            <nav className="space-y-1">
+            <nav className="space-y-0.5">
                 {headings.map(heading => (
                     <a
                         key={heading.id}
@@ -78,7 +78,7 @@ export default function TableOfContents({ content }: Props) {
                             scrollTo(heading.id)
                         }}
                         className={[
-                            'block text-sm leading-relaxed transition-colors',
+                            'flex min-h-[44px] items-center text-sm leading-relaxed transition-colors',
                             heading.level === 3 ? 'pl-3' : '',
                             activeId === heading.id
                                 ? 'font-medium text-nr-accent'

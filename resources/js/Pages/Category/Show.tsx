@@ -40,7 +40,7 @@ export default function CategoryShow({ category, posts, featured }: Props) {
                     />
                     <div className="relative z-10 mx-auto max-w-7xl px-6 py-16 md:px-12">
                         {/* Breadcrumb */}
-                        <nav className="mb-6 flex items-center gap-2 font-mono text-xs text-nr-faint">
+                        <nav className="mb-6 flex flex-wrap items-center gap-x-2 gap-y-1 font-mono text-xs text-nr-faint">
                             <Link
                                 href={localePath('/')}
                                 className="transition-colors hover:text-nr-muted"
@@ -108,13 +108,13 @@ export default function CategoryShow({ category, posts, featured }: Props) {
 
                     {/* Pagination with category-themed active page */}
                     {posts.last_page > 1 && (
-                        <div className="mt-12 flex justify-center gap-2">
+                        <div className="mt-12 flex flex-wrap justify-center gap-2">
                             {posts.links.map((link, i) =>
                                 link.url ? (
                                     <button
                                         key={i}
                                         onClick={() => router.get(link.url!)}
-                                        className="glass rounded-lg px-4 py-2 text-sm text-nr-faint transition-colors hover:text-nr-muted"
+                                        className="glass min-h-[44px] rounded-lg px-4 py-2 text-sm text-nr-faint transition-colors hover:text-nr-muted"
                                         style={
                                             link.active
                                                 ? {

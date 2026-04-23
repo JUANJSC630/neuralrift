@@ -98,7 +98,7 @@ export default function Navbar() {
                     {/* CTA */}
                     <Link
                         href={locale === 'es' ? '/#newsletter' : '/en#newsletter'}
-                        className="glow-accent hover:glow-accent-lg inline-flex min-h-[44px] flex-shrink-0 items-center rounded-full bg-gradient-to-r from-nr-accent to-nr-accent-dark px-4 py-2 text-sm font-semibold text-white transition-all duration-300 hover:-translate-y-0.5"
+                        className="glow-accent hover:glow-accent-lg hidden min-h-[44px] flex-shrink-0 items-center rounded-full bg-gradient-to-r from-nr-accent to-nr-accent-dark px-4 py-2 text-sm font-semibold text-white transition-all duration-300 hover:-translate-y-0.5 sm:inline-flex"
                     >
                         {t('nav.subscribe')}
                     </Link>
@@ -130,7 +130,7 @@ export default function Navbar() {
                             <Link
                                 key={link.href}
                                 href={link.href}
-                                className="py-1 text-sm font-medium text-nr-muted transition-colors hover:text-nr-text"
+                                className="flex min-h-[44px] items-center text-base font-medium text-nr-muted transition-colors hover:text-nr-text"
                                 onClick={() => setMobileOpen(false)}
                             >
                                 {link.label}
@@ -139,7 +139,7 @@ export default function Navbar() {
                         <div className="mt-1 border-t border-white/[0.06] pt-2">
                             <Link
                                 href={getSwitchUrl()}
-                                className="glass flex items-center gap-1.5 rounded-lg px-3 py-1.5 font-mono text-xs text-nr-faint transition-colors hover:text-nr-muted"
+                                className="glass flex min-h-[44px] items-center gap-1.5 rounded-lg px-3 font-mono text-sm text-nr-faint transition-colors hover:text-nr-muted"
                                 aria-label={t('nav.changeLang')}
                                 onClick={() => setMobileOpen(false)}
                             >

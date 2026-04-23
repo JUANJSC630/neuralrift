@@ -101,7 +101,7 @@ export default function BlogShow({
                     <div className="mesh-bg pointer-events-none absolute inset-0 opacity-60" />
                     <div className="relative z-10 mx-auto max-w-7xl px-6 py-16 md:px-12">
                         {/* Breadcrumb */}
-                        <nav className="mb-6 flex items-center gap-2 font-mono text-xs text-nr-faint">
+                        <nav className="mb-6 flex flex-wrap items-center gap-x-2 gap-y-1 font-mono text-xs text-nr-faint">
                             <Link
                                 href={localePath('/')}
                                 className="transition-colors hover:text-nr-muted"

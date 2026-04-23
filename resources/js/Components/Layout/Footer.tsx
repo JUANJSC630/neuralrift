@@ -32,7 +32,7 @@ export default function Footer() {
                                     href={s.href}
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className="glass rounded-lg px-3 py-1.5 text-xs text-nr-faint transition-all duration-200 hover:border-nr-accent/30 hover:text-nr-accent"
+                                    className="glass inline-flex min-h-[44px] items-center rounded-lg px-3 text-xs text-nr-faint transition-all duration-200 hover:border-nr-accent/30 hover:text-nr-accent"
                                 >
                                     {s.label}
                                 </a>
@@ -50,7 +50,7 @@ export default function Footer() {
                                 <li key={link.href}>
                                     <Link
                                         href={link.href}
-                                        className="text-sm text-nr-muted transition-colors hover:text-nr-text"
+                                        className="inline-flex min-h-[44px] items-center text-sm text-nr-muted transition-colors hover:text-nr-text"
                                     >
                                         {link.label}
                                     </Link>
@@ -69,7 +69,7 @@ export default function Footer() {
                                 <li key={l.href}>
                                     <Link
                                         href={l.href}
-                                        className="text-sm text-nr-muted transition-colors hover:text-nr-text"
+                                        className="inline-flex min-h-[44px] items-center text-sm text-nr-muted transition-colors hover:text-nr-text"
                                     >
                                         {l.label}
                                     </Link>
@@ -89,13 +89,13 @@ export default function Footer() {
                     <div className="flex items-center gap-4">
                         <a
                             href="/feed.xml"
-                            className="text-xs text-nr-faint transition-colors hover:text-nr-orange"
+                            className="inline-flex min-h-[44px] items-center text-xs text-nr-faint transition-colors hover:text-nr-orange"
                         >
                             {t('misc.rss')}
                         </a>
                         <a
                             href="/sitemap.xml"
-                            className="text-xs text-nr-faint transition-colors hover:text-nr-text"
+                            className="inline-flex min-h-[44px] items-center text-xs text-nr-faint transition-colors hover:text-nr-text"
                         >
                             {t('misc.sitemap')}
                         </a>
