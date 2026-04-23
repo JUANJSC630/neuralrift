@@ -186,6 +186,12 @@ export default function PostEdit({ post, categories, tags, affiliates }: Props) 
         router.post(`/admin/posts/${post.id}/duplicate`)
     }
 
+    const handleSendNewsletter = () => {
+        if (!post || post.status !== 'published') return
+        if (!confirm('¿Enviar newsletter de este artículo a todos los suscriptores?')) return
+        router.post(`/admin/posts/${post.id}/send-newsletter`)
+    }
+
     return (
         <AdminLayout title={isNew ? 'Nuevo artículo' : 'Editar artículo'}>
             <Head title={isNew ? 'Admin — Nuevo artículo' : `Admin — ${post?.title}`} />
@@ -200,6 +206,15 @@ export default function PostEdit({ post, categories, tags, affiliates }: Props) 
                             className="glass rounded-lg px-4 py-2 text-xs text-nr-faint transition-colors hover:text-nr-muted"
                         >
                             Duplicar
+                        </button>
+                    )}
+                    {post?.status === 'published' && (
+                        <button
+                            type="button"
+                            onClick={handleSendNewsletter}
+                            className="glass rounded-lg px-4 py-2 text-xs text-nr-cyan transition-colors hover:text-nr-text"
+                        >
+                            📧 Enviar newsletter
                         </button>
                     )}
                     <button

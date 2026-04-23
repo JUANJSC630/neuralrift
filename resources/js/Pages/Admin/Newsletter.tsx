@@ -120,9 +120,12 @@ export default function Newsletter({ subscribers, totals, filters }: Props) {
                     <span className="font-mono text-xs text-nr-faint">
                         {subscribers.from}–{subscribers.to} de {subscribers.total} suscriptores
                     </span>
-                    <button className="text-xs text-nr-accent transition-colors hover:text-nr-accent/80">
+                    <a
+                        href="/admin/newsletter/export"
+                        className="text-xs text-nr-accent transition-colors hover:text-nr-accent/80"
+                    >
                         ↓ Exportar CSV
-                    </button>
+                    </a>
                 </div>
 
                 <div className="divide-y divide-white/[0.04]">

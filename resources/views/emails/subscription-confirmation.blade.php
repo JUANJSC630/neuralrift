@@ -47,6 +47,8 @@
                     <tr>
                         <td align="center" style="padding-top:24px;color:#6B7280;font-size:12px;">
                             © {{ date('Y') }} NeuralRift · Tecnología, IA y herramientas para construir mejor
+                            <br>
+                            <a href="{{ $subscriber->getUnsubscribeUrl() }}" style="color:#6B7280;text-decoration:underline;">Cancelar suscripción</a>
                         </td>
                     </tr>
                 </table>

@@ -68,6 +68,7 @@ Route::prefix('en')->name('en.')->group(function () {
 // Newsletter
 Route::post('/newsletter/subscribe', [NewsletterController::class, 'subscribe'])->name('newsletter.subscribe')->middleware('throttle:3,60');
 Route::get('/newsletter/confirm/{token}', [NewsletterController::class, 'confirm'])->name('newsletter.confirm');
+Route::get('/newsletter/unsubscribe/{token}', [NewsletterController::class, 'unsubscribe'])->name('newsletter.unsubscribe');
 
 // Analytics (AJAX, sin SSR)
 Route::post('/api/views/{post}', [PostViewController::class, 'store'])->name('views.store')->middleware('throttle:10,1');
@@ -84,6 +85,7 @@ Route::middleware(['auth', 'verified', 'admin'])
     Route::resource('posts', AdminPostController::class);
     Route::post('/posts/{post}/publish',   [AdminPostController::class, 'publish'])->name('posts.publish');
     Route::post('/posts/{post}/duplicate', [AdminPostController::class, 'duplicate'])->name('posts.duplicate');
+    Route::post('/posts/{post}/send-newsletter', [AdminPostController::class, 'sendNewsletter'])->name('posts.send-newsletter');
 
     // AI Generator
     Route::get('/ai-generator', [AIGeneratorController::class, 'index'])
@@ -112,6 +114,7 @@ Route::middleware(['auth', 'verified', 'admin'])
     // Páginas
     Route::get('/analytics',  [AnalyticsController::class, 'index'])->name('analytics');
     Route::get('/newsletter', [AdminNewsletterController::class, 'index'])->name('newsletter');
+    Route::get('/newsletter/export', [AdminNewsletterController::class, 'export'])->name('newsletter.export');
     Route::delete('/newsletter/{subscriber}', [AdminNewsletterController::class, 'destroy'])->name('newsletter.destroy');
     Route::get('/settings',   [SettingsController::class, 'index'])->name('settings');
     Route::post('/settings',  [SettingsController::class, 'update'])->name('settings.update');

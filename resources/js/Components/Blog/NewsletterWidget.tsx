@@ -20,7 +20,7 @@ export default function NewsletterWidget({ compact = false }: NewsletterWidgetPr
         setLoading(true)
         router.post(
             '/newsletter/subscribe',
-            { email },
+            { email, lang: document.documentElement.lang || 'es' },
             {
                 onSuccess: () => {
                     setSent(true)

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Actions\Newsletter\ConfirmSubscriberAction;
 use App\Actions\Newsletter\SubscribeAction;
 use App\Http\Requests\SubscribeNewsletterRequest;
+use App\Models\Subscriber;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\RedirectResponse;
 
@@ -34,5 +35,18 @@ class NewsletterController extends Controller
         } catch (ModelNotFoundException) {
             return redirect('/')->with('error', 'El link no es válido o ya fue usado.');
         }
+    }
+
+    public function unsubscribe(string $token): RedirectResponse
+    {
+        $subscriber = Subscriber::where('unsubscribe_token', $token)->first();
+
+        if (!$subscriber) {
+            return redirect('/')->with('error', 'El link de cancelación no es válido.');
+        }
+
+        $subscriber->delete();
+
+        return redirect('/')->with('success', 'Te has dado de baja correctamente. ¡Hasta pronto!');
     }
 }

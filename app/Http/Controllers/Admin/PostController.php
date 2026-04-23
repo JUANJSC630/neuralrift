@@ -7,6 +7,7 @@ use App\Models\Post;
 use App\Models\Category;
 use App\Models\Tag;
 use App\Models\Affiliate;
+use App\Jobs\SendPostNewsletterJob;
 use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
 use Inertia\Inertia;
@@ -177,5 +178,16 @@ class PostController extends Controller
 
         return redirect()->route('admin.posts.edit', $new)
             ->with('success', 'Artículo duplicado. Ahora estás editando la copia.');
+    }
+
+    public function sendNewsletter(Post $post): RedirectResponse
+    {
+        if ($post->status !== 'published') {
+            return back()->with('error', 'Solo se puede enviar newsletter de artículos publicados.');
+        }
+
+        SendPostNewsletterJob::dispatch($post);
+
+        return back()->with('success', 'Newsletter en cola de envío.');
     }
 }

@@ -7,4 +7,6 @@ Confirma tu suscripción visitando este enlace:
 
 Si no solicitaste esta suscripción, puedes ignorar este email.
 
+Cancelar suscripción: {{ $subscriber->getUnsubscribeUrl() }}
+
 © {{ date('Y') }} NeuralRift

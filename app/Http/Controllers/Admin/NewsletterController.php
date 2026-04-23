@@ -8,6 +8,7 @@ use Inertia\Inertia;
 use Inertia\Response;
 use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class NewsletterController extends Controller
 {
@@ -39,5 +40,32 @@ class NewsletterController extends Controller
     {
         $subscriber->delete();
         return back()->with('success', 'Suscriptor eliminado.');
+    }
+
+    public function export(): StreamedResponse
+    {
+        $filename = 'neuralrift-subscribers-' . now()->format('Y-m-d') . '.csv';
+
+        return response()->streamDownload(function () {
+            $handle = fopen('php://output', 'w');
+            fputcsv($handle, ['Email', 'Nombre', 'Idioma', 'Confirmado', 'Fecha suscripción', 'Fecha confirmación']);
+
+            Subscriber::orderBy('created_at', 'desc')
+                ->cursor()
+                ->each(function (Subscriber $sub) use ($handle) {
+                    fputcsv($handle, [
+                        $sub->email,
+                        $sub->name ?? '',
+                        $sub->lang,
+                        $sub->confirmed ? 'Sí' : 'No',
+                        $sub->created_at->format('Y-m-d H:i'),
+                        $sub->confirmed_at?->format('Y-m-d H:i') ?? '',
+                    ]);
+                });
+
+            fclose($handle);
+        }, $filename, [
+            'Content-Type' => 'text/csv',
+        ]);
     }
 }
