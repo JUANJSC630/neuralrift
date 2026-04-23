@@ -98,6 +98,7 @@ export default function PostEdit({ post, categories, tags, affiliates }: Props) 
     const [tab, setTab] = useState<'es' | 'en'>('es')
     const [seoOpen, setSeoOpen] = useState(false)
     const [uploading, setUploading] = useState(false)
+    const [uploadToast, setUploadToast] = useState<{ type: 'success' | 'error'; message: string } | null>(null)
     const fileInputRef = useRef<HTMLInputElement>(null)
 
     const [data, setDataState] = useState({
@@ -143,6 +144,11 @@ export default function PostEdit({ post, categories, tags, affiliates }: Props) 
         set(field, current.includes(id) ? current.filter(i => i !== id) : [...current, id])
     }
 
+    const showToast = (type: 'success' | 'error', message: string) => {
+        setUploadToast({ type, message })
+        setTimeout(() => setUploadToast(null), 4000)
+    }
+
     const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0]
         if (!file) return
@@ -156,8 +162,20 @@ export default function PostEdit({ post, categories, tags, affiliates }: Props) 
                 headers: xsrf ? { 'X-XSRF-TOKEN': decodeURIComponent(xsrf) } : {},
                 body: form,
             })
+            if (!res.ok) {
+                const err = await res.json().catch(() => ({}))
+                console.error('Upload failed', res.status, err)
+                showToast('error', `Error al subir la imagen (${res.status})`)
+                return
+            }
             const json = await res.json()
-            if (json.url) set('cover_image', json.url)
+            if (json.url) {
+                set('cover_image', json.url)
+                showToast('success', 'Imagen subida correctamente')
+            }
+        } catch (err) {
+            console.error('Upload error', err)
+            showToast('error', 'Error de red al subir la imagen')
         } finally {
             setUploading(false)
         }
@@ -552,6 +570,13 @@ export default function PostEdit({ post, categories, tags, affiliates }: Props) 
                             >
                                 {uploading ? 'Subiendo...' : '↑ Subir imagen'}
                             </button>
+                            {uploadToast && (
+                                <p className={`text-xs font-medium ${
+                                    uploadToast.type === 'success' ? 'text-nr-green' : 'text-nr-red'
+                                }`}>
+                                    {uploadToast.type === 'success' ? '✓' : '✕'} {uploadToast.message}
+                                </p>
+                            )}
                             <div className="border-t border-white/[0.06] pt-3">
                                 <label className="mb-1.5 block text-xs text-nr-faint">
                                     OG Image (redes sociales)
