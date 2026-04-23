@@ -49,4 +49,13 @@ QUEUE_PID=$!
 
 # ── PHP development server ─────────────────────────────────
 echo "=== Starting PHP server on port ${PORT:-8080} ==="
-php -d upload_max_filesize=20M -d post_max_size=25M artisan serve --host=0.0.0.0 --port="${PORT:-8080}"
+
+# Apply php.ini overrides (upload limits etc.) — artisan serve spawns a new PHP
+# process that doesn't inherit -d flags, so we use PHP_INI_SCAN_DIR instead.
+SCAN_DIR="$(pwd)"
+if [ -n "$(php --ini | grep 'Scan for' | awk -F': ' '{print $2}')" ]; then
+    SCAN_DIR="${SCAN_DIR}:$(php --ini | grep 'Scan for' | awk -F': ' '{print $2}')"
+fi
+export PHP_INI_SCAN_DIR="$SCAN_DIR"
+
+php artisan serve --host=0.0.0.0 --port="${PORT:-8080}"
