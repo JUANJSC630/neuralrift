@@ -76,6 +76,16 @@ class Post extends Model
         return $this->hasMany(PostView::class);
     }
 
+    public function comments(): HasMany
+    {
+        return $this->hasMany(Comment::class);
+    }
+
+    public function approvedComments(): HasMany
+    {
+        return $this->hasMany(Comment::class)->where('status', 'approved');
+    }
+
     // ── Scopes ───────────────────────────────────────
     public function scopePublished(Builder $query): Builder
     {

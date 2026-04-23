@@ -27,13 +27,14 @@ class PostController extends Controller
         }
         if ($request->search) {
             $search = $request->search;
-            $query->where(fn($q) => $isEn
-                ? $q->where('title_en', 'like', "%{$search}%")->orWhere('title', 'like', "%{$search}%")
-                : $q->where('title', 'like', "%{$search}%")->orWhere('excerpt', 'like', "%{$search}%")
+            $query->where(
+                fn($q) => $isEn
+                    ? $q->where('title_en', 'like', "%{$search}%")->orWhere('title', 'like', "%{$search}%")
+                    : $q->where('title', 'like', "%{$search}%")->orWhere('excerpt', 'like', "%{$search}%")
             );
         }
 
-        match($request->sort ?? 'recent') {
+        match ($request->sort ?? 'recent') {
             'popular'  => $query->orderByDesc('views_count'),
             'shortest' => $query->orderBy('read_time'),
             default    => $query->latest('published_at'),
@@ -59,7 +60,21 @@ class PostController extends Controller
         $post = Post::published()
             ->where($slugColumn, $slug)
             ->with(['category', 'author', 'tags', 'affiliates'])
+            ->withCount('approvedComments as comments_count')
             ->firstOrFail();
+
+        // Load threaded approved comments
+        $comments = $post->approvedComments()
+            ->whereNull('parent_id')
+            ->with(['replies' => function ($q) {
+                $q->approved()
+                    ->with(['replies' => function ($q2) {
+                        $q2->approved()->oldest();
+                    }])
+                    ->oldest();
+            }])
+            ->oldest()
+            ->get();
 
         $related = Post::published()
             ->where('id', '!=', $post->id)
@@ -96,6 +111,7 @@ class PostController extends Controller
 
         return Inertia::render('Blog/Show', [
             'post'       => $post,
+            'comments'   => $comments,
             'related'    => $related,
             'schema'     => $schema,
             'lang'       => $lang,

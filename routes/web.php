@@ -20,6 +20,8 @@ use App\Http\Controllers\Admin\SettingsController;
 use App\Http\Controllers\Admin\AIGeneratorController;
 use App\Http\Controllers\Admin\NotificationController;
 use App\Http\Controllers\Admin\ImageController;
+use App\Http\Controllers\CommentController;
+use App\Http\Controllers\Admin\CommentController as AdminCommentController;
 
 // ── SEO ──────────────────────────────────────────────────
 Route::get('/sitemap.xml', [SeoController::class, 'sitemap']);
@@ -36,6 +38,10 @@ Route::prefix('blog')->name('blog.')->group(function () {
     Route::get('/',        [PostController::class, 'index'])->name('index');
     Route::get('/{slug}',  [PostController::class, 'show'])->name('show');
 });
+
+Route::post('/blog/{post}/comments', [CommentController::class, 'store'])
+    ->name('comments.store')
+    ->middleware('throttle:10,1');
 
 Route::get('/categorias',        [CategoryController::class, 'index'])->name('categories.index');
 Route::get('/categoria/{slug}',  [CategoryController::class, 'show'])->name('category.show');
@@ -55,6 +61,10 @@ Route::prefix('en')->name('en.')->group(function () {
         Route::get('/',        [PostController::class, 'index'])->name('index');
         Route::get('/{slug}',  [PostController::class, 'show'])->name('show');
     });
+
+    Route::post('/blog/{post}/comments', [CommentController::class, 'store'])
+        ->name('comments.store')
+        ->middleware('throttle:10,1');
 
     Route::get('/categories',       [CategoryController::class, 'index'])->name('categories.index');
     Route::get('/category/{slug}',  [CategoryController::class, 'show'])->name('category.show');
@@ -118,6 +128,12 @@ Route::middleware(['auth', 'verified', 'admin'])
     Route::delete('/newsletter/{subscriber}', [AdminNewsletterController::class, 'destroy'])->name('newsletter.destroy');
     Route::get('/settings',   [SettingsController::class, 'index'])->name('settings');
     Route::post('/settings',  [SettingsController::class, 'update'])->name('settings.update');
+
+    // Comments moderation
+    Route::get('/comments', [AdminCommentController::class, 'index'])->name('comments');
+    Route::post('/comments/{comment}/approve', [AdminCommentController::class, 'approve'])->name('comments.approve');
+    Route::post('/comments/{comment}/spam', [AdminCommentController::class, 'spam'])->name('comments.spam');
+    Route::delete('/comments/{comment}', [AdminCommentController::class, 'destroy'])->name('comments.destroy');
 });
 
 // Auth routes (Breeze)

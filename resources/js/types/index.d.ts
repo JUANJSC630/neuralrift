@@ -47,6 +47,7 @@ export interface Post {
     indexable: boolean
     read_time: number
     views_count: number
+    comments_count?: number
     published_at?: string
     created_at: string
     updated_at: string
@@ -83,6 +84,17 @@ export interface Tag {
     id: number
     name: string
     slug: string
+}
+
+export interface Comment {
+    id: number
+    post_id: number
+    parent_id: number | null
+    author_name: string
+    body: string
+    depth: number
+    created_at: string
+    replies?: Comment[]
 }
 
 export interface Subscriber {

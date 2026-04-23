@@ -92,6 +92,30 @@ const translations = {
     'post.sidebar_subscribe': { es: 'Suscribirse', en: 'Subscribe' },
     'post.featured_badge': { es: '★ ARTÍCULO DESTACADO', en: '★ FEATURED ARTICLE' },
 
+    // ── Comments ─────────────────────────────────────
+    'comments.title': { es: 'Comentarios', en: 'Comments' },
+    'comments.empty': { es: 'Sé el primero en comentar', en: 'Be the first to comment' },
+    'comments.leave': { es: 'Deja un comentario', en: 'Leave a comment' },
+    'comments.reply': { es: 'Responder', en: 'Reply' },
+    'comments.reply_to': { es: 'Respondiendo a', en: 'Replying to' },
+    'comments.cancel': { es: 'Cancelar', en: 'Cancel' },
+    'comments.submit': { es: 'Publicar comentario', en: 'Post comment' },
+    'comments.submit_reply': { es: 'Publicar respuesta', en: 'Post reply' },
+    'comments.name': { es: 'Nombre', en: 'Name' },
+    'comments.email': { es: 'Email', en: 'Email' },
+    'comments.email_hint': { es: 'No será publicado', en: "Won't be published" },
+    'comments.body': { es: 'Tu comentario...', en: 'Your comment...' },
+    'comments.pending': {
+        es: 'Tu comentario está pendiente de aprobación.',
+        en: 'Your comment is pending approval.',
+    },
+    'comments.count_one': { es: 'comentario', en: 'comment' },
+    'comments.count_other': { es: 'comentarios', en: 'comments' },
+    'comments.ago_now': { es: 'ahora', en: 'just now' },
+    'comments.ago_min': { es: 'min', en: 'min' },
+    'comments.ago_hour': { es: 'h', en: 'h' },
+    'comments.ago_day': { es: 'd', en: 'd' },
+
     // ── Category ─────────────────────────────────────
     'category.articles_count': { es: 'artículos', en: 'articles' },
 
@@ -175,7 +199,7 @@ const translations = {
     'misc.sitemap': { es: 'Sitemap', en: 'Sitemap' },
 } as const
 
-type TranslationKey = keyof typeof translations
+export type TranslationKey = keyof typeof translations
 
 /**
  * Get translated string for the given key and locale.

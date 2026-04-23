@@ -9,14 +9,16 @@ import NewsletterWidget from '@/Components/Blog/NewsletterWidget'
 import ReadingProgress from '@/Components/Blog/ReadingProgress'
 import TableOfContents from '@/Components/Blog/TableOfContents'
 import ShareButtons from '@/Components/Blog/ShareButtons'
+import CommentSection from '@/Components/Blog/CommentSection'
 import { formatDate, readTime } from '@/lib/utils'
 import { renderContent } from '@/lib/tiptap'
 import { CATEGORY_COLORS, SITE } from '@/lib/constants'
 import { useLocale } from '@/hooks/useLocale'
-import type { Post } from '@/types'
+import type { Post, Comment as CommentType } from '@/types'
 
 interface Props {
     post: Post
+    comments: CommentType[]
     related: Post[]
     schema?: Record<string, unknown>
     lang?: 'es' | 'en'
@@ -26,6 +28,7 @@ interface Props {
 
 export default function BlogShow({
     post,
+    comments,
     related,
     schema,
     lang = 'es',
@@ -325,6 +328,14 @@ export default function BlogShow({
                                     </div>
                                 </section>
                             )}
+
+                            {/* Comments */}
+                            <CommentSection
+                                postId={post.id}
+                                comments={comments}
+                                commentsCount={post.comments_count ?? 0}
+                                allowComments={post.allow_comments}
+                            />
                         </article>
 
                         {/* Sticky sidebar */}
