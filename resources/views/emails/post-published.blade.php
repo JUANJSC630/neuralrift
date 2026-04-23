@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="{{ $subscriber->lang === 'en' ? 'en' : 'es' }}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -38,7 +38,7 @@
                             <div style="padding:32px 40px 40px;">
                                 @if($post->category)
                                     <span style="display:inline-block;padding:4px 12px;border-radius:20px;background-color:rgba(124,106,247,0.15);color:#7C6AF7;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:16px;">
-                                        {{ $post->category->name }}
+                                        {{ $isEn && $post->category->name_en ? $post->category->name_en : $post->category->name }}
                                     </span>
                                 @endif
 
@@ -72,7 +72,7 @@
                     <!-- Footer -->
                     <tr>
                         <td align="center" style="padding-top:24px;color:#6B7280;font-size:12px;">
-                            © {{ date('Y') }} NeuralRift · Tecnología, IA y herramientas para construir mejor
+                            © {{ date('Y') }} NeuralRift · {{ $isEn ? 'Technology, AI and tools to build better' : 'Tecnología, IA y herramientas para construir mejor' }}
                             <br>
                             <a href="{{ $subscriber->getUnsubscribeUrl() }}" style="color:#6B7280;text-decoration:underline;">
                                 {{ $isEn ? 'Unsubscribe' : 'Cancelar suscripción' }}

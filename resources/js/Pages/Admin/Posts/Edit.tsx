@@ -2,6 +2,7 @@ import { Head, router } from '@inertiajs/react'
 import { useState, useRef } from 'react'
 import AdminLayout from '@/Components/Layout/AdminLayout'
 import TiptapEditor from '@/Components/Admin/TiptapEditor'
+import ConfirmModal from '@/Components/ConfirmModal'
 import type { Post, Category, Tag, Affiliate } from '@/types'
 
 interface Props {
@@ -186,10 +187,16 @@ export default function PostEdit({ post, categories, tags, affiliates }: Props) 
         router.post(`/admin/posts/${post.id}/duplicate`)
     }
 
+    const [showNewsletterConfirm, setShowNewsletterConfirm] = useState(false)
+
     const handleSendNewsletter = () => {
         if (!post || post.status !== 'published') return
-        if (!confirm('¿Enviar newsletter de este artículo a todos los suscriptores?')) return
-        router.post(`/admin/posts/${post.id}/send-newsletter`)
+        setShowNewsletterConfirm(true)
+    }
+
+    const confirmSendNewsletter = () => {
+        setShowNewsletterConfirm(false)
+        router.post(`/admin/posts/${post!.id}/send-newsletter`)
     }
 
     return (
@@ -612,6 +619,16 @@ export default function PostEdit({ post, categories, tags, affiliates }: Props) 
                     </div>
                 </div>
             </div>
+
+            <ConfirmModal
+                show={showNewsletterConfirm}
+                title="Enviar newsletter"
+                message="¿Enviar este artículo como newsletter a todos los suscriptores confirmados?"
+                confirmLabel="Enviar"
+                cancelLabel="Cancelar"
+                onConfirm={confirmSendNewsletter}
+                onCancel={() => setShowNewsletterConfirm(false)}
+            />
         </AdminLayout>
     )
 }
