@@ -159,6 +159,7 @@ export default function PostEdit({ post, categories, tags, affiliates }: Props) 
             const xsrf = getCookie('XSRF-TOKEN')
             const res = await fetch('/admin/upload/image', {
                 method: 'POST',
+                credentials: 'same-origin',
                 headers: xsrf ? { 'X-XSRF-TOKEN': decodeURIComponent(xsrf) } : {},
                 body: form,
             })

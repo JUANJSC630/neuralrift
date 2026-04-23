@@ -60,6 +60,7 @@ export default function Images({ images }: Props) {
             const xsrf = getCookie('XSRF-TOKEN')
             const res = await fetch('/admin/images', {
                 method: 'DELETE',
+                credentials: 'same-origin',
                 headers: {
                     'Content-Type': 'application/json',
                     ...(xsrf ? { 'X-XSRF-TOKEN': decodeURIComponent(xsrf) } : {}),
@@ -93,6 +94,7 @@ export default function Images({ images }: Props) {
         for (const path of paths) {
             await fetch('/admin/images', {
                 method: 'DELETE',
+                credentials: 'same-origin',
                 headers: {
                     'Content-Type': 'application/json',
                     ...(xsrf ? { 'X-XSRF-TOKEN': decodeURIComponent(xsrf) } : {}),
