@@ -108,6 +108,7 @@ export default function PostEdit({ post, categories, tags, affiliates }: Props) 
         content: post?.content ?? '',
         content_en: post?.content_en ?? '',
         cover_image: post?.cover_image ?? '',
+        og_image: post?.og_image ?? '',
         category_id: post?.category?.id?.toString() ?? '',
         status: (post?.status ?? 'draft') as Post['status'],
         lang: (post?.lang ?? 'es') as Post['lang'],
@@ -528,6 +529,18 @@ export default function PostEdit({ post, categories, tags, affiliates }: Props) 
                             >
                                 {uploading ? 'Subiendo...' : '↑ Subir imagen'}
                             </button>
+                            <div className="border-t border-white/[0.06] pt-3">
+                                <label className="mb-1.5 block text-xs text-nr-faint">
+                                    OG Image (redes sociales)
+                                </label>
+                                <input
+                                    type="text"
+                                    value={data.og_image}
+                                    onChange={e => set('og_image', e.target.value)}
+                                    placeholder="URL de la imagen OG (opcional, usa portada si vacío)"
+                                    className="glass w-full rounded-lg border border-white/[0.08] px-3 py-2 text-xs text-nr-text outline-none transition-colors focus:border-nr-accent/50"
+                                />
+                            </div>
                         </div>
 
                         {/* Tags */}

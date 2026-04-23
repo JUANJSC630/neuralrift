@@ -1,0 +1,23 @@
+[phases.setup]
+nixPkgs = [
+  "php83",
+  "php83Packages.composer",
+  "php83Extensions.pdo_mysql",
+  "php83Extensions.redis",
+  "php83Extensions.gd",
+  "nodejs_20",
+]
+
+[phases.install]
+cmds = [
+  "composer install --no-dev --optimize-autoloader --no-interaction",
+  "npm ci",
+]
+
+[phases.build]
+cmds = [
+  "npm run build",
+]
+
+[start]
+cmd = "bash scripts/start.sh"

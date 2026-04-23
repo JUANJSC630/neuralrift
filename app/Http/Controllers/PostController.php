@@ -90,6 +90,10 @@ class PostController extends Controller
             ],
         ];
 
+        if ($post->og_image || $post->cover_image) {
+            $schema['image'] = $post->og_image ?: $post->cover_image;
+        }
+
         return Inertia::render('Blog/Show', [
             'post'       => $post,
             'related'    => $related,
