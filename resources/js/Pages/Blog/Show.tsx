@@ -1,5 +1,5 @@
 import { Head, Link } from '@inertiajs/react'
-import { useEffect, useRef } from 'react'
+import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 import Navbar from '@/Components/Layout/Navbar'
 import Footer from '@/Components/Layout/Footer'
@@ -54,13 +54,14 @@ export default function BlogShow({
 
     const [featuredAffiliate, ...restAffiliates] = post.affiliates ?? []
 
-    // Client-side syntax highlighting: runs directly on DOM code blocks after
-    // mount, bypassing renderToHTMLString which may not work in the browser bundle.
-    const proseRef = useRef<HTMLDivElement>(null)
+    // Client-side syntax highlighting stored in state so React re-renders
+    // (triggered by CommentSection/LikeButton Inertia activity) don't revert
+    // the highlighted DOM back to the raw `content` string.
+    const [displayContent, setDisplayContent] = useState(content)
     useEffect(() => {
-        if (!proseRef.current) return
-        proseRef.current.querySelectorAll<HTMLElement>('pre code').forEach(codeEl => {
-            // textContent gives us the decoded raw code (strips any existing spans)
+        const div = document.createElement('div')
+        div.innerHTML = content
+        div.querySelectorAll<HTMLElement>('pre code').forEach(codeEl => {
             const code = codeEl.textContent ?? ''
             if (!code.trim()) return
             const lang =
@@ -69,6 +70,7 @@ export default function BlogShow({
                     ?.replace('language-', '') ?? ''
             codeEl.innerHTML = highlightCode(code, lang)
         })
+        setDisplayContent(div.innerHTML)
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
@@ -302,10 +304,9 @@ export default function BlogShow({
 
                             {/* Post content */}
                             <div
-                                ref={proseRef}
                                 className="nr-prose"
                                 suppressHydrationWarning
-                                dangerouslySetInnerHTML={{ __html: content }}
+                                dangerouslySetInnerHTML={{ __html: displayContent }}
                             />
 
                             {/* Like CTA */}
