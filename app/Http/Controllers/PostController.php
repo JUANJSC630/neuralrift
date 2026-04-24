@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Post;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -49,7 +50,7 @@ class PostController extends Controller
         ]);
     }
 
-    public function show(string $slug): Response
+    public function show(string $slug): Response|RedirectResponse
     {
         $lang = app()->getLocale();
         $isEn = $lang === 'en';
@@ -61,6 +62,15 @@ class PostController extends Controller
             ->with(['category', 'author', 'tags', 'affiliates'])
             ->withCount('approvedComments as comments_count')
             ->firstOrFail();
+
+        // Redirect to the canonical language if the post doesn't support the requested locale.
+        // e.g. visiting /en/blog/slug for a lang='es' post → redirect to /blog/{slug}
+        if ($isEn && $post->lang === 'es') {
+            return redirect("/blog/{$post->slug}", 301);
+        }
+        if (! $isEn && $post->lang === 'en') {
+            return redirect("/en/blog/{$post->slug_en}", 301);
+        }
 
         // Load threaded approved comments
         $comments = $post->approvedComments()
@@ -116,8 +126,9 @@ class PostController extends Controller
             'lang' => $lang,
             'canonical' => url($isEn ? "/en/blog/{$post->slug_en}" : "/blog/{$post->slug}"),
             'alternates' => [
-                'es' => url("/blog/{$post->slug}"),
-                'en' => $post->slug_en ? url("/en/blog/{$post->slug_en}") : null,
+                // Null means "no version in this locale" → language switcher falls back to homepage
+                'es' => $post->lang !== 'en' ? url("/blog/{$post->slug}") : null,
+                'en' => ($post->lang !== 'es' && $post->slug_en) ? url("/en/blog/{$post->slug_en}") : null,
             ],
         ]);
     }

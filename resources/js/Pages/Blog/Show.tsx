@@ -40,7 +40,8 @@ export default function BlogShow({
         ? (CATEGORY_COLORS[post.category.name] ?? post.category.color ?? '#7C6AF7')
         : '#7C6AF7'
     const { locale, t, localePath } = useLocale()
-    const isEn = locale === 'en'
+    // Only treat as English if both the user's locale AND the post's lang field support it
+    const isEn = locale === 'en' && (post.lang === 'en' || post.lang === 'both')
 
     const title = isEn && post.title_en ? post.title_en : post.title
     const raw = isEn && post.content_en ? post.content_en : post.content
