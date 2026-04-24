@@ -1,0 +1,44 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Support\Facades\DB;
+
+return new class extends Migration
+{
+    public function up(): void
+    {
+        $categories = [
+            ['name' => 'IA Generativa',   'name_en' => 'Generative AI',  'color' => '#7C6AF7', 'icon' => '✦',   'order' => 1,  'description' => 'Todo sobre modelos de lenguaje, imagen y audio generativos.', 'description_en' => null],
+            ['name' => 'Herramientas',    'name_en' => 'Tools',           'color' => '#06B6D4', 'icon' => '⚡',  'order' => 2,  'description' => 'Reviews y comparativas de las mejores herramientas IA.', 'description_en' => null],
+            ['name' => 'Tutoriales',      'name_en' => 'Tutorials',       'color' => '#10B981', 'icon' => '◈',   'order' => 3,  'description' => 'Guías paso a paso para dominar la inteligencia artificial.', 'description_en' => null],
+            ['name' => 'Reviews',         'name_en' => 'Reviews',         'color' => '#F59E0B', 'icon' => '★',   'order' => 4,  'description' => 'Análisis honestos y en profundidad de productos y servicios IA.', 'description_en' => null],
+            ['name' => 'Negocios',        'name_en' => 'Business',        'color' => '#EC4899', 'icon' => '◉',   'order' => 5,  'description' => 'Cómo monetizar y escalar negocios con inteligencia artificial.', 'description_en' => null],
+            ['name' => 'Noticias',        'name_en' => 'News',            'color' => '#F97316', 'icon' => '≋',   'order' => 6,  'description' => 'Las últimas novedades del ecosistema de IA.', 'description_en' => null],
+            ['name' => 'Desarrollo Web',  'name_en' => 'Web Dev',         'color' => '#3B82F6', 'icon' => '⟨/⟩', 'order' => 7,  'description' => 'Laravel, React, Inertia, deploy y arquitectura web moderna.', 'description_en' => 'Laravel, React, Inertia, deployment and modern web architecture.'],
+            ['name' => 'Productividad',   'name_en' => 'Productivity',    'color' => '#8B5CF6', 'icon' => '⊡',   'order' => 8,  'description' => 'Herramientas y sistemas para trabajar mejor y en menos tiempo.', 'description_en' => 'Tools and systems to work smarter and faster.'],
+            ['name' => 'Freelancing',     'name_en' => 'Freelancing',     'color' => '#14B8A6', 'icon' => '◆',   'order' => 9,  'description' => 'Cómo conseguir clientes, cobrar en dólares y escalar como freelancer desde LATAM.', 'description_en' => 'How to get clients, charge in USD and scale as a freelancer from LATAM.'],
+            ['name' => 'Automatización',  'name_en' => 'Automation',      'color' => '#EF4444', 'icon' => '⟳',   'order' => 10, 'description' => 'Make, n8n, Zapier y flujos de trabajo que ahorran horas cada semana.', 'description_en' => 'Make, n8n, Zapier and workflows that save hours every week.'],
+        ];
+
+        foreach ($categories as $cat) {
+            $slug = \Illuminate\Support\Str::slug($cat['name']);
+            DB::table('categories')->updateOrInsert(
+                ['slug' => $slug],
+                array_merge($cat, [
+                    'slug'       => $slug,
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ])
+            );
+        }
+    }
+
+    public function down(): void
+    {
+        DB::table('categories')->whereIn('slug', [
+            'ia-generativa', 'herramientas', 'tutoriales', 'reviews',
+            'negocios', 'noticias', 'desarrollo-web', 'productividad',
+            'freelancing', 'automatizacion',
+        ])->delete();
+    }
+};
