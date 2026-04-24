@@ -5,11 +5,20 @@ import { useLocale } from '@/hooks/useLocale'
 import { getNavLinks, LOCALE_ROUTES } from '@/lib/i18n'
 import CustomCursor from '@/Components/Layout/CustomCursor'
 
+function isActiveLink(href: string, currentUrl: string): boolean {
+    if (href.includes('#')) return false
+    const path = currentUrl.split('?')[0]
+    if (path === href) return true
+    if (href !== '/' && href !== '/en' && path.startsWith(href + '/')) return true
+    return false
+}
+
 export default function Navbar() {
     const [scrolled, setScrolled] = useState(false)
     const [mobileOpen, setMobileOpen] = useState(false)
     const { locale, t, localePath } = useLocale()
     const navLinks = getNavLinks(locale)
+    const { url: currentUrl } = usePage()
 
     useEffect(() => {
         const onScroll = () => setScrolled(window.scrollY > 20)
@@ -79,17 +88,29 @@ export default function Navbar() {
 
                 {/* Links desktop */}
                 <ul className="hidden flex-1 items-center justify-center gap-8 md:flex">
-                    {navLinks.map(link => (
-                        <li key={link.href}>
-                            <Link
-                                href={link.href}
-                                className="group relative text-sm font-medium text-nr-muted transition-colors hover:text-nr-text"
-                            >
-                                {link.label}
-                                <span className="absolute -bottom-1 left-0 right-0 h-px origin-left scale-x-0 bg-nr-accent transition-transform duration-300 group-hover:scale-x-100" />
-                            </Link>
-                        </li>
-                    ))}
+                    {navLinks.map(link => {
+                        const active = isActiveLink(link.href, currentUrl)
+                        return (
+                            <li key={link.href}>
+                                <Link
+                                    href={link.href}
+                                    className={cn(
+                                        'group relative text-sm font-medium transition-colors hover:text-nr-text',
+                                        active ? 'text-nr-text' : 'text-nr-muted',
+                                    )}
+                                    aria-current={active ? 'page' : undefined}
+                                >
+                                    {link.label}
+                                    <span
+                                        className={cn(
+                                            'absolute -bottom-1 left-0 right-0 h-px bg-gradient-to-r from-nr-accent to-nr-cyan transition-transform duration-300',
+                                            active ? 'scale-x-100' : 'origin-left scale-x-0 group-hover:scale-x-100',
+                                        )}
+                                    />
+                                </Link>
+                            </li>
+                        )
+                    })}
                 </ul>
 
                 {/* Actions */}
@@ -136,16 +157,26 @@ export default function Navbar() {
                         id="mobile-nav"
                         className="glass-strong absolute left-0 right-0 top-full flex flex-col gap-3 border-b border-white/[0.08] px-6 py-4 md:hidden"
                     >
-                        {navLinks.map(link => (
-                            <Link
-                                key={link.href}
-                                href={link.href}
-                                className="flex min-h-[44px] items-center text-base font-medium text-nr-muted transition-colors hover:text-nr-text"
-                                onClick={() => setMobileOpen(false)}
-                            >
-                                {link.label}
-                            </Link>
-                        ))}
+                        {navLinks.map(link => {
+                            const active = isActiveLink(link.href, currentUrl)
+                            return (
+                                <Link
+                                    key={link.href}
+                                    href={link.href}
+                                    className={cn(
+                                        'flex min-h-[44px] items-center gap-2 text-base font-medium transition-colors hover:text-nr-text',
+                                        active ? 'text-nr-text' : 'text-nr-muted',
+                                    )}
+                                    aria-current={active ? 'page' : undefined}
+                                    onClick={() => setMobileOpen(false)}
+                                >
+                                    {active && (
+                                        <span className="h-4 w-0.5 rounded-full bg-gradient-to-b from-nr-accent to-nr-cyan" />
+                                    )}
+                                    {link.label}
+                                </Link>
+                            )
+                        })}
                         <div className="mt-1 border-t border-white/[0.06] pt-2">
                             <Link
                                 href={getSwitchUrl()}
