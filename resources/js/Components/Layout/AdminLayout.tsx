@@ -4,7 +4,7 @@ import { ADMIN_NAV } from '@/lib/constants'
 import { cn } from '@/lib/utils'
 import type { PageProps } from '@/types'
 
-/* ── Toast notification type ─────────────────────────── */
+/* ── Types ─────────────────────────────────────────────── */
 interface Toast {
     id: string
     type: 'success' | 'error'
@@ -12,16 +12,46 @@ interface Toast {
     editUrl?: string | null
 }
 
+interface ActiveJob {
+    status: 'pending' | 'running' | 'failed'
+    topic: string
+    type: string
+    started_at: string
+    error?: string
+}
+
 interface Props {
     children: React.ReactNode
     title?: string
+}
+
+/* ── Elapsed time counter ───────────────────────────────── */
+function ElapsedTime({ startedAt }: { startedAt: string }) {
+    const [elapsed, setElapsed] = useState(() =>
+        Math.floor((Date.now() - new Date(startedAt).getTime()) / 1000),
+    )
+    useEffect(() => {
+        const t = setInterval(
+            () => setElapsed(Math.floor((Date.now() - new Date(startedAt).getTime()) / 1000)),
+            1000,
+        )
+        return () => clearInterval(t)
+    }, [startedAt])
+    if (elapsed < 60) return <>{elapsed}s</>
+    return (
+        <>
+            {Math.floor(elapsed / 60)}m {elapsed % 60}s
+        </>
+    )
 }
 
 export default function AdminLayout({ children, title }: Props) {
     const { auth, flash } = usePage<PageProps>().props
     const [collapsed, setCollapsed] = useState(false)
     const [toasts, setToasts] = useState<Toast[]>([])
-    const pollingRef = useRef<ReturnType<typeof setInterval> | null>(null)
+    const [activeJob, setActiveJob] = useState<ActiveJob | null>(null)
+    const notifPollingRef = useRef<ReturnType<typeof setInterval> | null>(null)
+    const jobPollingRef = useRef<ReturnType<typeof setInterval> | null>(null)
 
     // Persist seen IDs in sessionStorage so Inertia SPA navigations don't re-show toasts
     const seenIdsRef = useRef<Set<string>>(
@@ -39,7 +69,7 @@ export default function AdminLayout({ children, title }: Props) {
 
     const currentPath = typeof window !== 'undefined' ? window.location.pathname : ''
 
-    /* ── Remove toast after delay ─────────────────────── */
+    /* ── Toast helpers ──────────────────────────────────── */
     const removeToast = useCallback((id: string) => {
         setToasts(prev => prev.filter(t => t.id !== id))
     }, [])
@@ -52,7 +82,7 @@ export default function AdminLayout({ children, title }: Props) {
         [removeToast],
     )
 
-    // Flash → toast (auto-dismiss)
+    /* ── Flash → toast ──────────────────────────────────── */
     const flashRef = useRef<string | null>(null)
     useEffect(() => {
         if (flash?.success && flash.success !== flashRef.current) {
@@ -64,6 +94,57 @@ export default function AdminLayout({ children, title }: Props) {
             addToast({ id: `flash-${Date.now()}`, type: 'error', message: flash.error })
         }
     }, [flash?.success, flash?.error, addToast])
+
+    /* ── Job status polling ─────────────────────────────── */
+    useEffect(() => {
+        if (typeof window === 'undefined') return
+
+        const pollJobStatus = async () => {
+            try {
+                const res = await fetch('/admin/ai-generator/status', {
+                    credentials: 'same-origin',
+                    headers: { Accept: 'application/json' },
+                })
+                if (!res.ok) return
+                const data = await res.json()
+                const job: ActiveJob | null = data.job ?? null
+                setActiveJob(prev => {
+                    // If job just disappeared (was active, now null) — it completed
+                    if (prev && (prev.status === 'pending' || prev.status === 'running') && !job) {
+                        return null
+                    }
+                    // If job went to failed, auto-clear after 30s
+                    if (job?.status === 'failed' && (!prev || prev.status !== 'failed')) {
+                        setTimeout(() => setActiveJob(null), 30_000)
+                    }
+                    return job
+                })
+            } catch {
+                // ignore
+            }
+        }
+
+        pollJobStatus()
+
+        // Use dynamic interval: 3s while a job is in progress, 12s when idle
+        const scheduleNext = () => {
+            jobPollingRef.current = setTimeout(
+                async () => {
+                    await pollJobStatus()
+                    scheduleNext()
+                },
+                activeJob && activeJob.status !== 'failed' ? 3000 : 12_000,
+            )
+        }
+        scheduleNext()
+
+        return () => {
+            if (jobPollingRef.current) clearTimeout(jobPollingRef.current)
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [activeJob?.status])
+
+    /* ── Notification polling ───────────────────────────── */
     useEffect(() => {
         if (typeof window === 'undefined') return
 
@@ -93,36 +174,33 @@ export default function AdminLayout({ children, title }: Props) {
                             editUrl: n.edit_url,
                         })
                     } else if (n.type === 'ai_generation_failed') {
-                        addToast({
-                            id: n.id,
-                            type: 'error',
-                            message: n.message,
-                        })
+                        addToast({ id: n.id, type: 'error', message: n.message })
                     }
 
-                    // Mark as read on the server
                     fetch(`/admin/notifications/${n.id}/read`, {
                         method: 'POST',
                         credentials: 'same-origin',
-                        headers: {
-                            'X-XSRF-TOKEN': getXsrf(),
-                            Accept: 'application/json',
-                        },
+                        headers: { 'X-XSRF-TOKEN': getXsrf(), Accept: 'application/json' },
                     })
                 }
             } catch {
-                // Silently ignore fetch errors
+                // ignore
             }
         }
 
-        // Poll every 5 seconds
         poll()
-        pollingRef.current = setInterval(poll, 5000)
+        notifPollingRef.current = setInterval(poll, 5000)
 
         return () => {
-            if (pollingRef.current) clearInterval(pollingRef.current)
+            if (notifPollingRef.current) clearInterval(notifPollingRef.current)
         }
     }, [addToast])
+
+    const typeLabel: Record<string, string> = {
+        news: 'Noticia',
+        tutorial: 'Tutorial',
+        review: 'Review',
+    }
 
     return (
         <div className="admin-layout flex h-screen overflow-hidden bg-nr-bg font-sans">
@@ -230,6 +308,77 @@ export default function AdminLayout({ children, title }: Props) {
                         </Link>
                     </div>
                 </header>
+
+                {/* ── AI Job status banner ─────────────────── */}
+                {activeJob && (
+                    <div
+                        className={cn(
+                            'flex flex-shrink-0 items-center gap-3 border-b px-6 py-2.5',
+                            activeJob.status === 'failed'
+                                ? 'border-nr-red/20 bg-nr-red/[0.07]'
+                                : 'border-nr-accent/20 bg-nr-accent/[0.06]',
+                        )}
+                    >
+                        {activeJob.status === 'failed' ? (
+                            <span className="text-sm text-nr-red">✕</span>
+                        ) : (
+                            <span className="relative flex h-2 w-2 flex-shrink-0">
+                                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-nr-accent opacity-60" />
+                                <span className="relative inline-flex h-2 w-2 rounded-full bg-nr-accent" />
+                            </span>
+                        )}
+
+                        <div className="flex flex-1 flex-wrap items-center gap-x-3 gap-y-0.5">
+                            {activeJob.status === 'failed' ? (
+                                <>
+                                    <span className="text-xs font-semibold text-nr-red">
+                                        Error al generar borrador
+                                    </span>
+                                    {activeJob.error && (
+                                        <span className="truncate text-[11px] text-nr-faint">
+                                            {activeJob.error}
+                                        </span>
+                                    )}
+                                </>
+                            ) : (
+                                <>
+                                    <span className="text-xs font-semibold text-nr-accent">
+                                        {activeJob.status === 'pending'
+                                            ? 'Borrador en cola...'
+                                            : 'Generando borrador con IA...'}
+                                    </span>
+                                    <span className="truncate text-[11px] text-nr-muted">
+                                        {typeLabel[activeJob.type] ?? activeJob.type} — "
+                                        {activeJob.topic}"
+                                    </span>
+                                </>
+                            )}
+                        </div>
+
+                        <div className="flex flex-shrink-0 items-center gap-3">
+                            {activeJob.status !== 'failed' && (
+                                <span className="font-mono text-[11px] text-nr-faint">
+                                    <ElapsedTime startedAt={activeJob.started_at} />
+                                </span>
+                            )}
+                            {activeJob.status !== 'failed' && (
+                                <Link
+                                    href="/admin/ai-generator"
+                                    className="text-[11px] text-nr-accent underline decoration-nr-accent/30 underline-offset-2 hover:decoration-nr-accent"
+                                >
+                                    Ver
+                                </Link>
+                            )}
+                            <button
+                                onClick={() => setActiveJob(null)}
+                                className="text-xs text-nr-faint transition-colors hover:text-nr-muted"
+                                aria-label="Cerrar"
+                            >
+                                ✕
+                            </button>
+                        </div>
+                    </div>
+                )}
 
                 {/* Content */}
                 <main className="flex-1 overflow-y-auto p-6">{children}</main>

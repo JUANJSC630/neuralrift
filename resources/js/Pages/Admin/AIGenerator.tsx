@@ -1,12 +1,21 @@
 import AdminLayout from '@/Components/Layout/AdminLayout'
-import { Head, useForm } from '@inertiajs/react'
+import { Head, Link, useForm } from '@inertiajs/react'
 import { useState } from 'react'
 import { cn } from '@/lib/utils'
 import type { Category, Affiliate } from '@/types'
 
+interface ActiveJob {
+    status: 'pending' | 'running' | 'failed'
+    topic: string
+    type: string
+    started_at: string
+    error?: string
+}
+
 interface Props {
     categories: Category[]
     affiliates: (Affiliate & { category: string })[]
+    activeJob?: ActiveJob | null
 }
 
 type PostType = 'news' | 'tutorial' | 'review'
@@ -49,8 +58,9 @@ const selectCls = `w-full bg-nr-bg border border-white/[0.08] rounded-xl px-4 py
                    text-sm text-nr-muted outline-none focus:border-nr-accent/50
                    transition-colors`
 
-export default function AIGenerator({ categories, affiliates }: Props) {
+export default function AIGenerator({ categories, affiliates, activeJob: initialJob }: Props) {
     const [generating, setGenerating] = useState(false)
+    const jobActive = !!initialJob && initialJob.status !== 'failed'
 
     const { data, setData, post, processing, errors } = useForm({
         post_type: 'tutorial' as PostType,
@@ -96,17 +106,48 @@ export default function AIGenerator({ categories, affiliates }: Props) {
                         </div>
                     </div>
 
-                    {/* Aviso importante */}
-                    <div className="glass mt-4 flex items-start gap-3 rounded-xl border border-nr-gold/20 p-4">
-                        <span className="flex-shrink-0 text-sm text-nr-gold">⚠</span>
-                        <p className="text-xs leading-relaxed text-nr-muted">
-                            El borrador se guarda como{' '}
-                            <strong className="text-nr-gold">"En revisión"</strong> y nunca se
-                            publica automáticamente. Siempre revisa, ajusta y añade tu voz antes de
-                            publicar. Recibirás una notificación cuando esté listo (~30-60
-                            segundos).
-                        </p>
-                    </div>
+                    {/* Active job callout — replaces warning when job is running */}
+                    {jobActive && initialJob ? (
+                        <div className="mt-4 flex items-start gap-3 rounded-xl border border-nr-accent/25 bg-nr-accent/[0.08] p-4">
+                            <span className="relative mt-0.5 flex h-2.5 w-2.5 flex-shrink-0">
+                                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-nr-accent opacity-60" />
+                                <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-nr-accent" />
+                            </span>
+                            <div className="flex-1">
+                                <p className="text-xs font-semibold text-nr-accent">
+                                    {initialJob.status === 'pending'
+                                        ? 'Borrador en cola — en espera de procesamiento...'
+                                        : 'Generando borrador con IA — esto tarda ~30–60 segundos...'}
+                                </p>
+                                <p className="mt-1 text-[11px] text-nr-muted">
+                                    {POST_TYPES.find(t => t.id === initialJob.type)?.label ??
+                                        initialJob.type}
+                                    {' — '}"{initialJob.topic}"
+                                </p>
+                                <p className="mt-2 text-[11px] text-nr-faint">
+                                    Recibirás una notificación cuando el borrador esté listo. Puedes
+                                    navegar por el admin mientras tanto.
+                                </p>
+                            </div>
+                            <Link
+                                href="/admin/posts?status=review"
+                                className="flex-shrink-0 text-[11px] text-nr-accent underline decoration-nr-accent/30 underline-offset-2 hover:decoration-nr-accent"
+                            >
+                                Ver borradores →
+                            </Link>
+                        </div>
+                    ) : (
+                        <div className="glass mt-4 flex items-start gap-3 rounded-xl border border-nr-gold/20 p-4">
+                            <span className="flex-shrink-0 text-sm text-nr-gold">⚠</span>
+                            <p className="text-xs leading-relaxed text-nr-muted">
+                                El borrador se guarda como{' '}
+                                <strong className="text-nr-gold">"En revisión"</strong> y nunca se
+                                publica automáticamente. Siempre revisa, ajusta y añade tu voz antes
+                                de publicar. Recibirás una notificación cuando esté listo (~30-60
+                                segundos).
+                            </p>
+                        </div>
+                    )}
                 </div>
 
                 <form onSubmit={handleSubmit} className="space-y-6">
@@ -356,7 +397,7 @@ export default function AIGenerator({ categories, affiliates }: Props) {
                     <div className="flex items-center gap-4">
                         <button
                             type="submit"
-                            disabled={processing || generating || !data.topic.trim()}
+                            disabled={processing || generating || jobActive || !data.topic.trim()}
                             className={cn(
                                 'flex items-center gap-3 rounded-xl px-8 py-3.5 font-semibold',
                                 'bg-gradient-to-r from-nr-accent to-nr-accent-dark text-white',
@@ -364,10 +405,10 @@ export default function AIGenerator({ categories, affiliates }: Props) {
                                 'disabled:translate-y-0 disabled:cursor-not-allowed disabled:opacity-50',
                             )}
                         >
-                            {processing || generating ? (
+                            {processing || generating || jobActive ? (
                                 <>
                                     <span className="h-4 w-4 animate-spin rounded-full border-2 border-white/30 border-t-white" />
-                                    Generando borrador...
+                                    {jobActive ? 'Generación en curso...' : 'Generando borrador...'}
                                 </>
                             ) : (
                                 <>

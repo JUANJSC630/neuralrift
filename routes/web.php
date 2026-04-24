@@ -124,6 +124,8 @@ Route::middleware(['auth', 'verified', 'admin'])
         // AI Generator
         Route::get('/ai-generator', [AIGeneratorController::class, 'index'])
             ->name('ai-generator');
+        Route::get('/ai-generator/status', [AIGeneratorController::class, 'status'])
+            ->name('ai-generator.status');
         Route::post('/ai-generator/generate', [AIGeneratorController::class, 'generate'])
             ->name('ai-generator.generate')
             ->middleware('throttle:5,1');
