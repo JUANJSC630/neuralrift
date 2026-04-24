@@ -6,6 +6,8 @@ import Highlight from '@tiptap/extension-highlight'
 import { createLowlight, common } from 'lowlight'
 
 const lowlight = createLowlight(common)
+lowlight.registerAlias('typescript', ['tsx'])
+lowlight.registerAlias('javascript', ['jsx'])
 
 // ── Minimal hast → HTML converter ─────────────────────────────────────────
 // lowlight outputs a predictable hast tree: root / element (span) / text only.

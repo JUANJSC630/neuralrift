@@ -12,6 +12,8 @@ import typescript from 'highlight.js/lib/languages/typescript'
 import php from 'highlight.js/lib/languages/php'
 import bash from 'highlight.js/lib/languages/bash'
 import css from 'highlight.js/lib/languages/css'
+import xml from 'highlight.js/lib/languages/xml'
+import json from 'highlight.js/lib/languages/json'
 
 // StarterKit v3 ya incluye Link — no importar por separado para evitar duplicado
 const lowlight = createLowlight()
@@ -20,6 +22,23 @@ lowlight.register('typescript', typescript)
 lowlight.register('php', php)
 lowlight.register('bash', bash)
 lowlight.register('css', css)
+lowlight.register('xml', xml)
+lowlight.register('json', json)
+// tsx/jsx usan las mismas gramáticas que ts/js
+lowlight.registerAlias('typescript', ['tsx'])
+lowlight.registerAlias('javascript', ['jsx'])
+
+const CODE_LANGUAGES = [
+    { value: 'javascript', label: 'JavaScript' },
+    { value: 'typescript', label: 'TypeScript' },
+    { value: 'tsx',        label: 'TSX' },
+    { value: 'jsx',        label: 'JSX' },
+    { value: 'php',        label: 'PHP' },
+    { value: 'bash',       label: 'Bash' },
+    { value: 'css',        label: 'CSS' },
+    { value: 'xml',        label: 'HTML' },
+    { value: 'json',       label: 'JSON' },
+]
 
 interface Props {
     content: string
@@ -205,6 +224,27 @@ export default function TiptapEditor({
                     active={editor.isActive('codeBlock')}
                     title="Bloque de código"
                 >{`{ }`}</ToolbarBtn>
+                {editor.isActive('codeBlock') && (
+                    <select
+                        value={editor.getAttributes('codeBlock').language ?? ''}
+                        onChange={e =>
+                            editor
+                                .chain()
+                                .focus()
+                                .updateAttributes('codeBlock', { language: e.target.value })
+                                .run()
+                        }
+                        className="ml-1 rounded bg-white/[0.06] px-1.5 py-0.5 font-mono text-[11px] text-nr-faint outline-none focus:text-nr-muted"
+                        title="Idioma del bloque"
+                    >
+                        <option value="">auto</option>
+                        {CODE_LANGUAGES.map(l => (
+                            <option key={l.value} value={l.value}>
+                                {l.label}
+                            </option>
+                        ))}
+                    </select>
+                )}
 
                 <span className="mx-1 h-4 w-px bg-white/10" />
 
