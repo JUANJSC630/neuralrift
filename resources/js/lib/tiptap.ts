@@ -34,7 +34,7 @@ function hastToHtml(node: HastNode): string {
     return (node.children ?? []).map(hastToHtml).join('')
 }
 
-function highlightCode(code: string, language: string): string {
+export function highlightCode(code: string, language: string): string {
     try {
         const tree =
             language && lowlight.registered(language)

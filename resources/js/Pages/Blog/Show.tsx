@@ -11,7 +11,7 @@ import TableOfContents from '@/Components/Blog/TableOfContents'
 import ShareButtons from '@/Components/Blog/ShareButtons'
 import CommentSection from '@/Components/Blog/CommentSection'
 import { formatDate, readTime } from '@/lib/utils'
-import { renderContent } from '@/lib/tiptap'
+import { renderContent, highlightCode } from '@/lib/tiptap'
 import { CATEGORY_COLORS, SITE } from '@/lib/constants'
 import { useLocale } from '@/hooks/useLocale'
 import LikeButton from '@/Components/Blog/LikeButton'
@@ -54,16 +54,21 @@ export default function BlogShow({
 
     const [featuredAffiliate, ...restAffiliates] = post.affiliates ?? []
 
-    // Client-side re-render fallback: ensures hljs syntax highlighting even when
-    // SSR output differs slightly from client output (hydration mismatch).
+    // Client-side syntax highlighting: runs directly on DOM code blocks after
+    // mount, bypassing renderToHTMLString which may not work in the browser bundle.
     const proseRef = useRef<HTMLDivElement>(null)
     useEffect(() => {
         if (!proseRef.current) return
-        const rendered = renderContent(raw)
-        // Only update if we got actual HTML back (not the original JSON/string)
-        if (rendered && rendered !== raw && rendered.includes('<')) {
-            proseRef.current.innerHTML = rendered
-        }
+        proseRef.current.querySelectorAll<HTMLElement>('pre code').forEach(codeEl => {
+            // textContent gives us the decoded raw code (strips any existing spans)
+            const code = codeEl.textContent ?? ''
+            if (!code.trim()) return
+            const lang =
+                Array.from(codeEl.classList)
+                    .find(c => c.startsWith('language-'))
+                    ?.replace('language-', '') ?? ''
+            codeEl.innerHTML = highlightCode(code, lang)
+        })
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
