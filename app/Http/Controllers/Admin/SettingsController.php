@@ -38,10 +38,12 @@ class SettingsController extends Controller
             'twitter'  => 'nullable|string|max:50',
             'linkedin' => 'nullable|url',
             'website'  => 'nullable|url',
+            'skills'   => 'nullable|array',
+            'skills.*' => 'string|max:50',
         ]);
 
         auth()->user()->update($request->only([
-            'name', 'bio', 'twitter', 'linkedin', 'website',
+            'name', 'bio', 'twitter', 'linkedin', 'website', 'skills',
         ]));
 
         return back()->with('success', 'Ajustes guardados.');

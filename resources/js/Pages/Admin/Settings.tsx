@@ -1,5 +1,6 @@
 import AdminLayout from '@/Components/Layout/AdminLayout'
 import { Head, useForm } from '@inertiajs/react'
+import { useState, useRef } from 'react'
 import { cn } from '@/lib/utils'
 import type { User } from '@/types'
 
@@ -38,13 +39,41 @@ const inputCls = `w-full bg-nr-bg2 border border-white/[0.08] rounded-xl px-4 py
                   transition-colors placeholder-nr-faint/40`
 
 export default function Settings({ settings, user }: Props) {
+    const DEFAULT_SKILLS = [
+        'IA Generativa', 'Prompt Engineering', 'React / Next.js', 'Laravel',
+        'SEO Técnico', 'Marketing de Afiliados', 'Automatización', 'TypeScript',
+    ]
+
     const { data, setData, post, processing, errors, recentlySuccessful } = useForm({
-        name: user.name ?? '',
-        bio: user.bio ?? '',
+        name:    user.name    ?? '',
+        bio:     user.bio     ?? '',
         twitter: user.twitter ?? '',
         linkedin: user.linkedin ?? '',
-        website: user.website ?? '',
+        website:  user.website  ?? '',
+        skills:  user.skills  ?? DEFAULT_SKILLS,
     })
+
+    const [skillInput, setSkillInput] = useState('')
+    const skillInputRef = useRef<HTMLInputElement>(null)
+
+    const addSkill = () => {
+        const trimmed = skillInput.trim()
+        if (!trimmed || data.skills.includes(trimmed)) return
+        setData('skills', [...data.skills, trimmed])
+        setSkillInput('')
+        skillInputRef.current?.focus()
+    }
+
+    const removeSkill = (skill: string) => {
+        setData('skills', data.skills.filter(s => s !== skill))
+    }
+
+    const handleSkillKeyDown = (e: React.KeyboardEvent) => {
+        if (e.key === 'Enter') { e.preventDefault(); addSkill() }
+        if (e.key === 'Backspace' && !skillInput && data.skills.length > 0) {
+            setData('skills', data.skills.slice(0, -1))
+        }
+    }
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault()
@@ -134,6 +163,43 @@ export default function Settings({ settings, user }: Props) {
                                 className={inputCls}
                                 placeholder="https://linkedin.com/in/..."
                             />
+                        </Field>
+
+                        <Field label="Áreas de expertise (página About)">
+                            <div className="min-h-[44px] w-full cursor-text rounded-xl border border-white/[0.08] bg-nr-bg2 px-3 py-2 transition-colors focus-within:border-nr-accent/40"
+                                onClick={() => skillInputRef.current?.focus()}
+                            >
+                                <div className="flex flex-wrap gap-1.5">
+                                    {data.skills.map(skill => (
+                                        <span
+                                            key={skill}
+                                            className="inline-flex items-center gap-1 rounded-lg bg-nr-accent/15 px-2.5 py-1 text-xs font-medium text-nr-accent"
+                                        >
+                                            {skill}
+                                            <button
+                                                type="button"
+                                                onClick={() => removeSkill(skill)}
+                                                className="ml-0.5 text-nr-accent/60 transition-colors hover:text-nr-red"
+                                                aria-label={`Eliminar ${skill}`}
+                                            >
+                                                ✕
+                                            </button>
+                                        </span>
+                                    ))}
+                                    <input
+                                        ref={skillInputRef}
+                                        value={skillInput}
+                                        onChange={e => setSkillInput(e.target.value)}
+                                        onKeyDown={handleSkillKeyDown}
+                                        onBlur={addSkill}
+                                        placeholder={data.skills.length === 0 ? 'Escribe una habilidad y presiona Enter...' : '+'}
+                                        className="min-w-[120px] flex-1 bg-transparent text-sm text-nr-text outline-none placeholder-nr-faint/40"
+                                    />
+                                </div>
+                            </div>
+                            <p className="mt-1 text-[10px] text-nr-faint">
+                                Presiona <kbd className="rounded bg-white/[0.06] px-1 font-mono">Enter</kbd> para añadir · <kbd className="rounded bg-white/[0.06] px-1 font-mono">Backspace</kbd> para eliminar el último
+                            </p>
                         </Field>
 
                         <div className="flex items-center gap-4 pt-2">

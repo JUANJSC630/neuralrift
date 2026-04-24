@@ -17,15 +17,9 @@ function fmtStat(n: number): string {
     return `${n}+`
 }
 
-const SKILLS = [
-    'IA Generativa',
-    'Prompt Engineering',
-    'React / Next.js',
-    'Laravel',
-    'SEO Técnico',
-    'Marketing de Afiliados',
-    'Automatización',
-    'TypeScript',
+const DEFAULT_SKILLS = [
+    'IA Generativa', 'Prompt Engineering', 'React / Next.js', 'Laravel',
+    'SEO Técnico', 'Marketing de Afiliados', 'Automatización', 'TypeScript',
 ]
 
 interface RawStats {
@@ -33,8 +27,10 @@ interface RawStats {
     subscribers: number
 }
 
-export default function About({ rawStats }: { rawStats?: RawStats }) {
+export default function About({ rawStats, skills: skillsProp }: { rawStats?: RawStats; skills?: string[] | null }) {
     const { t } = useLocale()
+
+    const skills      = skillsProp ?? DEFAULT_SKILLS
 
     const articles    = (rawStats?.articles    ?? 0) + BOOST_ARTICLES
     const subscribers = (rawStats?.subscribers ?? 0) + BOOST_SUBSCRIBERS
@@ -160,7 +156,7 @@ export default function About({ rawStats }: { rawStats?: RawStats }) {
                             {t('about.skills_title')}
                         </h2>
                         <div className="flex flex-wrap gap-2">
-                            {SKILLS.map((skill, i) => (
+                            {skills.map((skill, i) => (
                                 <motion.span
                                     key={skill}
                                     initial={{ opacity: 0, scale: 0.9 }}

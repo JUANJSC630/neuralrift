@@ -33,11 +33,13 @@ Route::get('/robots.txt',  [SeoController::class, 'robots']);
 // ── PÚBLICAS — ES (default) ──────────────────────────────
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/sobre-mi', function () {
+    $author = \App\Models\User::where('role', 'admin')->first();
     return Inertia::render('About', [
         'rawStats' => [
             'articles'    => Post::where('status', 'published')->count(),
             'subscribers' => Subscriber::where('confirmed', true)->count(),
         ],
+        'skills' => $author?->skills ?? null,
     ]);
 })->name('about');
 Route::get('/herramientas', [AffiliateController::class, 'index'])->name('tools');
@@ -64,11 +66,13 @@ Route::get('/afiliados',  fn() => Inertia::render('Legal/Affiliates'))->name('le
 Route::prefix('en')->name('en.')->group(function () {
     Route::get('/',      [HomeController::class, 'index'])->name('home');
     Route::get('/about', function () {
+        $author = \App\Models\User::where('role', 'admin')->first();
         return Inertia::render('About', [
             'rawStats' => [
                 'articles'    => Post::where('status', 'published')->count(),
                 'subscribers' => Subscriber::where('confirmed', true)->count(),
             ],
+            'skills' => $author?->skills ?? null,
         ]);
     })->name('about');
     Route::get('/tools', [AffiliateController::class, 'index'])->name('tools');

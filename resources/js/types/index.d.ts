@@ -10,6 +10,7 @@ export interface User {
     twitter?: string
     linkedin?: string
     website?: string
+    skills?: string[]
     role: 'admin' | 'editor' | 'author'
 }
 
