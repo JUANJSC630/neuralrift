@@ -182,6 +182,8 @@ export default function PostEdit({ post, categories, tags, affiliates }: Props) 
             showToast('error', 'Error de red al subir la imagen')
         } finally {
             setUploading(false)
+            // Reset the file input so the same file can be re-selected after a failure
+            if (fileInputRef.current) fileInputRef.current.value = ''
         }
     }
 
