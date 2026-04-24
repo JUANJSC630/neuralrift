@@ -244,7 +244,7 @@ export default function Analytics({
             </div>
 
             {/* Top posts + Countries + Affiliates */}
-            <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
+            <div className="grid grid-cols-1 items-start gap-6 lg:grid-cols-3">
                 {/* Top posts */}
                 <div className="glass rounded-2xl p-6">
                     <h3 className="mb-5 font-semibold text-nr-text">Top artículos</h3>
