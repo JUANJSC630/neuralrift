@@ -120,7 +120,7 @@ MAIL_FROM_NAME="NeuralRift"
 
 # Sitio (opcionales, mejoran el panel de ajustes)
 SITE_DESCRIPTION="Guías en profundidad sobre IA..."
-SITE_TWITTER="@neuralrift"
+SITE_TWITTER="@neuralrift-blog"
 ANALYTICS_ID="G-XXXXXXXXXX"
 ```
 

@@ -253,7 +253,7 @@ export default function Settings({ settings, user }: Props) {
                             Variables recomendadas en .env:
                         </p>
                         <pre className="font-mono text-[10px] leading-relaxed text-nr-muted">{`SITE_DESCRIPTION="El futuro de la IA..."
-SITE_TWITTER="@neuralrift"
+SITE_TWITTER="@neuralrift-blog"
 ANALYTICS_ID="G-XXXXXXXXXX"`}</pre>
                     </div>
                 </div>

@@ -19,7 +19,7 @@ export const SITE = {
     taglineEn: 'Tech, AI & tools to build smarter',
     url: 'https://neuralrift.up.railway.app',
     email: 'juansc0630@gmail.com',
-    twitter: '@neuralrift',
+    twitter: '@neuralrift-blog',
     author: 'Juan J Saldarriaga',
     description:
         'Guías técnicas, reviews honestas y estrategias para developers y freelancers que quieren construir mejores productos con tecnología e IA.',
