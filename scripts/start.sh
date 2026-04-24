@@ -53,9 +53,14 @@ QUEUE_PID=$!
 # PHP_INI_SCAN_DIR) don't propagate reliably to the child.
 # server.php at the project root handles static files and routes to public/index.php.
 echo "=== Starting PHP server on port ${PORT:-8080} ==="
+
+# Log effective PHP limits for debugging
+echo "PHP upload_max_filesize: $(php -d upload_max_filesize=20M -r "echo ini_get('upload_max_filesize');")"
+
 php \
     -d upload_max_filesize=20M \
     -d post_max_size=25M \
     -d memory_limit=256M \
+    -d user_ini.filename=.user.ini \
     -S 0.0.0.0:"${PORT:-8080}" \
     server.php
