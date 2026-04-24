@@ -19,5 +19,6 @@ cmds = [
   "npm run build",
 ]
 
+
 [start]
 cmd = "bash scripts/start.sh"
