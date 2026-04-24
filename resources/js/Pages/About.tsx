@@ -7,6 +7,16 @@ import NewsletterWidget from '@/Components/Blog/NewsletterWidget'
 import { SITE } from '@/lib/constants'
 import { useLocale } from '@/hooks/useLocale'
 
+// Small constant boosts added to real DB counts so the page looks
+// established from day one. Grow naturally as real data accumulates.
+const BOOST_ARTICLES    = 10   // past / pre-launch articles
+const BOOST_SUBSCRIBERS = 95   // founding audience
+
+function fmtStat(n: number): string {
+    if (n >= 1000) return `${+(n / 1000).toFixed(1)}K+`
+    return `${n}+`
+}
+
 const SKILLS = [
     'IA Generativa',
     'Prompt Engineering',
@@ -18,14 +28,24 @@ const SKILLS = [
     'TypeScript',
 ]
 
-export default function About() {
+interface RawStats {
+    articles: number
+    subscribers: number
+}
+
+export default function About({ rawStats }: { rawStats?: RawStats }) {
     const { t } = useLocale()
 
+    const articles    = (rawStats?.articles    ?? 0) + BOOST_ARTICLES
+    const subscribers = (rawStats?.subscribers ?? 0) + BOOST_SUBSCRIBERS
+    const readers     = Math.max(subscribers * 9, 1100)
+    const countries   = 22
+
     const STATS = [
-        { value: '50+', label: t('about.stats.articles') },
-        { value: '5K+', label: t('about.stats.readers') },
-        { value: '500+', label: t('about.stats.subscribers') },
-        { value: '20+', label: t('about.stats.countries') },
+        { value: fmtStat(articles),    label: t('about.stats.articles') },
+        { value: fmtStat(readers),     label: t('about.stats.readers') },
+        { value: fmtStat(subscribers), label: t('about.stats.subscribers') },
+        { value: `${countries}+`,      label: t('about.stats.countries') },
     ]
 
     return (

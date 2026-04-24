@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+use App\Models\Post;
+use App\Models\Subscriber;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\CategoryController;
@@ -30,7 +32,14 @@ Route::get('/robots.txt',  [SeoController::class, 'robots']);
 
 // ── PÚBLICAS — ES (default) ──────────────────────────────
 Route::get('/', [HomeController::class, 'index'])->name('home');
-Route::get('/sobre-mi', fn() => Inertia::render('About'))->name('about');
+Route::get('/sobre-mi', function () {
+    return Inertia::render('About', [
+        'rawStats' => [
+            'articles'    => Post::where('status', 'published')->count(),
+            'subscribers' => Subscriber::where('confirmed', true)->count(),
+        ],
+    ]);
+})->name('about');
 Route::get('/herramientas', [AffiliateController::class, 'index'])->name('tools');
 Route::get('/herramientas/{slug}/click', [AffiliateController::class, 'click'])->name('tools.click')->middleware('throttle:30,1');
 
@@ -54,7 +63,14 @@ Route::get('/afiliados',  fn() => Inertia::render('Legal/Affiliates'))->name('le
 // ── PÚBLICAS — EN (mirror) ──────────────────────────────
 Route::prefix('en')->name('en.')->group(function () {
     Route::get('/',      [HomeController::class, 'index'])->name('home');
-    Route::get('/about', fn() => Inertia::render('About'))->name('about');
+    Route::get('/about', function () {
+        return Inertia::render('About', [
+            'rawStats' => [
+                'articles'    => Post::where('status', 'published')->count(),
+                'subscribers' => Subscriber::where('confirmed', true)->count(),
+            ],
+        ]);
+    })->name('about');
     Route::get('/tools', [AffiliateController::class, 'index'])->name('tools');
 
     Route::prefix('blog')->name('blog.')->group(function () {
