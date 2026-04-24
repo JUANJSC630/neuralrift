@@ -38,6 +38,7 @@ class Post extends Model
         'indexable',
         'read_time',
         'views_count',
+        'likes_count',
         'schema_markup',
     ];
 

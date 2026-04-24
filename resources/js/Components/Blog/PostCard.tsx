@@ -89,6 +89,14 @@ export default function PostCard({ post }: { post: Post }) {
                     <span>
                         {post.views_count.toLocaleString()} {t('postcard.views')}
                     </span>
+                    {post.likes_count > 0 && (
+                        <>
+                            <span className="text-white/10">·</span>
+                            <span className="text-nr-red/70">
+                                ♥ {post.likes_count.toLocaleString()}
+                            </span>
+                        </>
+                    )}
                 </div>
             </div>
         </Link>

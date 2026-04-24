@@ -28,6 +28,7 @@ class PostResource extends JsonResource
             'lang' => $this->lang,
             'featured' => $this->featured,
             'views_count' => $this->views_count,
+            'likes_count' => $this->likes_count,
             'read_time' => $this->read_time,
             'published_at' => $this->published_at?->toISOString(),
             'created_at' => $this->created_at->toISOString(),

@@ -48,6 +48,7 @@ export interface Post {
     indexable: boolean
     read_time: number
     views_count: number
+    likes_count: number
     comments_count?: number
     published_at?: string
     created_at: string

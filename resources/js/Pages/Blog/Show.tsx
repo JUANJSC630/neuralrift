@@ -14,6 +14,7 @@ import { formatDate, readTime } from '@/lib/utils'
 import { renderContent } from '@/lib/tiptap'
 import { CATEGORY_COLORS, SITE } from '@/lib/constants'
 import { useLocale } from '@/hooks/useLocale'
+import LikeButton from '@/Components/Blog/LikeButton'
 import type { Post, Comment as CommentType } from '@/types'
 
 interface Props {
@@ -206,6 +207,11 @@ export default function BlogShow({
                                     <span className="font-mono text-xs text-nr-faint">
                                         👁 {post.views_count.toLocaleString()} {t('post.views')}
                                     </span>
+                                    <LikeButton
+                                        postId={post.id}
+                                        initialCount={post.likes_count}
+                                        size="sm"
+                                    />
                                 </div>
 
                                 <ShareButtons url={postUrl} title={title} />
@@ -281,8 +287,17 @@ export default function BlogShow({
                                 dangerouslySetInnerHTML={{ __html: content }}
                             />
 
+                            {/* Like CTA */}
+                            <div className="mt-12 flex justify-center border-t border-white/[0.06] pt-10">
+                                <LikeButton
+                                    postId={post.id}
+                                    initialCount={post.likes_count}
+                                    size="lg"
+                                />
+                            </div>
+
                             {/* Share footer */}
-                            <div className="mt-12 flex flex-wrap items-center justify-between gap-4 border-t border-white/[0.06] pt-8">
+                            <div className="mt-8 flex flex-wrap items-center justify-between gap-4 border-t border-white/[0.06] pt-8">
                                 <span className="text-sm text-nr-faint">{t('post.share_cta')}</span>
                                 <ShareButtons url={postUrl} title={title} />
                             </div>

@@ -18,6 +18,7 @@ use App\Http\Controllers\CommentController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\NewsletterController;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\PostLikeController;
 use App\Http\Controllers\PostViewController;
 use App\Http\Controllers\SeoController;
 use App\Models\Post;
@@ -105,6 +106,8 @@ Route::get('/newsletter/unsubscribe/{token}', [NewsletterController::class, 'uns
 
 // Analytics (AJAX, sin SSR)
 Route::post('/api/views/{post}', [PostViewController::class, 'store'])->name('views.store')->middleware('throttle:10,1');
+Route::post('/api/posts/{post}/like', [PostLikeController::class, 'like'])->name('posts.like')->middleware('throttle:5,1');
+Route::delete('/api/posts/{post}/like', [PostLikeController::class, 'unlike'])->name('posts.unlike')->middleware('throttle:5,1');
 Route::get('/api/comments/{post}', [CommentController::class, 'index'])->name('comments.index')->middleware('throttle:60,1');
 
 // ── ADMIN ─────────────────────────────────────────────────

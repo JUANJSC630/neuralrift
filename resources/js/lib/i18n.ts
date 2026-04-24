@@ -82,6 +82,8 @@ const translations = {
     'post.blog': { es: 'Blog', en: 'Blog' },
     'post.featured': { es: '★ Destacado', en: '★ Featured' },
     'post.views': { es: 'vistas', en: 'views' },
+    'post.likes': { es: 'me gusta', en: 'likes' },
+    'post.like_cta': { es: '¿Te gustó el artículo?', en: 'Did you enjoy this article?' },
     'post.share_cta': { es: '¿Te resultó útil? Compártelo', en: 'Found it useful? Share it' },
     'post.tools_mentioned': { es: 'Herramientas mencionadas', en: 'Tools mentioned' },
     'post.related': { es: 'Artículos relacionados', en: 'Related articles' },
