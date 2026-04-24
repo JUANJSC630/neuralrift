@@ -1,4 +1,4 @@
-import { Link, usePage } from '@inertiajs/react'
+import { Link, router, usePage } from '@inertiajs/react'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { ADMIN_NAV } from '@/lib/constants'
 import { cn } from '@/lib/utils'
@@ -84,6 +84,12 @@ export default function AdminLayout({ children, title }: Props) {
 
     /* ── Flash → toast ──────────────────────────────────── */
     const flashRef = useRef<string | null>(null)
+    useEffect(() => {
+        // Reset on each navigation so identical consecutive messages always show
+        return router.on('navigate', () => {
+            flashRef.current = null
+        })
+    }, [])
     useEffect(() => {
         if (flash?.success && flash.success !== flashRef.current) {
             flashRef.current = flash.success
