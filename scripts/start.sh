@@ -13,6 +13,7 @@ trap cleanup SIGTERM SIGINT
 # ── Migrations ─────────────────────────────────────────────
 echo "=== Running migrations ==="
 php artisan migrate --force
+php artisan db:seed --class=CategorySeeder --force
 
 # ── Storage link (needed if MEDIA_DISK=public) ─────────────
 php artisan storage:link --force 2>/dev/null || true

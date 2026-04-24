@@ -97,7 +97,7 @@ class CategorySeeder extends Seeder
         ];
 
         foreach ($categories as $cat) {
-            Category::create($cat);
+            Category::updateOrCreate(['name' => $cat['name']], $cat);
         }
     }
 }
