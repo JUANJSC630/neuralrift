@@ -218,8 +218,8 @@ return [
             'maxTime' => 0,
             'maxJobs' => 0,
             'memory' => 256,
-            'tries' => 2,
-            'timeout' => 150,
+            'tries' => 1,
+            'timeout' => 420,
             'nice' => 5,
         ],
         'supervisor-newsletter' => [

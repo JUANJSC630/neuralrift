@@ -37,7 +37,7 @@ class PostGeneratorAgent
             prompt: $fullPrompt,
             provider: 'anthropic',
             model: self::MODEL,
-            timeout: 120,
+            timeout: 300,  // 5 min — bilingual tutorials can take 3-4 min
         );
 
         $parsed = $this->parseResponse($response->text);
