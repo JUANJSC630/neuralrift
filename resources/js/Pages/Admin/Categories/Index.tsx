@@ -79,248 +79,254 @@ export default function CategoriesIndex({ categories }: Props) {
 
     return (
         <>
-        <AdminLayout title="Categorías">
-            <Head title="Categorías — Admin" />
+            <AdminLayout title="Categorías">
+                <Head title="Categorías — Admin" />
 
-            <div className="flex gap-6">
-                {/* List */}
-                <div className="flex-1">
-                    <div className="mb-5 flex items-center justify-between">
-                        <h2 className="font-display text-xl font-bold text-nr-text">Categorías</h2>
-                        <button
-                            onClick={() => {
-                                setEditing(null)
-                                reset()
-                                setShowForm(true)
-                            }}
-                            className="glow-accent rounded-lg bg-gradient-to-r from-nr-accent to-nr-accent-dark px-4 py-2 text-sm font-semibold text-white transition-all hover:-translate-y-0.5"
-                        >
-                            + Nueva categoría
-                        </button>
+                <div className="flex gap-6">
+                    {/* List */}
+                    <div className="flex-1">
+                        <div className="mb-5 flex items-center justify-between">
+                            <h2 className="font-display text-xl font-bold text-nr-text">
+                                Categorías
+                            </h2>
+                            <button
+                                onClick={() => {
+                                    setEditing(null)
+                                    reset()
+                                    setShowForm(true)
+                                }}
+                                className="glow-accent rounded-lg bg-gradient-to-r from-nr-accent to-nr-accent-dark px-4 py-2 text-sm font-semibold text-white transition-all hover:-translate-y-0.5"
+                            >
+                                + Nueva categoría
+                            </button>
+                        </div>
+
+                        <div className="glass overflow-hidden rounded-2xl">
+                            <div className="divide-y divide-white/[0.04]">
+                                {categories.map(cat => (
+                                    <div
+                                        key={cat.id}
+                                        className="group flex items-center gap-4 px-6 py-4 transition-colors hover:bg-white/[0.02]"
+                                    >
+                                        {/* Color + icon */}
+                                        <div
+                                            className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-lg text-sm"
+                                            style={{
+                                                background: `${cat.color}20`,
+                                                border: `1px solid ${cat.color}30`,
+                                            }}
+                                        >
+                                            {cat.icon ?? '◈'}
+                                        </div>
+
+                                        {/* Name */}
+                                        <div className="min-w-0 flex-1">
+                                            <p className="text-sm font-medium text-nr-text">
+                                                {cat.name}
+                                            </p>
+                                            {cat.name_en && (
+                                                <p className="text-xs text-nr-faint">
+                                                    {cat.name_en}
+                                                </p>
+                                            )}
+                                        </div>
+
+                                        {/* Color swatch */}
+                                        <div
+                                            className="h-4 w-4 flex-shrink-0 rounded-full"
+                                            style={{ background: cat.color }}
+                                        />
+
+                                        {/* Order */}
+                                        <span className="w-6 flex-shrink-0 text-center font-mono text-xs text-nr-faint">
+                                            #{cat.order}
+                                        </span>
+
+                                        {/* Posts count */}
+                                        <span className="hidden flex-shrink-0 font-mono text-xs text-nr-faint md:block">
+                                            {cat.posts_count} posts
+                                        </span>
+
+                                        {/* Actions */}
+                                        <div className="flex flex-shrink-0 gap-3 opacity-0 transition-opacity group-hover:opacity-100">
+                                            <button
+                                                onClick={() => startEdit(cat)}
+                                                className="text-xs text-nr-muted transition-colors hover:text-nr-text"
+                                            >
+                                                Editar
+                                            </button>
+                                            <button
+                                                onClick={() => deleteCategory(cat)}
+                                                className="text-xs text-nr-faint transition-colors hover:text-nr-red"
+                                            >
+                                                Eliminar
+                                            </button>
+                                        </div>
+                                    </div>
+                                ))}
+
+                                {categories.length === 0 && (
+                                    <div className="py-12 text-center text-sm text-nr-faint">
+                                        No hay categorías creadas.
+                                    </div>
+                                )}
+                            </div>
+                        </div>
                     </div>
 
-                    <div className="glass overflow-hidden rounded-2xl">
-                        <div className="divide-y divide-white/[0.04]">
-                            {categories.map(cat => (
-                                <div
-                                    key={cat.id}
-                                    className="group flex items-center gap-4 px-6 py-4 transition-colors hover:bg-white/[0.02]"
-                                >
-                                    {/* Color + icon */}
-                                    <div
-                                        className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-lg text-sm"
-                                        style={{
-                                            background: `${cat.color}20`,
-                                            border: `1px solid ${cat.color}30`,
+                    {/* Side form */}
+                    {showForm && (
+                        <div className="w-[320px] flex-shrink-0">
+                            <div className="glass sticky top-6 rounded-2xl p-6">
+                                <div className="mb-5 flex items-center justify-between">
+                                    <h3 className="font-semibold text-nr-text">
+                                        {editing ? 'Editar categoría' : 'Nueva categoría'}
+                                    </h3>
+                                    <button
+                                        onClick={() => {
+                                            setShowForm(false)
+                                            setEditing(null)
+                                            reset()
                                         }}
+                                        className="text-sm text-nr-faint transition-colors hover:text-nr-text"
                                     >
-                                        {cat.icon ?? '◈'}
-                                    </div>
+                                        ✕
+                                    </button>
+                                </div>
 
-                                    {/* Name */}
-                                    <div className="min-w-0 flex-1">
-                                        <p className="text-sm font-medium text-nr-text">
-                                            {cat.name}
-                                        </p>
-                                        {cat.name_en && (
-                                            <p className="text-xs text-nr-faint">{cat.name_en}</p>
+                                <form onSubmit={handleSubmit} className="space-y-4">
+                                    <div>
+                                        <label className="mb-1.5 block font-mono text-[10px] uppercase tracking-wider text-nr-faint">
+                                            Nombre (ES)
+                                        </label>
+                                        <input
+                                            value={data.name}
+                                            onChange={e => setData('name', e.target.value)}
+                                            className={inputCls}
+                                            placeholder="IA Generativa"
+                                            required
+                                        />
+                                        {errors.name && (
+                                            <p className="mt-1 text-xs text-nr-red">
+                                                {errors.name}
+                                            </p>
                                         )}
                                     </div>
 
-                                    {/* Color swatch */}
-                                    <div
-                                        className="h-4 w-4 flex-shrink-0 rounded-full"
-                                        style={{ background: cat.color }}
-                                    />
-
-                                    {/* Order */}
-                                    <span className="w-6 flex-shrink-0 text-center font-mono text-xs text-nr-faint">
-                                        #{cat.order}
-                                    </span>
-
-                                    {/* Posts count */}
-                                    <span className="hidden flex-shrink-0 font-mono text-xs text-nr-faint md:block">
-                                        {cat.posts_count} posts
-                                    </span>
-
-                                    {/* Actions */}
-                                    <div className="flex flex-shrink-0 gap-3 opacity-0 transition-opacity group-hover:opacity-100">
-                                        <button
-                                            onClick={() => startEdit(cat)}
-                                            className="text-xs text-nr-muted transition-colors hover:text-nr-text"
-                                        >
-                                            Editar
-                                        </button>
-                                        <button
-                                            onClick={() => deleteCategory(cat)}
-                                            className="text-xs text-nr-faint transition-colors hover:text-nr-red"
-                                        >
-                                            Eliminar
-                                        </button>
-                                    </div>
-                                </div>
-                            ))}
-
-                            {categories.length === 0 && (
-                                <div className="py-12 text-center text-sm text-nr-faint">
-                                    No hay categorías creadas.
-                                </div>
-                            )}
-                        </div>
-                    </div>
-                </div>
-
-                {/* Side form */}
-                {showForm && (
-                    <div className="w-[320px] flex-shrink-0">
-                        <div className="glass sticky top-6 rounded-2xl p-6">
-                            <div className="mb-5 flex items-center justify-between">
-                                <h3 className="font-semibold text-nr-text">
-                                    {editing ? 'Editar categoría' : 'Nueva categoría'}
-                                </h3>
-                                <button
-                                    onClick={() => {
-                                        setShowForm(false)
-                                        setEditing(null)
-                                        reset()
-                                    }}
-                                    className="text-sm text-nr-faint transition-colors hover:text-nr-text"
-                                >
-                                    ✕
-                                </button>
-                            </div>
-
-                            <form onSubmit={handleSubmit} className="space-y-4">
-                                <div>
-                                    <label className="mb-1.5 block font-mono text-[10px] uppercase tracking-wider text-nr-faint">
-                                        Nombre (ES)
-                                    </label>
-                                    <input
-                                        value={data.name}
-                                        onChange={e => setData('name', e.target.value)}
-                                        className={inputCls}
-                                        placeholder="IA Generativa"
-                                        required
-                                    />
-                                    {errors.name && (
-                                        <p className="mt-1 text-xs text-nr-red">{errors.name}</p>
-                                    )}
-                                </div>
-
-                                <div>
-                                    <label className="mb-1.5 block font-mono text-[10px] uppercase tracking-wider text-nr-faint">
-                                        Nombre (EN)
-                                    </label>
-                                    <input
-                                        value={data.name_en}
-                                        onChange={e => setData('name_en', e.target.value)}
-                                        className={inputCls}
-                                        placeholder="Generative AI"
-                                    />
-                                </div>
-
-                                <div>
-                                    <label className="mb-1.5 block font-mono text-[10px] uppercase tracking-wider text-nr-faint">
-                                        Descripción
-                                    </label>
-                                    <textarea
-                                        value={data.description}
-                                        onChange={e => setData('description', e.target.value)}
-                                        rows={2}
-                                        className={cn(inputCls, 'resize-none text-xs')}
-                                        placeholder="Descripción de la categoría..."
-                                    />
-                                </div>
-
-                                <div className="grid grid-cols-2 gap-3">
                                     <div>
                                         <label className="mb-1.5 block font-mono text-[10px] uppercase tracking-wider text-nr-faint">
-                                            Icono
+                                            Nombre (EN)
                                         </label>
                                         <input
-                                            value={data.icon}
-                                            onChange={e => setData('icon', e.target.value)}
+                                            value={data.name_en}
+                                            onChange={e => setData('name_en', e.target.value)}
                                             className={inputCls}
-                                            placeholder="✦"
-                                            maxLength={4}
+                                            placeholder="Generative AI"
                                         />
                                     </div>
+
                                     <div>
                                         <label className="mb-1.5 block font-mono text-[10px] uppercase tracking-wider text-nr-faint">
-                                            Orden
+                                            Descripción
                                         </label>
-                                        <input
-                                            type="number"
-                                            value={data.order}
-                                            onChange={e =>
-                                                setData('order', parseInt(e.target.value))
-                                            }
-                                            className={inputCls}
-                                            min={0}
+                                        <textarea
+                                            value={data.description}
+                                            onChange={e => setData('description', e.target.value)}
+                                            rows={2}
+                                            className={cn(inputCls, 'resize-none text-xs')}
+                                            placeholder="Descripción de la categoría..."
                                         />
                                     </div>
-                                </div>
 
-                                {/* Color picker */}
-                                <div>
-                                    <label className="mb-2 block font-mono text-[10px] uppercase tracking-wider text-nr-faint">
-                                        Color
-                                    </label>
-                                    <div className="mb-2 flex flex-wrap gap-2">
-                                        {PRESET_COLORS.map(color => (
-                                            <button
-                                                key={color}
-                                                type="button"
-                                                onClick={() => setData('color', color)}
-                                                className={cn(
-                                                    'h-7 w-7 rounded-lg transition-all',
-                                                    data.color === color
-                                                        ? 'scale-110 ring-2 ring-white ring-offset-2 ring-offset-nr-bg2'
-                                                        : 'hover:scale-105',
-                                                )}
-                                                style={{ background: color }}
+                                    <div className="grid grid-cols-2 gap-3">
+                                        <div>
+                                            <label className="mb-1.5 block font-mono text-[10px] uppercase tracking-wider text-nr-faint">
+                                                Icono
+                                            </label>
+                                            <input
+                                                value={data.icon}
+                                                onChange={e => setData('icon', e.target.value)}
+                                                className={inputCls}
+                                                placeholder="✦"
+                                                maxLength={4}
                                             />
-                                        ))}
-                                        <input
-                                            type="color"
-                                            value={data.color}
-                                            onChange={e => setData('color', e.target.value)}
-                                            className="h-7 w-7 cursor-pointer rounded-lg border-0 bg-transparent"
-                                            title="Color personalizado"
-                                        />
+                                        </div>
+                                        <div>
+                                            <label className="mb-1.5 block font-mono text-[10px] uppercase tracking-wider text-nr-faint">
+                                                Orden
+                                            </label>
+                                            <input
+                                                type="number"
+                                                value={data.order}
+                                                onChange={e =>
+                                                    setData('order', parseInt(e.target.value))
+                                                }
+                                                className={inputCls}
+                                                min={0}
+                                            />
+                                        </div>
                                     </div>
-                                    {/* Live preview */}
-                                    <div
-                                        className="flex items-center gap-2 rounded-lg p-2"
-                                        style={{ background: `${data.color}10` }}
-                                    >
-                                        <span>{data.icon || '◈'}</span>
-                                        <span
-                                            className="text-xs font-semibold"
-                                            style={{ color: data.color }}
-                                        >
-                                            {data.name || 'Preview'}
-                                        </span>
-                                    </div>
-                                </div>
 
-                                <button
-                                    type="submit"
-                                    disabled={processing}
-                                    className="glow-accent w-full rounded-xl bg-gradient-to-r from-nr-accent to-nr-accent-dark py-2.5 text-sm font-semibold text-white transition-all hover:-translate-y-0.5 disabled:opacity-50"
-                                >
-                                    {processing
-                                        ? 'Guardando...'
-                                        : editing
-                                          ? 'Actualizar'
-                                          : 'Crear categoría'}
-                                </button>
-                            </form>
+                                    {/* Color picker */}
+                                    <div>
+                                        <label className="mb-2 block font-mono text-[10px] uppercase tracking-wider text-nr-faint">
+                                            Color
+                                        </label>
+                                        <div className="mb-2 flex flex-wrap gap-2">
+                                            {PRESET_COLORS.map(color => (
+                                                <button
+                                                    key={color}
+                                                    type="button"
+                                                    onClick={() => setData('color', color)}
+                                                    className={cn(
+                                                        'h-7 w-7 rounded-lg transition-all',
+                                                        data.color === color
+                                                            ? 'scale-110 ring-2 ring-white ring-offset-2 ring-offset-nr-bg2'
+                                                            : 'hover:scale-105',
+                                                    )}
+                                                    style={{ background: color }}
+                                                />
+                                            ))}
+                                            <input
+                                                type="color"
+                                                value={data.color}
+                                                onChange={e => setData('color', e.target.value)}
+                                                className="h-7 w-7 cursor-pointer rounded-lg border-0 bg-transparent"
+                                                title="Color personalizado"
+                                            />
+                                        </div>
+                                        {/* Live preview */}
+                                        <div
+                                            className="flex items-center gap-2 rounded-lg p-2"
+                                            style={{ background: `${data.color}10` }}
+                                        >
+                                            <span>{data.icon || '◈'}</span>
+                                            <span
+                                                className="text-xs font-semibold"
+                                                style={{ color: data.color }}
+                                            >
+                                                {data.name || 'Preview'}
+                                            </span>
+                                        </div>
+                                    </div>
+
+                                    <button
+                                        type="submit"
+                                        disabled={processing}
+                                        className="glow-accent w-full rounded-xl bg-gradient-to-r from-nr-accent to-nr-accent-dark py-2.5 text-sm font-semibold text-white transition-all hover:-translate-y-0.5 disabled:opacity-50"
+                                    >
+                                        {processing
+                                            ? 'Guardando...'
+                                            : editing
+                                              ? 'Actualizar'
+                                              : 'Crear categoría'}
+                                    </button>
+                                </form>
+                            </div>
                         </div>
-                    </div>
-                )}
-            </div>
-        </AdminLayout>
+                    )}
+                </div>
+            </AdminLayout>
 
             <ConfirmModal
                 show={pendingDelete !== null}

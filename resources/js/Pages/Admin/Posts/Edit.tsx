@@ -98,7 +98,10 @@ export default function PostEdit({ post, categories, tags, affiliates }: Props) 
     const [tab, setTab] = useState<'es' | 'en'>('es')
     const [seoOpen, setSeoOpen] = useState(false)
     const [uploading, setUploading] = useState(false)
-    const [uploadToast, setUploadToast] = useState<{ type: 'success' | 'error'; message: string } | null>(null)
+    const [uploadToast, setUploadToast] = useState<{
+        type: 'success' | 'error'
+        message: string
+    } | null>(null)
     const fileInputRef = useRef<HTMLInputElement>(null)
 
     const [data, setDataState] = useState({
@@ -156,7 +159,7 @@ export default function PostEdit({ post, categories, tags, affiliates }: Props) 
         try {
             const base64 = await new Promise<string>((resolve, reject) => {
                 const reader = new FileReader()
-                reader.onload = (ev) => resolve(ev.target!.result as string)
+                reader.onload = ev => resolve(ev.target!.result as string)
                 reader.onerror = () => reject(new Error('FileReader error'))
                 reader.readAsDataURL(file)
             })
@@ -579,10 +582,15 @@ export default function PostEdit({ post, categories, tags, affiliates }: Props) 
                                 {uploading ? 'Subiendo...' : '↑ Subir imagen'}
                             </button>
                             {uploadToast && (
-                                <p className={`text-xs font-medium ${
-                                    uploadToast.type === 'success' ? 'text-nr-green' : 'text-nr-red'
-                                }`}>
-                                    {uploadToast.type === 'success' ? '✓' : '✕'} {uploadToast.message}
+                                <p
+                                    className={`text-xs font-medium ${
+                                        uploadToast.type === 'success'
+                                            ? 'text-nr-green'
+                                            : 'text-nr-red'
+                                    }`}
+                                >
+                                    {uploadToast.type === 'success' ? '✓' : '✕'}{' '}
+                                    {uploadToast.message}
                                 </p>
                             )}
                             <div className="border-t border-white/[0.06] pt-3">
@@ -666,4 +674,3 @@ export default function PostEdit({ post, categories, tags, affiliates }: Props) 
         </AdminLayout>
     )
 }
-

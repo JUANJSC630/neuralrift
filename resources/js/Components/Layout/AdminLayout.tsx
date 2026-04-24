@@ -24,11 +24,13 @@ export default function AdminLayout({ children, title }: Props) {
     const pollingRef = useRef<ReturnType<typeof setInterval> | null>(null)
 
     // Persist seen IDs in sessionStorage so Inertia SPA navigations don't re-show toasts
-    const seenIdsRef = useRef<Set<string>>(new Set(
-        typeof window !== 'undefined'
-            ? JSON.parse(sessionStorage.getItem('nr_seen_notif') ?? '[]')
-            : []
-    ))
+    const seenIdsRef = useRef<Set<string>>(
+        new Set(
+            typeof window !== 'undefined'
+                ? JSON.parse(sessionStorage.getItem('nr_seen_notif') ?? '[]')
+                : [],
+        ),
+    )
 
     const markSeen = (id: string) => {
         seenIdsRef.current.add(id)
