@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Post;
 use App\Models\Affiliate;
+use App\Models\Post;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -23,7 +23,7 @@ class HomeController extends Controller
         $recent = Post::published()
             ->forLang($lang)
             ->with(['category', 'author'])
-            ->when($featured, fn($q) => $q->where('id', '!=', $featured->id))
+            ->when($featured, fn ($q) => $q->where('id', '!=', $featured->id))
             ->latest('published_at')
             ->take(6)
             ->get();
@@ -42,11 +42,11 @@ class HomeController extends Controller
             ->get();
 
         return Inertia::render('Home', [
-            'featured'   => $featured,
-            'recent'     => $recent,
-            'popular'    => $popular,
+            'featured' => $featured,
+            'recent' => $recent,
+            'popular' => $popular,
             'affiliates' => $affiliates,
-            'canonical'  => url($lang === 'en' ? '/en' : '/'),
+            'canonical' => url($lang === 'en' ? '/en' : '/'),
         ]);
     }
 }

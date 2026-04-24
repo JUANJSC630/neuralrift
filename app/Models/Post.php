@@ -2,12 +2,12 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Post extends Model
 {
@@ -42,10 +42,10 @@ class Post extends Model
     ];
 
     protected $casts = [
-        'published_at'  => 'datetime',
-        'featured'      => 'boolean',
+        'published_at' => 'datetime',
+        'featured' => 'boolean',
         'allow_comments' => 'boolean',
-        'indexable'     => 'boolean',
+        'indexable' => 'boolean',
         'schema_markup' => 'array',
     ];
 
@@ -127,7 +127,7 @@ class Post extends Model
             if (empty($post->slug)) {
                 $post->slug = str($post->title)->slug();
             }
-            if (!empty($post->title_en) && empty($post->slug_en)) {
+            if (! empty($post->title_en) && empty($post->slug_en)) {
                 $post->slug_en = str($post->title_en)->slug();
             }
         });
@@ -135,13 +135,13 @@ class Post extends Model
 
     private static function extractTextFromTiptap(mixed $content): string
     {
-        if (!$content) {
+        if (! $content) {
             return '';
         }
 
         $data = is_string($content) ? json_decode($content, true) : $content;
 
-        if (!is_array($data)) {
+        if (! is_array($data)) {
             return strip_tags((string) $content);
         }
 
@@ -153,7 +153,7 @@ class Post extends Model
         $text = '';
 
         if (($node['type'] ?? '') === 'text') {
-            $text .= ($node['text'] ?? '') . ' ';
+            $text .= ($node['text'] ?? '').' ';
         }
 
         foreach ($node['content'] ?? [] as $child) {

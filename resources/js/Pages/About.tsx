@@ -13,8 +13,14 @@ function fmtStat(n: number): string {
 }
 
 const DEFAULT_SKILLS = [
-    'IA Generativa', 'Prompt Engineering', 'React / Next.js', 'Laravel',
-    'SEO Técnico', 'Marketing de Afiliados', 'Automatización', 'TypeScript',
+    'IA Generativa',
+    'Prompt Engineering',
+    'React / Next.js',
+    'Laravel',
+    'SEO Técnico',
+    'Marketing de Afiliados',
+    'Automatización',
+    'TypeScript',
 ]
 
 interface RawStats {
@@ -22,20 +28,26 @@ interface RawStats {
     subscribers: number
 }
 
-export default function About({ rawStats, skills: skillsProp }: { rawStats?: RawStats; skills?: string[] | null }) {
+export default function About({
+    rawStats,
+    skills: skillsProp,
+}: {
+    rawStats?: RawStats
+    skills?: string[] | null
+}) {
     const { t } = useLocale()
 
     const skills = skillsProp ?? DEFAULT_SKILLS
 
-    const realSubs    = rawStats?.subscribers ?? 0
+    const realSubs = rawStats?.subscribers ?? 0
     const subscribers = Math.max(realSubs, 63)
-    const readers     = Math.max(realSubs * 12, 1200)
+    const readers = Math.max(realSubs * 12, 1200)
 
     const STATS = [
         { value: fmtStat(rawStats?.articles ?? 0), label: t('about.stats.articles') },
-        { value: fmtStat(readers),                 label: t('about.stats.readers') },
-        { value: fmtStat(subscribers),             label: t('about.stats.subscribers') },
-        { value: '22+',                            label: t('about.stats.countries') },
+        { value: fmtStat(readers), label: t('about.stats.readers') },
+        { value: fmtStat(subscribers), label: t('about.stats.subscribers') },
+        { value: '22+', label: t('about.stats.countries') },
     ]
 
     return (

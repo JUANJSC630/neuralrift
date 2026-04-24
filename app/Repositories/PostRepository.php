@@ -27,15 +27,15 @@ class PostRepository implements PostRepositoryInterface
             ->with(['category', 'author', 'tags'])
             ->forLang($lang);
 
-        if (!empty($filters['category'])) {
+        if (! empty($filters['category'])) {
             $query->whereHas('category', fn ($q) => $q->where('slug', $filters['category']));
         }
 
-        if (!empty($filters['tag'])) {
+        if (! empty($filters['tag'])) {
             $query->whereHas('tags', fn ($q) => $q->where('slug', $filters['tag']));
         }
 
-        if (!empty($filters['search'])) {
+        if (! empty($filters['search'])) {
             $search = $filters['search'];
             $query->where(fn ($q) => $isEn
                 ? $q->where('title_en', 'like', "%{$search}%")->orWhere('title', 'like', "%{$search}%")
@@ -44,9 +44,9 @@ class PostRepository implements PostRepositoryInterface
         }
 
         match ($filters['sort'] ?? 'recent') {
-            'popular'  => $query->orderByDesc('views_count'),
+            'popular' => $query->orderByDesc('views_count'),
             'shortest' => $query->orderBy('read_time'),
-            default    => $query->latest('published_at'),
+            default => $query->latest('published_at'),
         };
 
         return $query->paginate($perPage)->withQueryString();
@@ -99,15 +99,15 @@ class PostRepository implements PostRepositoryInterface
     {
         $query = Post::with(['category', 'author'])->latest();
 
-        if (!empty($filters['status'])) {
+        if (! empty($filters['status'])) {
             $query->where('status', $filters['status']);
         }
 
-        if (!empty($filters['category'])) {
+        if (! empty($filters['category'])) {
             $query->where('category_id', $filters['category']);
         }
 
-        if (!empty($filters['search'])) {
+        if (! empty($filters['search'])) {
             $query->where('title', 'like', "%{$filters['search']}%");
         }
 
@@ -117,8 +117,7 @@ class PostRepository implements PostRepositoryInterface
     public function getTopByWeeklyViews(int $limit = 5): Collection
     {
         return Post::published()
-            ->withCount(['views as week_views' => fn ($q) =>
-                $q->where('viewed_at', '>=', now()->subWeek())
+            ->withCount(['views as week_views' => fn ($q) => $q->where('viewed_at', '>=', now()->subWeek()),
             ])
             ->orderByDesc('week_views')
             ->take($limit)

@@ -2,9 +2,9 @@
 
 namespace App\Services;
 
+use App\Models\Affiliate;
 use App\Repositories\Contracts\AffiliateRepositoryInterface;
 use Illuminate\Database\Eloquent\Collection;
-use App\Models\Affiliate;
 
 class AffiliateService
 {

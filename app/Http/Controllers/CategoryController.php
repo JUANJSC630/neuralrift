@@ -17,7 +17,7 @@ class CategoryController extends Controller
 
         return Inertia::render('Category/Index', [
             'categories' => $categories,
-            'canonical'  => url(app()->getLocale() === 'en' ? '/en/categories' : '/categorias'),
+            'canonical' => url(app()->getLocale() === 'en' ? '/en/categories' : '/categorias'),
         ]);
     }
 
@@ -44,9 +44,9 @@ class CategoryController extends Controller
             ->first();
 
         return Inertia::render('Category/Show', [
-            'category'  => $category,
-            'posts'     => $posts,
-            'featured'  => $featured,
+            'category' => $category,
+            'posts' => $posts,
+            'featured' => $featured,
             'canonical' => url($lang === 'en' ? "/en/category/{$category->slug}" : "/categoria/{$category->slug}"),
         ]);
     }

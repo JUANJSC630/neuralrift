@@ -2,8 +2,8 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
@@ -33,11 +33,11 @@ class Affiliate extends Model
     ];
 
     protected $casts = [
-        'pros'     => 'array',
-        'cons'     => 'array',
-        'active'   => 'boolean',
+        'pros' => 'array',
+        'cons' => 'array',
+        'active' => 'boolean',
         'featured' => 'boolean',
-        'rating'   => 'float',
+        'rating' => 'float',
     ];
 
     public function posts(): BelongsToMany

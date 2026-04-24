@@ -4,9 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use App\Models\Post;
+use Illuminate\Http\Response;
 use Spatie\Sitemap\Sitemap;
 use Spatie\Sitemap\Tags\Url;
-use Illuminate\Http\Response;
 
 class SeoController extends Controller
 {
@@ -59,12 +59,14 @@ class SeoController extends Controller
             ->get();
 
         $xml = view('rss', compact('posts'))->render();
+
         return response($xml, 200, ['Content-Type' => 'application/rss+xml']);
     }
 
     public function robots(): Response
     {
-        $content = "User-agent: *\nAllow: /\nDisallow: /admin\nDisallow: /api\n\nSitemap: " . url('/sitemap.xml');
+        $content = "User-agent: *\nAllow: /\nDisallow: /admin\nDisallow: /api\n\nSitemap: ".url('/sitemap.xml');
+
         return response($content, 200, ['Content-Type' => 'text/plain']);
     }
 }

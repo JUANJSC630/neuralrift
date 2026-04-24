@@ -3,10 +3,10 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Affiliate;
+use App\Models\AffiliateClick;
 use App\Models\Post;
 use App\Models\PostView;
-use App\Models\AffiliateClick;
-use App\Models\Affiliate;
 use App\Models\Subscriber;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -27,8 +27,9 @@ class AnalyticsController extends Controller
 
         $viewsChart = collect(range($days - 1, 0))->map(function ($daysAgo) use ($viewsByDay) {
             $date = now()->subDays($daysAgo)->format('Y-m-d');
+
             return [
-                'date'  => now()->subDays($daysAgo)->format('d M'),
+                'date' => now()->subDays($daysAgo)->format('d M'),
                 'views' => $viewsByDay[$date] ?? 0,
             ];
         })->values();
@@ -39,8 +40,7 @@ class AnalyticsController extends Controller
             ->pluck('total', 'source');
 
         $topPosts = Post::published()
-            ->withCount(['views as period_views' => fn($q) =>
-                $q->where('viewed_at', '>=', $from)
+            ->withCount(['views as period_views' => fn ($q) => $q->where('viewed_at', '>=', $from),
             ])
             ->orderByDesc('period_views')
             ->take(10)
@@ -54,24 +54,23 @@ class AnalyticsController extends Controller
             ->take(10)
             ->get();
 
-        $affiliateStats = Affiliate::withCount(['clicks as period_clicks' => fn($q) =>
-            $q->where('clicked_at', '>=', $from)
+        $affiliateStats = Affiliate::withCount(['clicks as period_clicks' => fn ($q) => $q->where('clicked_at', '>=', $from),
         ])->orderByDesc('period_clicks')->get(['id', 'name', 'clicks_count']);
 
         $totals = [
-            'views'       => PostView::where('viewed_at', '>=', $from)->count(),
+            'views' => PostView::where('viewed_at', '>=', $from)->count(),
             'subscribers' => Subscriber::where('confirmed_at', '>=', $from)->count(),
-            'clicks'      => AffiliateClick::where('clicked_at', '>=', $from)->count(),
+            'clicks' => AffiliateClick::where('clicked_at', '>=', $from)->count(),
         ];
 
         return Inertia::render('Admin/Analytics', [
-            'viewsChart'     => $viewsChart,
-            'sources'        => $sources,
-            'topPosts'       => $topPosts,
-            'countries'      => $countries,
+            'viewsChart' => $viewsChart,
+            'sources' => $sources,
+            'topPosts' => $topPosts,
+            'countries' => $countries,
             'affiliateStats' => $affiliateStats,
-            'totals'         => $totals,
-            'days'           => $days,
+            'totals' => $totals,
+            'days' => $days,
         ]);
     }
 }

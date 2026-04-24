@@ -2,9 +2,9 @@
 
 namespace App\Repositories\Contracts;
 
+use App\Models\Post;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Collection;
-use App\Models\Post;
 
 interface PostRepositoryInterface
 {

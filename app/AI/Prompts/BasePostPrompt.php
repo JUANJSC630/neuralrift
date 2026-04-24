@@ -4,13 +4,15 @@ namespace App\AI\Prompts;
 
 abstract class BasePostPrompt
 {
-    protected string $siteName    = '';
+    protected string $siteName = '';
+
     protected string $siteTagline = '';
-    protected string $audience    = 'developers, freelancers y emprendedores en Latinoamérica';
+
+    protected string $audience = 'developers, freelancers y emprendedores';
 
     public function __construct()
     {
-        $this->siteName    = config('site.name', 'NeuralRift');
+        $this->siteName = config('site.name', 'NeuralRift');
         $this->siteTagline = config('site.tagline', 'Tecnología, IA y herramientas para construir mejor');
     }
 
@@ -66,9 +68,9 @@ TIPTAP;
     protected function outputFormatInstructions(string $lang): string
     {
         $langInstruction = match ($lang) {
-            'es'    => 'Genera SOLO en español. Los campos _en déjalos vacíos string "".',
-            'en'    => 'Genera SOLO en inglés. Los campos sin _en déjalos vacíos string "".',
-            'both'  => 'Genera en ambos idiomas. Campos sin _en en español, campos con _en en inglés.',
+            'es' => 'Genera SOLO en español. Los campos _en déjalos vacíos string "".',
+            'en' => 'Genera SOLO en inglés. Los campos sin _en déjalos vacíos string "".',
+            'both' => 'Genera en ambos idiomas. Campos sin _en en español, campos con _en en inglés.',
             default => 'Genera en español.',
         };
 

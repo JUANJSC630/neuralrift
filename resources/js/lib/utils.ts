@@ -9,12 +9,19 @@ export function cn(...inputs: ClassValue[]) {
     return twMerge(clsx(inputs))
 }
 
-export function formatDate(date: string | Date, pattern = 'd MMM yyyy', locale: 'es' | 'en' = 'es') {
+export function formatDate(
+    date: string | Date,
+    pattern = 'd MMM yyyy',
+    locale: 'es' | 'en' = 'es',
+) {
     return format(new Date(date), pattern, { locale: locale === 'en' ? enUS : es })
 }
 
 export function timeAgo(date: string | Date, locale: 'es' | 'en' = 'es') {
-    return formatDistanceToNow(new Date(date), { addSuffix: true, locale: locale === 'en' ? enUS : es })
+    return formatDistanceToNow(new Date(date), {
+        addSuffix: true,
+        locale: locale === 'en' ? enUS : es,
+    })
 }
 
 export function readTime(minutes: number, locale: 'es' | 'en' = 'es') {

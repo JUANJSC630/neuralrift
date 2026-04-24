@@ -35,11 +35,11 @@ class PostDraftReadyNotification extends Notification
     public function toArray(object $notifiable): array
     {
         return [
-            'type'     => 'ai_generation_success',
-            'post_id'  => $this->post->id,
-            'title'    => $this->post->title,
+            'type' => 'ai_generation_success',
+            'post_id' => $this->post->id,
+            'title' => $this->post->title,
             'edit_url' => "/admin/posts/{$this->post->id}/edit",
-            'message'  => "Borrador IA listo: {$this->post->title}",
+            'message' => "Borrador IA listo: {$this->post->title}",
         ];
     }
 }

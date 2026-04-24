@@ -16,7 +16,7 @@ class CategorySeeder extends Seeder
                 'color' => '#7C6AF7',
                 'icon' => '✦',
                 'order' => 1,
-                'description' => 'Todo sobre modelos de lenguaje, imagen y audio generativos.'
+                'description' => 'Todo sobre modelos de lenguaje, imagen y audio generativos.',
             ],
             [
                 'name' => 'Herramientas',
@@ -24,7 +24,7 @@ class CategorySeeder extends Seeder
                 'color' => '#06B6D4',
                 'icon' => '⚡',
                 'order' => 2,
-                'description' => 'Reviews y comparativas de las mejores herramientas IA.'
+                'description' => 'Reviews y comparativas de las mejores herramientas IA.',
             ],
             [
                 'name' => 'Tutoriales',
@@ -32,7 +32,7 @@ class CategorySeeder extends Seeder
                 'color' => '#10B981',
                 'icon' => '◈',
                 'order' => 3,
-                'description' => 'Guías paso a paso para dominar la inteligencia artificial.'
+                'description' => 'Guías paso a paso para dominar la inteligencia artificial.',
             ],
             [
                 'name' => 'Reviews',
@@ -40,7 +40,7 @@ class CategorySeeder extends Seeder
                 'color' => '#F59E0B',
                 'icon' => '★',
                 'order' => 4,
-                'description' => 'Análisis honestos y en profundidad de productos y servicios IA.'
+                'description' => 'Análisis honestos y en profundidad de productos y servicios IA.',
             ],
             [
                 'name' => 'Negocios',
@@ -48,7 +48,7 @@ class CategorySeeder extends Seeder
                 'color' => '#EC4899',
                 'icon' => '◉',
                 'order' => 5,
-                'description' => 'Cómo monetizar y escalar negocios con inteligencia artificial.'
+                'description' => 'Cómo monetizar y escalar negocios con inteligencia artificial.',
             ],
             [
                 'name' => 'Noticias',
@@ -56,7 +56,7 @@ class CategorySeeder extends Seeder
                 'color' => '#F97316',
                 'icon' => '≋',
                 'order' => 6,
-                'description' => 'Las últimas novedades del ecosistema de IA.'
+                'description' => 'Las últimas novedades del ecosistema de IA.',
             ],
             [
                 'name' => 'Desarrollo Web',

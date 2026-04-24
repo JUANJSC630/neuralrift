@@ -11,10 +11,10 @@ class DatabaseSeeder extends Seeder
     {
         // Crear usuario admin
         User::factory()->create([
-            'name'   => 'Juan Jose',
-            'email'  => 'admin@neuralrift.com',
-            'role'   => 'admin',
-            'bio'    => 'Desarrollador y apasionado de la IA. Escribo sobre tecnología, herramientas y negocios digitales.',
+            'name' => 'Juan Jose',
+            'email' => 'admin@neuralrift.com',
+            'role' => 'admin',
+            'bio' => 'Desarrollador y apasionado de la IA. Escribo sobre tecnología, herramientas y negocios digitales.',
         ]);
 
         // Correr seeders en orden

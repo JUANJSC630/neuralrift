@@ -6,7 +6,6 @@
  * Serves static files from /public when they exist, otherwise
  * forwards the request to public/index.php.
  */
-
 $uri = urldecode(
     parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH) ?? '/'
 );

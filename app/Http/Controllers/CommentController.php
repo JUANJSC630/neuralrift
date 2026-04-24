@@ -26,7 +26,7 @@ class CommentController extends Controller
 
         return response()->json([
             'comments' => $comments,
-            'count'    => $post->approvedComments()->count(),
+            'count' => $post->approvedComments()->count(),
         ]);
     }
 
@@ -42,10 +42,10 @@ class CommentController extends Controller
         }
 
         $validated = $request->validate([
-            'author_name'  => ['required', 'string', 'max:80'],
+            'author_name' => ['required', 'string', 'max:80'],
             'author_email' => ['required', 'email', 'max:255'],
-            'body'         => ['required', 'string', 'min:3', 'max:2000'],
-            'parent_id'    => ['nullable', 'integer', 'exists:comments,id'],
+            'body' => ['required', 'string', 'min:3', 'max:2000'],
+            'parent_id' => ['nullable', 'integer', 'exists:comments,id'],
         ]);
 
         $depth = 0;
@@ -66,16 +66,16 @@ class CommentController extends Controller
         $autoApprove = (bool) $user;
 
         Comment::create([
-            'post_id'      => $post->id,
-            'parent_id'    => $validated['parent_id'] ?? null,
-            'user_id'      => $user?->id,
-            'author_name'  => strip_tags($validated['author_name']),
+            'post_id' => $post->id,
+            'parent_id' => $validated['parent_id'] ?? null,
+            'user_id' => $user?->id,
+            'author_name' => strip_tags($validated['author_name']),
             'author_email' => $validated['author_email'],
-            'body'         => strip_tags($validated['body']),
-            'status'       => $autoApprove ? 'approved' : 'pending',
-            'ip_address'   => $request->ip(),
-            'user_agent'   => $request->userAgent(),
-            'depth'        => $depth,
+            'body' => strip_tags($validated['body']),
+            'status' => $autoApprove ? 'approved' : 'pending',
+            'ip_address' => $request->ip(),
+            'user_agent' => $request->userAgent(),
+            'depth' => $depth,
         ]);
 
         $message = $autoApprove

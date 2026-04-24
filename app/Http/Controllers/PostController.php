@@ -3,10 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Post;
-use App\Models\Category;
+use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
-use Illuminate\Http\Request;
 
 class PostController extends Controller
 {
@@ -20,32 +19,32 @@ class PostController extends Controller
             ->forLang($lang);
 
         if ($request->category) {
-            $query->whereHas('category', fn($q) => $q->where('slug', $request->category));
+            $query->whereHas('category', fn ($q) => $q->where('slug', $request->category));
         }
         if ($request->tag) {
-            $query->whereHas('tags', fn($q) => $q->where('slug', $request->tag));
+            $query->whereHas('tags', fn ($q) => $q->where('slug', $request->tag));
         }
         if ($request->search) {
             $search = $request->search;
             $query->where(
-                fn($q) => $isEn
+                fn ($q) => $isEn
                     ? $q->where('title_en', 'like', "%{$search}%")->orWhere('title', 'like', "%{$search}%")
                     : $q->where('title', 'like', "%{$search}%")->orWhere('excerpt', 'like', "%{$search}%")
             );
         }
 
         match ($request->sort ?? 'recent') {
-            'popular'  => $query->orderByDesc('views_count'),
+            'popular' => $query->orderByDesc('views_count'),
             'shortest' => $query->orderBy('read_time'),
-            default    => $query->latest('published_at'),
+            default => $query->latest('published_at'),
         };
 
         $posts = $query->paginate(12)->withQueryString();
 
         return Inertia::render('Blog/Index', [
-            'posts'     => $posts,
-            'filters'   => $request->only(['category', 'tag', 'search', 'sort']),
-            'lang'      => $lang,
+            'posts' => $posts,
+            'filters' => $request->only(['category', 'tag', 'search', 'sort']),
+            'lang' => $lang,
             'canonical' => url($isEn ? '/en/blog' : '/blog'),
         ]);
     }
@@ -86,22 +85,22 @@ class PostController extends Controller
             ->get();
 
         $title = $isEn && $post->title_en ? $post->title_en : $post->title;
-        $desc  = $isEn && $post->excerpt_en ? $post->excerpt_en : $post->excerpt;
+        $desc = $isEn && $post->excerpt_en ? $post->excerpt_en : $post->excerpt;
 
         $schema = [
-            '@context'      => 'https://schema.org',
-            '@type'         => 'BlogPosting',
-            'headline'      => $title,
-            'description'   => $desc,
+            '@context' => 'https://schema.org',
+            '@type' => 'BlogPosting',
+            'headline' => $title,
+            'description' => $desc,
             'datePublished' => $post->published_at?->toIso8601String(),
-            'dateModified'  => $post->updated_at->toIso8601String(),
-            'author'        => [
+            'dateModified' => $post->updated_at->toIso8601String(),
+            'author' => [
                 '@type' => 'Person',
-                'name'  => $post->author->name,
+                'name' => $post->author->name,
             ],
             'publisher' => [
                 '@type' => 'Organization',
-                'name'  => config('site.name'),
+                'name' => config('site.name'),
             ],
         ];
 
@@ -110,12 +109,12 @@ class PostController extends Controller
         }
 
         return Inertia::render('Blog/Show', [
-            'post'       => $post,
-            'comments'   => $comments,
-            'related'    => $related,
-            'schema'     => $schema,
-            'lang'       => $lang,
-            'canonical'  => url($isEn ? "/en/blog/{$post->slug_en}" : "/blog/{$post->slug}"),
+            'post' => $post,
+            'comments' => $comments,
+            'related' => $related,
+            'schema' => $schema,
+            'lang' => $lang,
+            'canonical' => url($isEn ? "/en/blog/{$post->slug_en}" : "/blog/{$post->slug}"),
             'alternates' => [
                 'es' => url("/blog/{$post->slug}"),
                 'en' => $post->slug_en ? url("/en/blog/{$post->slug_en}") : null,

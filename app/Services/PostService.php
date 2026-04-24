@@ -2,10 +2,10 @@
 
 namespace App\Services;
 
+use App\Models\Post;
 use App\Repositories\Contracts\PostRepositoryInterface;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Collection;
-use App\Models\Post;
 
 class PostService
 {
@@ -22,7 +22,7 @@ class PostService
     {
         return [
             'featured' => $this->posts->getFeatured($lang),
-            'posts'    => $this->posts->getPublishedPaginated($lang, $filters),
+            'posts' => $this->posts->getPublishedPaginated($lang, $filters),
         ];
     }
 

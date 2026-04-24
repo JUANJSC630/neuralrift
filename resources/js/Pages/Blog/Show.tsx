@@ -194,7 +194,11 @@ export default function BlogShow({
                                         </div>
                                     )}
                                     <span className="font-mono text-xs text-nr-faint">
-                                        {formatDate(post.published_at ?? post.created_at, 'd MMM yyyy', locale)}
+                                        {formatDate(
+                                            post.published_at ?? post.created_at,
+                                            'd MMM yyyy',
+                                            locale,
+                                        )}
                                     </span>
                                     <span className="font-mono text-xs text-nr-faint">
                                         ⏱ {readTime(post.read_time, locale)}

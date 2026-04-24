@@ -29,10 +29,10 @@ class RecordPostViewAction
 
         try {
             PostView::create([
-                'post_id'   => $post->id,
-                'ip'        => $request->ip(),
-                'source'    => $this->detectSource($request->header('Referer')),
-                'referrer'  => $request->header('Referer'),
+                'post_id' => $post->id,
+                'ip' => $request->ip(),
+                'source' => $this->detectSource($request->header('Referer')),
+                'referrer' => $request->header('Referer'),
                 'viewed_at' => now(),
             ]);
 
@@ -43,7 +43,7 @@ class RecordPostViewAction
         } catch (\Throwable $e) {
             Log::warning('Failed to record post view', [
                 'post_id' => $post->id,
-                'error'   => $e->getMessage(),
+                'error' => $e->getMessage(),
             ]);
 
             \Sentry\captureException($e);
@@ -54,7 +54,7 @@ class RecordPostViewAction
 
     private function isBot(?string $userAgent): bool
     {
-        if (!$userAgent) {
+        if (! $userAgent) {
             return true;
         }
 
@@ -71,7 +71,7 @@ class RecordPostViewAction
 
     private function detectSource(?string $referer): string
     {
-        if (!$referer) {
+        if (! $referer) {
             return 'direct';
         }
 

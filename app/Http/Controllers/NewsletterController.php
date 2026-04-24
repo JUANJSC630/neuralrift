@@ -31,7 +31,7 @@ class NewsletterController extends Controller
         try {
             $this->confirmAction->execute($token);
 
-            return redirect('/')->with('success', '¡Confirmado! Bienvenido a ' . config('site.name') . '.');
+            return redirect('/')->with('success', '¡Confirmado! Bienvenido a '.config('site.name').'.');
         } catch (ModelNotFoundException) {
             return redirect('/')->with('error', 'El link no es válido o ya fue usado.');
         }
@@ -41,7 +41,7 @@ class NewsletterController extends Controller
     {
         $subscriber = Subscriber::where('unsubscribe_token', $token)->first();
 
-        if (!$subscriber) {
+        if (! $subscriber) {
             return redirect('/')->with('error', 'El link de cancelación no es válido.');
         }
 

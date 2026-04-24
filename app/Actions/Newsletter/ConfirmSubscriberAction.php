@@ -13,14 +13,14 @@ class ConfirmSubscriberAction
             ->where('confirmed', false)
             ->first();
 
-        if (!$subscriber) {
+        if (! $subscriber) {
             throw new ModelNotFoundException('Invalid or already used confirmation token.');
         }
 
         $subscriber->update([
-            'confirmed'    => true,
+            'confirmed' => true,
             'confirmed_at' => now(),
-            'token'        => null,
+            'token' => null,
         ]);
 
         return $subscriber;

@@ -111,7 +111,9 @@ export default function Navbar() {
                                     <span
                                         className={cn(
                                             'absolute -bottom-1 left-0 right-0 h-px bg-gradient-to-r from-nr-accent to-nr-cyan transition-transform duration-300',
-                                            active ? 'scale-x-100' : 'origin-left scale-x-0 group-hover:scale-x-100',
+                                            active
+                                                ? 'scale-x-100'
+                                                : 'origin-left scale-x-0 group-hover:scale-x-100',
                                         )}
                                     />
                                 </Link>

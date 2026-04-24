@@ -10,7 +10,7 @@ class Subscriber extends Model
     protected $fillable = ['email', 'name', 'lang', 'confirmed', 'token', 'confirmed_at', 'unsubscribe_token'];
 
     protected $casts = [
-        'confirmed'    => 'boolean',
+        'confirmed' => 'boolean',
         'confirmed_at' => 'datetime',
     ];
 
@@ -33,7 +33,7 @@ class Subscriber extends Model
      */
     public function getUnsubscribeUrl(): string
     {
-        if (!$this->unsubscribe_token) {
+        if (! $this->unsubscribe_token) {
             $this->update(['unsubscribe_token' => Str::random(64)]);
         }
 

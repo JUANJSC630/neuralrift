@@ -15,7 +15,7 @@ class SubscribeNewsletterRequest extends FormRequest
     {
         return [
             'email' => ['required', 'email:rfc,dns', 'max:255'],
-            'lang'  => ['nullable', 'in:es,en'],
+            'lang' => ['nullable', 'in:es,en'],
         ];
     }
 }

@@ -19,7 +19,7 @@ class VerifyEmailController extends Controller
         }
 
         $user = $request->user();
-        assert(!is_null($user));
+        assert(! is_null($user));
 
         if ($user->markEmailAsVerified()) {
             event(new Verified($user));

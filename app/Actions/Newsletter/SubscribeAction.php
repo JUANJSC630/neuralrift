@@ -15,7 +15,7 @@ class SubscribeAction
             ['confirmed' => false, 'lang' => $lang],
         );
 
-        if (!$subscriber->confirmed) {
+        if (! $subscriber->confirmed) {
             Mail::to($subscriber->email)->send(new SubscriptionConfirmation($subscriber));
         }
 

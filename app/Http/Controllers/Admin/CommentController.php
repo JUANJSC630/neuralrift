@@ -24,23 +24,23 @@ class CommentController extends Controller
             $search = $request->search;
             $query->where(function ($q) use ($search) {
                 $q->where('author_name', 'like', "%{$search}%")
-                  ->orWhere('author_email', 'like', "%{$search}%")
-                  ->orWhere('body', 'like', "%{$search}%");
+                    ->orWhere('author_email', 'like', "%{$search}%")
+                    ->orWhere('body', 'like', "%{$search}%");
             });
         }
 
         $comments = $query->paginate(20)->withQueryString();
 
         $counts = [
-            'pending'  => Comment::pending()->count(),
+            'pending' => Comment::pending()->count(),
             'approved' => Comment::approved()->count(),
-            'spam'     => Comment::where('status', 'spam')->count(),
+            'spam' => Comment::where('status', 'spam')->count(),
         ];
 
         return Inertia::render('Admin/Comments', [
             'comments' => $comments,
-            'filters'  => $request->only(['status', 'search']),
-            'counts'   => $counts,
+            'filters' => $request->only(['status', 'search']),
+            'counts' => $counts,
         ]);
     }
 

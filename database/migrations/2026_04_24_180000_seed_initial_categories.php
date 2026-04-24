@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 return new class extends Migration
 {
@@ -21,11 +22,11 @@ return new class extends Migration
         ];
 
         foreach ($categories as $cat) {
-            $slug = \Illuminate\Support\Str::slug($cat['name']);
+            $slug = Str::slug($cat['name']);
             DB::table('categories')->updateOrInsert(
                 ['slug' => $slug],
                 array_merge($cat, [
-                    'slug'       => $slug,
+                    'slug' => $slug,
                     'created_at' => now(),
                     'updated_at' => now(),
                 ])

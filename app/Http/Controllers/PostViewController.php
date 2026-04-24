@@ -4,8 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Actions\Analytics\RecordPostViewAction;
 use App\Models\Post;
-use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 
 class PostViewController extends Controller
 {

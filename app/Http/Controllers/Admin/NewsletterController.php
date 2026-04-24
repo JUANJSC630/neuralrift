@@ -4,10 +4,10 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Subscriber;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
-use Illuminate\Http\Request;
-use Illuminate\Http\RedirectResponse;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class NewsletterController extends Controller
@@ -25,12 +25,12 @@ class NewsletterController extends Controller
 
         return Inertia::render('Admin/Newsletter', [
             'subscribers' => $query->paginate(20)->withQueryString(),
-            'totals'      => [
-                'all'       => Subscriber::count(),
+            'totals' => [
+                'all' => Subscriber::count(),
                 'confirmed' => Subscriber::confirmed()->count(),
-                'pending'   => Subscriber::where('confirmed', false)->count(),
-                'es'        => Subscriber::confirmed()->where('lang', 'es')->count(),
-                'en'        => Subscriber::confirmed()->where('lang', 'en')->count(),
+                'pending' => Subscriber::where('confirmed', false)->count(),
+                'es' => Subscriber::confirmed()->where('lang', 'es')->count(),
+                'en' => Subscriber::confirmed()->where('lang', 'en')->count(),
             ],
             'filters' => $request->only(['confirmed', 'search']),
         ]);
@@ -39,12 +39,13 @@ class NewsletterController extends Controller
     public function destroy(Subscriber $subscriber): RedirectResponse
     {
         $subscriber->delete();
+
         return back()->with('success', 'Suscriptor eliminado.');
     }
 
     public function export(): StreamedResponse
     {
-        $filename = 'neuralrift-subscribers-' . now()->format('Y-m-d') . '.csv';
+        $filename = 'neuralrift-subscribers-'.now()->format('Y-m-d').'.csv';
 
         return response()->streamDownload(function () {
             $handle = fopen('php://output', 'w');

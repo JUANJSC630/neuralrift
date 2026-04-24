@@ -4,10 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Affiliate;
 use App\Models\AffiliateClick;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
-use Illuminate\Http\Request;
-use Illuminate\Http\RedirectResponse;
 
 class AffiliateController extends Controller
 {
@@ -22,8 +22,8 @@ class AffiliateController extends Controller
 
         return Inertia::render('Tools', [
             'affiliates' => $affiliates,
-            'grouped'    => $grouped,
-            'canonical'  => url(app()->getLocale() === 'en' ? '/en/tools' : '/herramientas'),
+            'grouped' => $grouped,
+            'canonical' => url(app()->getLocale() === 'en' ? '/en/tools' : '/herramientas'),
         ]);
     }
 
@@ -33,9 +33,9 @@ class AffiliateController extends Controller
 
         AffiliateClick::create([
             'affiliate_id' => $affiliate->id,
-            'post_id'      => $request->query('post'),
-            'ip'           => $request->ip(),
-            'clicked_at'   => now(),
+            'post_id' => $request->query('post'),
+            'ip' => $request->ip(),
+            'clicked_at' => now(),
         ]);
 
         $affiliate->increment('clicks_count');

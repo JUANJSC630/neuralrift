@@ -8,8 +8,8 @@
         "type-check": "tsc --noEmit",
         "lint": "eslint resources/js --ext .ts,.tsx",
         "lint:fix": "eslint resources/js --ext .ts,.tsx --fix",
-        "format": "prettier --write \"resources/js/**/*.{ts,tsx}\"",
-        "format:check": "prettier --check \"resources/js/**/*.{ts,tsx}\"",
+        "format": "prettier --write \"resources/js/**/*.{ts,tsx}\" && ./vendor/bin/pint",
+        "format:check": "prettier --check \"resources/js/**/*.{ts,tsx}\" && ./vendor/bin/pint --test",
         "check": "npm run type-check && npm run lint && npm run format:check"
     },
     "devDependencies": {

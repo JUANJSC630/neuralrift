@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Post;
 use App\Models\Affiliate;
+use App\Models\Post;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -31,13 +31,13 @@ class ImageController extends Controller
             $usedIn = $usageMap[$path] ?? [];
 
             return [
-                'path'      => $path,
-                'url'       => $url,
-                'filename'  => basename($path),
-                'size'      => Storage::disk($disk)->size($path),
-                'modified'  => Storage::disk($disk)->lastModified($path),
-                'used_in'   => $usedIn,
-                'is_used'   => count($usedIn) > 0,
+                'path' => $path,
+                'url' => $url,
+                'filename' => basename($path),
+                'size' => Storage::disk($disk)->size($path),
+                'modified' => Storage::disk($disk)->lastModified($path),
+                'used_in' => $usedIn,
+                'is_used' => count($usedIn) > 0,
             ];
         })->sortByDesc('modified')->values();
 
@@ -55,13 +55,13 @@ class ImageController extends Controller
         $path = $request->input('path');
 
         // Prevent path traversal
-        if (str_contains($path, '..') || !str_starts_with($path, 'posts/')) {
+        if (str_contains($path, '..') || ! str_starts_with($path, 'posts/')) {
             return response()->json(['error' => 'Ruta inválida.'], 403);
         }
 
         $disk = $this->mediaDisk();
 
-        if (!Storage::disk($disk)->exists($path)) {
+        if (! Storage::disk($disk)->exists($path)) {
             return response()->json(['error' => 'Imagen no encontrada.'], 404);
         }
 
@@ -76,6 +76,7 @@ class ImageController extends Controller
 
         return collect($files)->filter(function (string $file) {
             $ext = strtolower(pathinfo($file, PATHINFO_EXTENSION));
+
             return in_array($ext, ['jpg', 'jpeg', 'png', 'gif', 'webp', 'svg', 'avif']);
         })->values()->all();
     }
@@ -93,8 +94,8 @@ class ImageController extends Controller
                     if ($url) {
                         $path = self::extractRelativePath($url);
                         $map[$path][] = [
-                            'type'  => 'post',
-                            'id'    => $post->id,
+                            'type' => 'post',
+                            'id' => $post->id,
                             'title' => $post->title,
                             'field' => $field,
                         ];
@@ -104,7 +105,9 @@ class ImageController extends Controller
                 // Check inside Tiptap JSON content for image URLs
                 foreach (['content', 'content_en'] as $field) {
                     $raw = $post->{$field};
-                    if (!$raw) continue;
+                    if (! $raw) {
+                        continue;
+                    }
 
                     $json = $raw;
                     // Match both local /storage/posts/ and R2/S3 /posts/ URLs
@@ -114,10 +117,10 @@ class ImageController extends Controller
                         $url = rtrim($url, '",}]');
                         $path = self::extractRelativePath($url);
                         $map[$path][] = [
-                            'type'  => 'post',
-                            'id'    => $post->id,
+                            'type' => 'post',
+                            'id' => $post->id,
                             'title' => $post->title,
-                            'field' => $field . ' (contenido)',
+                            'field' => $field.' (contenido)',
                         ];
                     }
                 }
@@ -131,8 +134,8 @@ class ImageController extends Controller
                 if ($aff->logo) {
                     $path = self::extractRelativePath($aff->logo);
                     $map[$path][] = [
-                        'type'  => 'affiliate',
-                        'id'    => $aff->id,
+                        'type' => 'affiliate',
+                        'id' => $aff->id,
                         'title' => $aff->name,
                         'field' => 'logo',
                     ];
@@ -141,7 +144,7 @@ class ImageController extends Controller
 
         // Deduplicate usage entries
         foreach ($map as $path => $entries) {
-            $map[$path] = collect($entries)->unique(fn ($e) => $e['type'] . $e['id'] . $e['field'])->values()->all();
+            $map[$path] = collect($entries)->unique(fn ($e) => $e['type'].$e['id'].$e['field'])->values()->all();
         }
 
         return $map;

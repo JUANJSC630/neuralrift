@@ -2,9 +2,9 @@
 
 namespace App\Services;
 
+use App\Models\Category;
 use App\Repositories\Contracts\CategoryRepositoryInterface;
 use Illuminate\Database\Eloquent\Collection;
-use App\Models\Category;
 
 class CategoryService
 {

@@ -3,18 +3,18 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 class UploadController extends Controller
 {
     private const ALLOWED_MIME_TYPES = [
-        'image/jpeg'    => 'jpg',
-        'image/png'     => 'png',
-        'image/gif'     => 'gif',
-        'image/webp'    => 'webp',
+        'image/jpeg' => 'jpg',
+        'image/png' => 'png',
+        'image/gif' => 'gif',
+        'image/webp' => 'webp',
         'image/svg+xml' => 'svg',
     ];
 
@@ -23,7 +23,7 @@ class UploadController extends Controller
     public function image(Request $request): JsonResponse
     {
         $request->validate([
-            'image'    => 'required|string',
+            'image' => 'required|string',
             'filename' => 'required|string|max:255',
         ]);
 
@@ -33,7 +33,7 @@ class UploadController extends Controller
         }
 
         $mime = $m[1];
-        $ext  = self::ALLOWED_MIME_TYPES[$mime] ?? null;
+        $ext = self::ALLOWED_MIME_TYPES[$mime] ?? null;
 
         if (! $ext) {
             return response()->json(['message' => 'Tipo de imagen no permitido.'], 422);
@@ -46,7 +46,7 @@ class UploadController extends Controller
         }
 
         $slug = Str::slug(pathinfo($request->filename, PATHINFO_FILENAME)) ?: 'image';
-        $path = 'posts/' . now()->format('Y/m') . '/' . $slug . '-' . uniqid() . '.' . $ext;
+        $path = 'posts/'.now()->format('Y/m').'/'.$slug.'-'.uniqid().'.'.$ext;
 
         $disk = config('filesystems.media');
         Storage::disk($disk)->put($path, $binary, 'public');

@@ -2,8 +2,8 @@
 
 namespace App\Jobs;
 
-use App\AI\Agents\PostGeneratorAgent;
 use App\Actions\AI\CreatePostFromGeneratedContentAction;
+use App\AI\Agents\PostGeneratorAgent;
 use App\Models\User;
 use App\Notifications\PostDraftFailedNotification;
 use App\Notifications\PostDraftReadyNotification;
@@ -13,33 +13,36 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Log;
+use Sentry\State\Scope;
 
 class GeneratePostDraftJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     public int $timeout = 120;
-    public int $tries   = 2;
+
+    public int $tries = 2;
+
     public int $backoff = 30;
 
     public function __construct(
         private readonly array $inputs,
-        private readonly int   $authorId,
+        private readonly int $authorId,
     ) {
         $this->onQueue('ai-generation');
     }
 
     public function handle(
-        PostGeneratorAgent                   $agent,
+        PostGeneratorAgent $agent,
         CreatePostFromGeneratedContentAction $createAction,
     ): void {
         try {
             Log::info('GeneratePostDraftJob: starting', [
-                'type'  => $this->inputs['post_type'],
+                'type' => $this->inputs['post_type'],
                 'topic' => substr($this->inputs['topic'], 0, 80),
             ]);
 
-            $dto  = $agent->generate($this->inputs);
+            $dto = $agent->generate($this->inputs);
             $post = $createAction->execute($dto, $this->authorId);
 
             $author = User::find($this->authorId);
@@ -49,11 +52,11 @@ class GeneratePostDraftJob implements ShouldQueue
 
             Log::info('GeneratePostDraftJob: completed', [
                 'post_id' => $post->id,
-                'title'   => $post->title,
+                'title' => $post->title,
             ]);
         } catch (\Throwable $e) {
             Log::error('GeneratePostDraftJob: failed', [
-                'error'  => $e->getMessage(),
+                'error' => $e->getMessage(),
                 'inputs' => $this->inputs,
             ]);
 
@@ -64,13 +67,13 @@ class GeneratePostDraftJob implements ShouldQueue
     public function failed(\Throwable $exception): void
     {
         Log::error('GeneratePostDraftJob: all attempts failed', [
-            'error'  => $exception->getMessage(),
+            'error' => $exception->getMessage(),
             'inputs' => $this->inputs,
         ]);
 
-        \Sentry\withScope(function (\Sentry\State\Scope $scope) use ($exception): void {
+        \Sentry\withScope(function (Scope $scope) use ($exception): void {
             $scope->setContext('job', [
-                'type'  => $this->inputs['post_type'] ?? 'unknown',
+                'type' => $this->inputs['post_type'] ?? 'unknown',
                 'topic' => substr($this->inputs['topic'] ?? '', 0, 100),
             ]);
             \Sentry\captureException($exception);

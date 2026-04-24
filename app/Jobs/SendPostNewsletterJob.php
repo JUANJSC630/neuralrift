@@ -11,6 +11,7 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Mail;
+use Sentry\State\Scope;
 
 class SendPostNewsletterJob implements ShouldQueue
 {
@@ -28,10 +29,10 @@ class SendPostNewsletterJob implements ShouldQueue
 
     public function failed(\Throwable $exception): void
     {
-        \Sentry\withScope(function (\Sentry\State\Scope $scope) use ($exception): void {
+        \Sentry\withScope(function (Scope $scope) use ($exception): void {
             $scope->setContext('job', [
                 'post_id' => $this->post->id,
-                'post'    => $this->post->title,
+                'post' => $this->post->title,
             ]);
             \Sentry\captureException($exception);
         });

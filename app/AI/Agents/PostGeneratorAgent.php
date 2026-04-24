@@ -22,8 +22,8 @@ class PostGeneratorAgent
         $fullPrompt = $prompt->build($enrichedInputs);
 
         Log::info('PostGeneratorAgent: starting generation', [
-            'type'  => $inputs['post_type'],
-            'lang'  => $inputs['lang'],
+            'type' => $inputs['post_type'],
+            'lang' => $inputs['lang'],
             'topic' => substr($inputs['topic'], 0, 100),
         ]);
 
@@ -53,10 +53,10 @@ class PostGeneratorAgent
     private function buildPrompt(array $inputs): object
     {
         return match ($inputs['post_type']) {
-            'news'    => new NewsPostPrompt(),
-            'tutorial' => new TutorialPostPrompt(),
-            'review'  => new ReviewPostPrompt(),
-            default   => new TutorialPostPrompt(),
+            'news' => new NewsPostPrompt,
+            'tutorial' => new TutorialPostPrompt,
+            'review' => new ReviewPostPrompt,
+            default => new TutorialPostPrompt,
         };
     }
 
@@ -85,7 +85,7 @@ class PostGeneratorAgent
 
         if (json_last_error() !== JSON_ERROR_NONE) {
             Log::error('PostGeneratorAgent: JSON parse error', [
-                'error'    => json_last_error_msg(),
+                'error' => json_last_error_msg(),
                 'response' => substr($response, 0, 500),
             ]);
 
@@ -106,10 +106,10 @@ class PostGeneratorAgent
             $parsed['content_en_json'] = json_encode($parsed['content_en_json']);
         }
 
-        $parsed['category_id']  = $inputs['category_id']  ?? null;
+        $parsed['category_id'] = $inputs['category_id'] ?? null;
         $parsed['affiliate_id'] = $inputs['affiliate_id'] ?? null;
-        $parsed['lang']         = $inputs['lang']          ?? 'es';
-        $parsed['post_type']    = $inputs['post_type']     ?? 'tutorial';
+        $parsed['lang'] = $inputs['lang'] ?? 'es';
+        $parsed['post_type'] = $inputs['post_type'] ?? 'tutorial';
 
         return $parsed;
     }
