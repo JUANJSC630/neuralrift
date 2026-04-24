@@ -47,15 +47,15 @@ echo "=== Starting Horizon ==="
 php artisan horizon &
 QUEUE_PID=$!
 
-# ── PHP development server ─────────────────────────────────
+# ── PHP built-in server ────────────────────────────────────
+# We run php -S directly instead of artisan serve because artisan serve
+# spawns a child PHP process via proc_open and PHP INI overrides (-d flags,
+# PHP_INI_SCAN_DIR) don't propagate reliably to the child.
+# server.php at the project root handles static files and routes to public/index.php.
 echo "=== Starting PHP server on port ${PORT:-8080} ==="
-
-# Apply php.ini overrides (upload limits etc.) — artisan serve spawns a new PHP
-# process that doesn't inherit -d flags, so we use PHP_INI_SCAN_DIR instead.
-SCAN_DIR="$(pwd)"
-if [ -n "$(php --ini | grep 'Scan for' | awk -F': ' '{print $2}')" ]; then
-    SCAN_DIR="${SCAN_DIR}:$(php --ini | grep 'Scan for' | awk -F': ' '{print $2}')"
-fi
-export PHP_INI_SCAN_DIR="$SCAN_DIR"
-
-php artisan serve --host=0.0.0.0 --port="${PORT:-8080}"
+php \
+    -d upload_max_filesize=20M \
+    -d post_max_size=25M \
+    -d memory_limit=256M \
+    -S 0.0.0.0:"${PORT:-8080}" \
+    server.php
