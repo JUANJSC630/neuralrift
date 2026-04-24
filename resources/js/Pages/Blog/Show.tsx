@@ -247,7 +247,7 @@ export default function BlogShow({
                 <div className="mx-auto max-w-7xl px-6 py-12 md:px-12">
                     <div className="grid grid-cols-1 gap-12 lg:grid-cols-[1fr_300px]">
                         {/* Article body */}
-                        <article>
+                        <article className="min-w-0">
                             {/* Mobile ToC */}
                             <div className="mb-8 lg:hidden">
                                 <TableOfContents content={content} />
