@@ -81,8 +81,15 @@ export default function Navbar() {
                 {/* Logo */}
                 <Link
                     href={localePath('/')}
-                    className="flex-shrink-0 font-display text-xl font-black tracking-tight"
+                    className="flex shrink-0 items-center gap-2 font-display text-xl font-black tracking-tight"
                 >
+                    <img
+                        src="/logo.png"
+                        alt="NeuralRift"
+                        className="h-8 w-8 rounded-lg object-contain"
+                        width={32}
+                        height={32}
+                    />
                     <span className="text-gradient">NeuralRift</span>
                 </Link>
 

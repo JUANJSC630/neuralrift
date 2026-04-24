@@ -18,8 +18,18 @@ export default function Footer() {
                 <div className="grid grid-cols-1 gap-12 md:grid-cols-4">
                     {/* Brand */}
                     <div className="md:col-span-2">
-                        <div className="text-gradient mb-3 font-display text-2xl font-black">
-                            NeuralRift
+                        <div className="mb-3 flex items-center gap-2">
+                            <img
+                                src="/logo.png"
+                                alt="NeuralRift"
+                                className="h-9 w-9 rounded-xl object-contain"
+                                width={36}
+                                height={36}
+                                loading="lazy"
+                            />
+                            <span className="text-gradient font-display text-2xl font-black">
+                                NeuralRift
+                            </span>
                         </div>
                         <p className="max-w-sm text-sm leading-relaxed text-nr-muted">
                             {t('footer.tagline')}

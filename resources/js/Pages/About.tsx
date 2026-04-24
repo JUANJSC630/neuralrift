@@ -60,9 +60,13 @@ export default function About({ rawStats, skills: skillsProp }: { rawStats?: Raw
                                 className="flex-shrink-0"
                             >
                                 <div className="relative">
-                                    <div className="flex h-40 w-40 items-center justify-center rounded-3xl bg-gradient-to-br from-nr-accent to-nr-cyan font-display text-6xl font-bold text-white">
-                                        J
-                                    </div>
+                                    <img
+                                        src="/logo.png"
+                                        alt="NeuralRift"
+                                        className="h-40 w-40 rounded-3xl object-contain"
+                                        width={160}
+                                        height={160}
+                                    />
                                     <div className="glow-accent-lg absolute inset-0 -z-10 rounded-3xl opacity-40 blur-xl" />
                                 </div>
                             </motion.div>

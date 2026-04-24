@@ -6,6 +6,13 @@
 
         <title inertia>{{ config('app.name', 'Laravel') }}</title>
 
+        <!-- Favicon -->
+        <link rel="icon" type="image/png" href="/logo.png">
+        <link rel="apple-touch-icon" href="/logo.png">
+        <meta property="og:image" content="{{ config('app.url') }}/logo.png">
+        <meta name="twitter:image" content="{{ config('app.url') }}/logo.png">
+        <meta name="twitter:card" content="summary">
+
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
