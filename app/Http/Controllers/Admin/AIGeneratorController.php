@@ -43,7 +43,7 @@ class AIGeneratorController extends Controller
         )->onQueue('ai-generation');
 
         return redirect()
-            ->route('admin.ai-generator.index')
+            ->route('admin.ai-generator')
             ->with('success', '✦ Borrador en cola. Te avisamos cuando esté listo (~30–60 s).');
     }
 
