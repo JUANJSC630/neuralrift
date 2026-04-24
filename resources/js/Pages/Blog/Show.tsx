@@ -1,5 +1,5 @@
 import { Head, Link } from '@inertiajs/react'
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 import { motion } from 'framer-motion'
 import Navbar from '@/Components/Layout/Navbar'
 import Footer from '@/Components/Layout/Footer'
@@ -53,6 +53,19 @@ export default function BlogShow({
         typeof window !== 'undefined' ? window.location.href : `${SITE.url}/blog/${post.slug}`
 
     const [featuredAffiliate, ...restAffiliates] = post.affiliates ?? []
+
+    // Client-side re-render fallback: ensures hljs syntax highlighting even when
+    // SSR output differs slightly from client output (hydration mismatch).
+    const proseRef = useRef<HTMLDivElement>(null)
+    useEffect(() => {
+        if (!proseRef.current) return
+        const rendered = renderContent(raw)
+        // Only update if we got actual HTML back (not the original JSON/string)
+        if (rendered && rendered !== raw && rendered.includes('<')) {
+            proseRef.current.innerHTML = rendered
+        }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [])
 
     // Track view via API
     useEffect(() => {
@@ -284,7 +297,9 @@ export default function BlogShow({
 
                             {/* Post content */}
                             <div
+                                ref={proseRef}
                                 className="nr-prose"
+                                suppressHydrationWarning
                                 dangerouslySetInnerHTML={{ __html: content }}
                             />
 
