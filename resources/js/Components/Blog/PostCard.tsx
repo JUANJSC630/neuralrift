@@ -80,9 +80,9 @@ export default function PostCard({ post }: { post: Post }) {
 
                 {/* Meta */}
                 <div className="flex flex-wrap items-center gap-x-3 gap-y-1 border-t border-white/[0.05] pt-4 font-mono text-xs text-nr-faint">
-                    <span>{formatDate(post.published_at ?? post.created_at)}</span>
+                    <span>{formatDate(post.published_at ?? post.created_at, 'd MMM yyyy', locale)}</span>
                     <span className="text-white/10">·</span>
-                    <span>{readTime(post.read_time)}</span>
+                    <span>{readTime(post.read_time, locale)}</span>
                     <span className="text-white/10">·</span>
                     <span>
                         {post.views_count.toLocaleString()} {t('postcard.views')}

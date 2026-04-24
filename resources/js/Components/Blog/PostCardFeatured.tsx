@@ -101,10 +101,10 @@ export default function PostCardFeatured({ post }: { post: Post }) {
                             </div>
                         )}
                         <span className="font-mono text-xs text-nr-faint">
-                            {formatDate(post.published_at ?? post.created_at)}
+                            {formatDate(post.published_at ?? post.created_at, 'd MMM yyyy', locale)}
                         </span>
                         <span className="font-mono text-xs text-nr-faint">
-                            ⏱ {readTime(post.read_time)}
+                            ⏱ {readTime(post.read_time, locale)}
                         </span>
                         <span className="font-mono text-xs text-nr-faint">
                             👁 {post.views_count.toLocaleString()}
