@@ -154,17 +154,20 @@ export default function PostEdit({ post, categories, tags, affiliates }: Props) 
         if (!file) return
         setUploading(true)
         try {
-            const form = new FormData()
-            form.append('image', file)
-            const xsrf = getCookie('XSRF-TOKEN')
+            const base64 = await new Promise<string>((resolve, reject) => {
+                const reader = new FileReader()
+                reader.onload = (ev) => resolve(ev.target!.result as string)
+                reader.onerror = () => reject(new Error('FileReader error'))
+                reader.readAsDataURL(file)
+            })
             const res = await fetch('/admin/upload/image', {
                 method: 'POST',
                 credentials: 'same-origin',
                 headers: {
+                    'Content-Type': 'application/json',
                     Accept: 'application/json',
-                    ...(xsrf ? { 'X-XSRF-TOKEN': decodeURIComponent(xsrf) } : {}),
                 },
-                body: form,
+                body: JSON.stringify({ image: base64, filename: file.name }),
             })
             if (!res.ok || !res.headers.get('content-type')?.includes('application/json')) {
                 const text = await res.text().catch(() => '')
@@ -182,7 +185,6 @@ export default function PostEdit({ post, categories, tags, affiliates }: Props) 
             showToast('error', 'Error de red al subir la imagen')
         } finally {
             setUploading(false)
-            // Reset the file input so the same file can be re-selected after a failure
             if (fileInputRef.current) fileInputRef.current.value = ''
         }
     }
@@ -665,8 +667,3 @@ export default function PostEdit({ post, categories, tags, affiliates }: Props) 
     )
 }
 
-function getCookie(name: string) {
-    if (typeof document === 'undefined') return null
-    const match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'))
-    return match ? match[2] : null
-}

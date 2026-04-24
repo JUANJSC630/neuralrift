@@ -6,26 +6,52 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class UploadController extends Controller
 {
+    private const ALLOWED_MIME_TYPES = [
+        'image/jpeg'    => 'jpg',
+        'image/png'     => 'png',
+        'image/gif'     => 'gif',
+        'image/webp'    => 'webp',
+        'image/svg+xml' => 'svg',
+    ];
+
+    private const MAX_BYTES = 10 * 1024 * 1024; // 10 MB
+
     public function image(Request $request): JsonResponse
     {
         $request->validate([
-            'image' => 'required|image|max:10240',
+            'image'    => 'required|string',
+            'filename' => 'required|string|max:255',
         ]);
 
-        $disk = config('filesystems.media');
+        // Expect a data URI: data:image/jpeg;base64,<data>
+        if (! preg_match('/^data:(image\/[a-z+]+);base64,(.+)$/s', $request->image, $m)) {
+            return response()->json(['message' => 'Formato de imagen inválido.'], 422);
+        }
 
-        $path = $request->file('image')->store(
-            'posts/' . now()->format('Y/m'),
-            $disk
-        );
+        $mime = $m[1];
+        $ext  = self::ALLOWED_MIME_TYPES[$mime] ?? null;
+
+        if (! $ext) {
+            return response()->json(['message' => 'Tipo de imagen no permitido.'], 422);
+        }
+
+        $binary = base64_decode($m[2], strict: true);
+
+        if ($binary === false || strlen($binary) > self::MAX_BYTES) {
+            return response()->json(['message' => 'Imagen inválida o superior a 10 MB.'], 422);
+        }
+
+        $slug = Str::slug(pathinfo($request->filename, PATHINFO_FILENAME)) ?: 'image';
+        $path = 'posts/' . now()->format('Y/m') . '/' . $slug . '-' . uniqid() . '.' . $ext;
+
+        $disk = config('filesystems.media');
+        Storage::disk($disk)->put($path, $binary, 'public');
 
         return response()->json([
-            // For the local public disk, asset() resolves relative to the current
-            // request host (works with any dev domain). For cloud disks (r2, s3)
-            // Storage::url() returns the correct CDN URL.
             'url' => $disk === 'public'
                 ? asset("storage/{$path}")
                 : Storage::disk($disk)->url($path),
