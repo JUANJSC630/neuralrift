@@ -308,7 +308,7 @@ export default function PostEdit({ post, categories, tags, affiliates }: Props) 
                                             type="text"
                                             value={data.title}
                                             onChange={e => handleTitleChange(e.target.value)}
-                                            className="glass w-full rounded-lg border border-white/[0.08] px-3 py-2.5 text-base text-sm font-medium text-nr-text outline-none transition-colors focus:border-nr-accent/50"
+                                            className="glass w-full rounded-lg border border-white/[0.08] px-3 py-2.5 text-base font-medium text-nr-text outline-none transition-colors focus:border-nr-accent/50"
                                             placeholder="Título del artículo"
                                         />
                                         <input
@@ -331,7 +331,7 @@ export default function PostEdit({ post, categories, tags, affiliates }: Props) 
                                             type="text"
                                             value={data.title_en}
                                             onChange={e => handleTitleEnChange(e.target.value)}
-                                            className="glass w-full rounded-lg border border-white/[0.08] px-3 py-2.5 text-base text-sm font-medium text-nr-text outline-none transition-colors focus:border-nr-accent/50"
+                                            className="glass w-full rounded-lg border border-white/[0.08] px-3 py-2.5 text-base font-medium text-nr-text outline-none transition-colors focus:border-nr-accent/50"
                                             placeholder="Article title in English"
                                         />
                                         <input
