@@ -28,49 +28,224 @@ function hastToHtml(node: HastNode): string {
     return (node.children ?? []).map(hastToHtml).join('')
 }
 
-// For tsx/jsx, highlight.js's typescript grammar gives up on JSX whenever it
-// hits `style={{...}}` (nested braces break its expression parser) and emits
-// the tags as fragmented text nodes — `<`, `<`, `</` — too small to re-detect.
-//
-// Fix: run xml FIRST so JSX tags are captured as whole `hljs-tag` spans, then
-// run typescript over the plain-text gaps that remain (the JS code between
-// tags) and merge those spans back in.
-function mergeTsIntoText(node: HastNode): HastNode | HastNode[] {
-    if (node.type === 'text') {
-        const value = node.value ?? ''
-        if (!value.trim()) return node
-        const tsTree = lowlight.highlight('typescript', value) as HastNode
-        return tsTree.children ?? []
+// highlight.js's typescript grammar gives up on JSX whenever it hits
+// `style={{...}}` — nested braces break its expression parser and the rest
+// of the code becomes plain text. xml grammar mishandles JSX expressions too.
+// So for tsx/jsx we run a custom linear parser that splits the code into JSX
+// tags vs plain JS, highlights each piece appropriately, and concatenates.
+
+function highlightWithTs(code: string): string {
+    if (!code) return ''
+    const tree = lowlight.highlight('typescript', code) as HastNode
+    return hastToHtml(tree)
+}
+
+// Find the end of a JSX tag starting at position `start` (where code[start] === '<').
+// Returns the index AFTER the closing '>', or -1 if not a real tag.
+function findJsxTagEnd(code: string, start: number): number {
+    const N = code.length
+    let i = start + 1
+    if (code[i] === '/') i++
+    // Tag name must start with a letter
+    if (!/[A-Za-z]/.test(code[i] ?? '')) return -1
+    while (i < N) {
+        const c = code[i]
+        if (c === '"' || c === "'") {
+            const q = c
+            i++
+            while (i < N && code[i] !== q) i++
+            if (i < N) i++
+            continue
+        }
+        if (c === '{') {
+            let depth = 1
+            i++
+            while (i < N && depth > 0) {
+                const cc = code[i]
+                if (cc === '{') depth++
+                else if (cc === '}') depth--
+                else if (cc === '"' || cc === "'" || cc === '`') {
+                    const q = cc
+                    i++
+                    while (i < N && code[i] !== q) {
+                        if (code[i] === '\\') i++
+                        i++
+                    }
+                }
+                i++
+            }
+            continue
+        }
+        if (c === '>') return i + 1
+        i++
     }
-    if (node.type === 'element') {
-        // xml-highlighted span — leave it alone.
-        return node
+    return -1
+}
+
+function highlightJsxTag(tag: string): string {
+    // tag starts with '<' or '</', ends with '>' or '/>'
+    let i = 0
+    const N = tag.length
+    let inner = ''
+
+    // opening punctuation
+    let punct = '<'
+    i = 1
+    if (tag[1] === '/') {
+        punct = '</'
+        i = 2
     }
-    const children = (node.children ?? []).flatMap(c => {
-        const r = mergeTsIntoText(c)
-        return Array.isArray(r) ? r : [r]
-    })
-    return { ...node, children }
+    inner += escapeHtml(punct)
+
+    // tag name
+    const nameStart = i
+    while (i < N && /[A-Za-z0-9.]/.test(tag[i])) i++
+    if (i > nameStart) {
+        inner += `<span class="hljs-name">${escapeHtml(tag.slice(nameStart, i))}</span>`
+    }
+
+    // attributes
+    while (i < N) {
+        // whitespace
+        const wsStart = i
+        while (i < N && /\s/.test(tag[i])) i++
+        if (i > wsStart) inner += escapeHtml(tag.slice(wsStart, i))
+        if (i >= N) break
+
+        // closing punctuation
+        if (tag[i] === '/' && tag[i + 1] === '>') {
+            inner += escapeHtml('/>')
+            i += 2
+            break
+        }
+        if (tag[i] === '>') {
+            inner += '&gt;'
+            i++
+            break
+        }
+
+        // attribute name
+        const attrStart = i
+        while (i < N && /[A-Za-z0-9-]/.test(tag[i])) i++
+        if (i > attrStart) {
+            inner += `<span class="hljs-attr">${escapeHtml(tag.slice(attrStart, i))}</span>`
+        }
+
+        // = and value
+        if (tag[i] === '=') {
+            inner += '='
+            i++
+            if (tag[i] === '"' || tag[i] === "'") {
+                const q = tag[i]
+                const valStart = i
+                i++
+                while (i < N && tag[i] !== q) i++
+                if (i < N) i++
+                inner += `<span class="hljs-string">${escapeHtml(tag.slice(valStart, i))}</span>`
+            } else if (tag[i] === '{') {
+                // JSX expression — highlight inner with typescript
+                const exprStart = i
+                let depth = 1
+                i++
+                while (i < N && depth > 0) {
+                    if (tag[i] === '"' || tag[i] === "'" || tag[i] === '`') {
+                        const q = tag[i]
+                        i++
+                        while (i < N && tag[i] !== q) {
+                            if (tag[i] === '\\') i++
+                            i++
+                        }
+                        if (i < N) i++
+                        continue
+                    }
+                    if (tag[i] === '{') depth++
+                    else if (tag[i] === '}') depth--
+                    if (depth > 0) i++
+                }
+                if (i < N) i++
+                const exprBody = tag.slice(exprStart + 1, i - 1)
+                inner += '{' + highlightWithTs(exprBody) + '}'
+            } else {
+                const valStart = i
+                while (i < N && /[A-Za-z0-9_-]/.test(tag[i])) i++
+                inner += escapeHtml(tag.slice(valStart, i))
+            }
+        } else if (i === attrStart) {
+            // didn't consume anything — bail to avoid infinite loop
+            inner += escapeHtml(tag[i] ?? '')
+            i++
+        }
+    }
+
+    return `<span class="hljs-tag">${inner}</span>`
+}
+
+function highlightTsx(code: string): string {
+    let out = ''
+    let i = 0
+    const N = code.length
+    let jsStart = 0
+
+    while (i < N) {
+        const c = code[i]
+        // skip strings to avoid false JSX detection inside them
+        if (c === '"' || c === "'" || c === '`') {
+            const q = c
+            i++
+            while (i < N && code[i] !== q) {
+                if (code[i] === '\\') i++
+                i++
+            }
+            if (i < N) i++
+            continue
+        }
+        // skip line and block comments
+        if (c === '/' && code[i + 1] === '/') {
+            while (i < N && code[i] !== '\n') i++
+            continue
+        }
+        if (c === '/' && code[i + 1] === '*') {
+            i += 2
+            while (i < N && !(code[i] === '*' && code[i + 1] === '/')) i++
+            if (i < N) i += 2
+            continue
+        }
+        // detect JSX tag start
+        if (c === '<') {
+            const next = code[i + 1] ?? ''
+            const looksLikeTag =
+                /[A-Za-z]/.test(next) ||
+                (next === '/' && /[A-Za-z]/.test(code[i + 2] ?? ''))
+            if (looksLikeTag) {
+                const end = findJsxTagEnd(code, i)
+                if (end > i) {
+                    if (i > jsStart) {
+                        out += highlightWithTs(code.slice(jsStart, i))
+                    }
+                    out += highlightJsxTag(code.slice(i, end))
+                    jsStart = end
+                    i = end
+                    continue
+                }
+            }
+        }
+        i++
+    }
+    if (jsStart < N) out += highlightWithTs(code.slice(jsStart))
+    return out
 }
 
 export function highlightCode(code: string, language: string): string {
     try {
         const lang = language?.toLowerCase()
-        const isJsx = lang === 'tsx' || lang === 'jsx'
-
-        let tree: HastNode
-        if (isJsx) {
-            const xmlTree = lowlight.highlight('xml', code) as HastNode
-            const merged = mergeTsIntoText(xmlTree)
-            tree = Array.isArray(merged)
-                ? { type: 'root', children: merged }
-                : merged
-        } else if (language && lowlight.registered(language)) {
-            tree = lowlight.highlight(language, code) as HastNode
-        } else {
-            tree = lowlight.highlightAuto(code) as HastNode
+        if (lang === 'tsx' || lang === 'jsx') {
+            return highlightTsx(code)
         }
-        return hastToHtml(tree)
+        const tree =
+            language && lowlight.registered(language)
+                ? lowlight.highlight(language, code)
+                : lowlight.highlightAuto(code)
+        return hastToHtml(tree as HastNode)
     } catch {
         return escapeHtml(code)
     }
