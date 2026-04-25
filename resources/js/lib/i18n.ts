@@ -78,6 +78,9 @@ const translations = {
     'blog.no_results': { es: 'No se encontraron artículos.', en: 'No articles found.' },
 
     // ── Blog post ────────────────────────────────────
+    'post.code_copy': { es: 'Copiar', en: 'Copy' },
+    'post.code_copied': { es: '✓ Copiado', en: '✓ Copied' },
+    'post.code_copy_label': { es: 'Copiar código', en: 'Copy code' },
     'post.home': { es: 'Inicio', en: 'Home' },
     'post.blog': { es: 'Blog', en: 'Blog' },
     'post.featured': { es: '★ Destacado', en: '★ Featured' },
@@ -149,7 +152,10 @@ const translations = {
     'tools.loading': { es: 'Cargando más herramientas...', en: 'Loading more tools...' },
     'tools.items': { es: 'herramientas', en: 'tools' },
     'tools.end': { es: 'fin del listado', en: 'end of list' },
-    'tools.empty': { es: 'No hay herramientas disponibles en esta categoría.', en: 'No tools available in this category.' },
+    'tools.empty': {
+        es: 'No hay herramientas disponibles en esta categoría.',
+        en: 'No tools available in this category.',
+    },
 
     // ── About page ───────────────────────────────────
     'about.greeting': { es: 'Hola, soy', en: "Hi, I'm" },
@@ -215,6 +221,8 @@ const translations = {
     'postcard.views': { es: 'vistas', en: 'views' },
 
     // ── Misc / shared ────────────────────────────────
+    'share.share_on': { es: 'Compartir en', en: 'Share on' },
+    'share.copy_link': { es: 'Copiar enlace', en: 'Copy link' },
     'misc.back_home': { es: '← Volver al inicio', en: '← Back to home' },
     'misc.view_blog': { es: 'Ver blog ↗', en: 'View blog ↗' },
     'misc.rss': { es: 'RSS Feed', en: 'RSS Feed' },

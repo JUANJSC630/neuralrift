@@ -54,6 +54,10 @@ export default function BlogShow({
 
     const [featuredAffiliate, ...restAffiliates] = post.affiliates ?? []
 
+    const codeCopy = t('post.code_copy')
+    const codeCopied = t('post.code_copied')
+    const codeCopyLabel = t('post.code_copy_label')
+
     // Copy buttons for code blocks
     useEffect(() => {
         const article = document.querySelector('.nr-prose')
@@ -66,8 +70,8 @@ export default function BlogShow({
 
             const btn = document.createElement('button')
             btn.className = 'copy-btn-code'
-            btn.textContent = 'Copiar'
-            btn.setAttribute('aria-label', 'Copiar código')
+            btn.textContent = codeCopy
+            btn.setAttribute('aria-label', codeCopyLabel)
             btn.style.cssText = [
                 'position: absolute',
                 'top: 0.5rem',
@@ -100,12 +104,12 @@ export default function BlogShow({
             btn.addEventListener('click', () => {
                 const code = pre.querySelector('code')?.textContent ?? pre.textContent ?? ''
                 navigator.clipboard.writeText(code).then(() => {
-                    btn.textContent = '✓ Copiado'
+                    btn.textContent = codeCopied
                     btn.style.color = '#10B981'
                     btn.style.background = 'rgba(16,185,129,0.08)'
                     btn.style.borderColor = 'rgba(16,185,129,0.25)'
                     setTimeout(() => {
-                        btn.textContent = 'Copiar'
+                        btn.textContent = codeCopy
                         btn.style.color = '#6B7280'
                         btn.style.background = 'rgba(255,255,255,0.05)'
                         btn.style.borderColor = 'rgba(255,255,255,0.10)'
@@ -119,7 +123,7 @@ export default function BlogShow({
         return () => {
             article.querySelectorAll('.copy-btn-code').forEach(btn => btn.remove())
         }
-    }, [content])
+    }, [content, codeCopy, codeCopied, codeCopyLabel])
 
     // Track view via API
     useEffect(() => {

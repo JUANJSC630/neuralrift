@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { cn } from '@/lib/utils'
+import { useLocale } from '@/hooks/useLocale'
 
 interface Props {
     url: string
@@ -9,6 +10,7 @@ interface Props {
 
 export default function ShareButtons({ url, title, className }: Props) {
     const [copied, setCopied] = useState(false)
+    const { t } = useLocale()
 
     const encoded = encodeURIComponent(url)
     const encodedTitle = encodeURIComponent(title)
@@ -46,7 +48,7 @@ export default function ShareButtons({ url, title, className }: Props) {
                     target="_blank"
                     rel="noopener noreferrer"
                     className="glass flex h-11 w-11 items-center justify-center rounded-lg text-xs font-bold text-nr-faint transition-colors hover:border-nr-accent/30 hover:text-nr-accent"
-                    aria-label={`Compartir en ${link.label}`}
+                    aria-label={`${t('share.share_on')} ${link.label}`}
                 >
                     {link.icon}
                 </a>
@@ -54,7 +56,7 @@ export default function ShareButtons({ url, title, className }: Props) {
             <button
                 onClick={copyLink}
                 className="glass flex h-11 w-11 items-center justify-center rounded-lg text-xs text-nr-faint transition-colors hover:border-nr-accent/30 hover:text-nr-accent"
-                aria-label="Copiar enlace"
+                aria-label={t('share.copy_link')}
             >
                 {copied ? '✓' : '⎘'}
             </button>
