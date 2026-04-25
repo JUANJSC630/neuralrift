@@ -246,8 +246,7 @@ function highlightTsx(code: string): string {
             if (c === '<') {
                 const next = code[i + 1] ?? ''
                 const looksLikeTag =
-                    /[A-Za-z]/.test(next) ||
-                    (next === '/' && /[A-Za-z]/.test(code[i + 2] ?? ''))
+                    /[A-Za-z]/.test(next) || (next === '/' && /[A-Za-z]/.test(code[i + 2] ?? ''))
                 if (looksLikeTag) {
                     const end = findJsxTagEnd(code, i)
                     if (end > i) {
@@ -313,9 +312,12 @@ export function highlightCode(code: string, language: string): string {
         const lang = language?.toLowerCase() ?? ''
         const jsLike =
             lang === '' ||
-            lang === 'tsx' || lang === 'jsx' ||
-            lang === 'typescript' || lang === 'javascript' ||
-            lang === 'ts' || lang === 'js'
+            lang === 'tsx' ||
+            lang === 'jsx' ||
+            lang === 'typescript' ||
+            lang === 'javascript' ||
+            lang === 'ts' ||
+            lang === 'js'
         // Use the custom JSX-aware parser for any JS-family (or auto) block
         // that actually contains JSX. This dodges highlight.js's typescript
         // grammar breaking on `style={{...}}`.
@@ -345,20 +347,30 @@ type TiptapNode = {
     marks?: Array<{ type: string; attrs?: Record<string, unknown> }>
 }
 
-function renderMark(markType: string, attrs: Record<string, unknown> | undefined, inner: string): string {
+function renderMark(
+    markType: string,
+    attrs: Record<string, unknown> | undefined,
+    inner: string,
+): string {
     switch (markType) {
-        case 'bold': return `<strong>${inner}</strong>`
-        case 'italic': return `<em>${inner}</em>`
-        case 'strike': return `<s>${inner}</s>`
-        case 'highlight': return `<mark>${inner}</mark>`
-        case 'code': return `<code>${inner}</code>`
+        case 'bold':
+            return `<strong>${inner}</strong>`
+        case 'italic':
+            return `<em>${inner}</em>`
+        case 'strike':
+            return `<s>${inner}</s>`
+        case 'highlight':
+            return `<mark>${inner}</mark>`
+        case 'code':
+            return `<code>${inner}</code>`
         case 'link': {
             const href = String(attrs?.href ?? '')
             if (!/^(https?:|mailto:)/.test(href)) return inner
             const target = attrs?.target ? ` target="${escapeHtml(String(attrs.target))}"` : ''
             return `<a href="${escapeHtml(href)}"${target} rel="noopener noreferrer">${inner}</a>`
         }
-        default: return inner
+        default:
+            return inner
     }
 }
 
@@ -440,7 +452,9 @@ function renderTiptapNode(node: TiptapNode): string {
         case 'image': {
             const src = escapeHtml(String(node.attrs?.src ?? ''))
             const alt = escapeHtml(String(node.attrs?.alt ?? ''))
-            const title = node.attrs?.title ? ` title="${escapeHtml(String(node.attrs.title))}"` : ''
+            const title = node.attrs?.title
+                ? ` title="${escapeHtml(String(node.attrs.title))}"`
+                : ''
             return `<img src="${src}" alt="${alt}"${title} loading="lazy" decoding="async">`
         }
 

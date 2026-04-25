@@ -173,8 +173,7 @@ export default function PostEdit({ post, categories, tags, affiliates }: Props) 
                 body: JSON.stringify({ image: base64, filename: file.name }),
             })
             if (!res.ok || !res.headers.get('content-type')?.includes('application/json')) {
-                const text = await res.text().catch(() => '')
-                console.error('Upload failed', res.status, text.slice(0, 200))
+                await res.text().catch(() => '')
                 showToast('error', `Error al subir la imagen (${res.status})`)
                 return
             }
@@ -183,8 +182,7 @@ export default function PostEdit({ post, categories, tags, affiliates }: Props) 
                 set('cover_image', json.url)
                 showToast('success', 'Imagen subida correctamente')
             }
-        } catch (err) {
-            console.error('Upload error', err)
+        } catch {
             showToast('error', 'Error de red al subir la imagen')
         } finally {
             setUploading(false)

@@ -31,13 +31,13 @@ lowlight.registerAlias('javascript', ['jsx'])
 const CODE_LANGUAGES = [
     { value: 'javascript', label: 'JavaScript' },
     { value: 'typescript', label: 'TypeScript' },
-    { value: 'tsx',        label: 'TSX' },
-    { value: 'jsx',        label: 'JSX' },
-    { value: 'php',        label: 'PHP' },
-    { value: 'bash',       label: 'Bash' },
-    { value: 'css',        label: 'CSS' },
-    { value: 'xml',        label: 'HTML' },
-    { value: 'json',       label: 'JSON' },
+    { value: 'tsx', label: 'TSX' },
+    { value: 'jsx', label: 'JSX' },
+    { value: 'php', label: 'PHP' },
+    { value: 'bash', label: 'Bash' },
+    { value: 'css', label: 'CSS' },
+    { value: 'xml', label: 'HTML' },
+    { value: 'json', label: 'JSON' },
 ]
 
 interface Props {
