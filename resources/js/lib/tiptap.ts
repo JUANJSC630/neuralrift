@@ -235,10 +235,24 @@ function highlightTsx(code: string): string {
     return out
 }
 
+// Cheap heuristic: does this code contain JSX-like markup?
+// Looks for `<Tag` or `</Tag` (lowercase HTML tags or PascalCase components).
+function containsJsx(code: string): boolean {
+    return /<\/?[A-Za-z][A-Za-z0-9]*[\s/>]/.test(code)
+}
+
 export function highlightCode(code: string, language: string): string {
     try {
-        const lang = language?.toLowerCase()
-        if (lang === 'tsx' || lang === 'jsx') {
+        const lang = language?.toLowerCase() ?? ''
+        const jsLike =
+            lang === '' ||
+            lang === 'tsx' || lang === 'jsx' ||
+            lang === 'typescript' || lang === 'javascript' ||
+            lang === 'ts' || lang === 'js'
+        // Use the custom JSX-aware parser for any JS-family (or auto) block
+        // that actually contains JSX. This dodges highlight.js's typescript
+        // grammar breaking on `style={{...}}`.
+        if (jsLike && containsJsx(code)) {
             return highlightTsx(code)
         }
         const tree =
