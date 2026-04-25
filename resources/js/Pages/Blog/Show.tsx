@@ -54,6 +54,73 @@ export default function BlogShow({
 
     const [featuredAffiliate, ...restAffiliates] = post.affiliates ?? []
 
+    // Copy buttons for code blocks
+    useEffect(() => {
+        const article = document.querySelector('.nr-prose')
+        if (!article) return
+
+        const pres = Array.from(article.querySelectorAll<HTMLElement>('pre'))
+
+        pres.forEach(pre => {
+            if (pre.querySelector('.copy-btn-code')) return
+
+            const btn = document.createElement('button')
+            btn.className = 'copy-btn-code'
+            btn.textContent = 'Copiar'
+            btn.setAttribute('aria-label', 'Copiar código')
+            btn.style.cssText = [
+                'position: absolute',
+                'top: 0.5rem',
+                'left: 0.9rem',
+                'padding: 2px 8px',
+                'font-size: 11px',
+                "font-family: 'JetBrains Mono', monospace",
+                'background: rgba(255,255,255,0.05)',
+                'border: 1px solid rgba(255,255,255,0.10)',
+                'border-radius: 4px',
+                'color: #6B7280',
+                'cursor: pointer',
+                'z-index: 1',
+                'transition: color 0.15s, background 0.15s, border-color 0.15s',
+                'line-height: 1.8',
+            ].join(';')
+
+            btn.addEventListener('mouseenter', () => {
+                if (!btn.textContent?.startsWith('✓')) {
+                    btn.style.color = '#94A3B8'
+                    btn.style.background = 'rgba(255,255,255,0.09)'
+                }
+            })
+            btn.addEventListener('mouseleave', () => {
+                if (!btn.textContent?.startsWith('✓')) {
+                    btn.style.color = '#6B7280'
+                    btn.style.background = 'rgba(255,255,255,0.05)'
+                }
+            })
+            btn.addEventListener('click', () => {
+                const code = pre.querySelector('code')?.textContent ?? pre.textContent ?? ''
+                navigator.clipboard.writeText(code).then(() => {
+                    btn.textContent = '✓ Copiado'
+                    btn.style.color = '#10B981'
+                    btn.style.background = 'rgba(16,185,129,0.08)'
+                    btn.style.borderColor = 'rgba(16,185,129,0.25)'
+                    setTimeout(() => {
+                        btn.textContent = 'Copiar'
+                        btn.style.color = '#6B7280'
+                        btn.style.background = 'rgba(255,255,255,0.05)'
+                        btn.style.borderColor = 'rgba(255,255,255,0.10)'
+                    }, 2000)
+                })
+            })
+
+            pre.appendChild(btn)
+        })
+
+        return () => {
+            article.querySelectorAll('.copy-btn-code').forEach(btn => btn.remove())
+        }
+    }, [content])
+
     // Track view via API
     useEffect(() => {
         const xsrf = document.cookie
