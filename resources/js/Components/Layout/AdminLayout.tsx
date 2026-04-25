@@ -46,11 +46,10 @@ function ElapsedTime({ startedAt }: { startedAt: string }) {
 }
 
 export default function AdminLayout({ children, title }: Props) {
-    const { auth, flash } = usePage<PageProps>().props
+    const { auth } = usePage<PageProps>().props
     const [collapsed, setCollapsed] = useState(false)
     const [toasts, setToasts] = useState<Toast[]>([])
     const [activeJob, setActiveJob] = useState<ActiveJob | null>(null)
-    const [navCount, setNavCount] = useState(0)
     const notifPollingRef = useRef<ReturnType<typeof setInterval> | null>(null)
     const jobPollingRef = useRef<ReturnType<typeof setInterval> | null>(null)
 
@@ -84,25 +83,17 @@ export default function AdminLayout({ children, title }: Props) {
     )
 
     /* ── Flash → toast ──────────────────────────────────── */
-    const flashRef = useRef<string | null>(null)
     useEffect(() => {
-        return router.on('navigate', () => {
-            flashRef.current = null
-            setNavCount(n => n + 1)
+        return router.on('success', event => {
+            const props = (event.detail.page.props ?? {}) as PageProps
+            if (props.flash?.success) {
+                addToast({ id: `flash-${Date.now()}`, type: 'success', message: props.flash.success })
+            }
+            if (props.flash?.error) {
+                addToast({ id: `flash-${Date.now()}`, type: 'error', message: props.flash.error })
+            }
         })
-    }, [])
-    useEffect(() => {
-        if (flash?.success && flash.success !== flashRef.current) {
-            flashRef.current = flash.success
-            addToast({ id: `flash-${Date.now()}`, type: 'success', message: flash.success })
-        }
-        if (flash?.error && flash.error !== flashRef.current) {
-            flashRef.current = flash.error
-            addToast({ id: `flash-${Date.now()}`, type: 'error', message: flash.error })
-        }
-        // navCount en deps fuerza re-ejecución aunque flash.success sea el mismo string
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [flash?.success, flash?.error, navCount, addToast])
+    }, [addToast])
 
     /* ── Job status polling ─────────────────────────────── */
     useEffect(() => {
