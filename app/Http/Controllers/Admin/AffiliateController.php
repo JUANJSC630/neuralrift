@@ -11,21 +11,44 @@ use Inertia\Response;
 
 class AffiliateController extends Controller
 {
-    public function index(): Response
+    public function index(Request $request): Response
     {
+        $query = Affiliate::withCount('clicks')
+            ->orderByDesc('featured')
+            ->orderBy('order')
+            ->orderBy('name');
+
+        if ($search = $request->input('search')) {
+            $query->where(function ($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%")
+                  ->orWhere('category', 'like', "%{$search}%")
+                  ->orWhere('description', 'like', "%{$search}%");
+            });
+        }
+
+        if ($request->input('status') === 'active') {
+            $query->where('active', true);
+        } elseif ($request->input('status') === 'inactive') {
+            $query->where('active', false);
+        } elseif ($request->input('status') === 'featured') {
+            $query->where('featured', true);
+        }
+
         return Inertia::render('Admin/Affiliates/Index', [
-            'affiliates' => Affiliate::orderByDesc('featured')
-                ->orderBy('order')
-                ->withCount('clicks')
-                ->get(),
+            'affiliates' => $query->paginate(15)->withQueryString(),
+            'filters'    => $request->only('search', 'status'),
+            'totals'     => [
+                'all'      => Affiliate::count(),
+                'active'   => Affiliate::where('active', true)->count(),
+                'inactive' => Affiliate::where('active', false)->count(),
+                'featured' => Affiliate::where('featured', true)->count(),
+            ],
         ]);
     }
 
     public function create(): Response
     {
-        return Inertia::render('Admin/Affiliates/Index', [
-            'affiliates' => Affiliate::orderByDesc('featured')->orderBy('order')->withCount('clicks')->get(),
-        ]);
+        return $this->index(new Request);
     }
 
     public function store(Request $request): RedirectResponse
@@ -57,15 +80,12 @@ class AffiliateController extends Controller
 
     public function show(Affiliate $affiliate): Response
     {
-        return $this->index();
+        return $this->index(new Request);
     }
 
     public function edit(Affiliate $affiliate): Response
     {
-        return Inertia::render('Admin/Affiliates/Index', [
-            'affiliates' => Affiliate::orderByDesc('featured')->orderBy('order')->withCount('clicks')->get(),
-            'editing' => $affiliate,
-        ]);
+        return $this->index(new Request);
     }
 
     public function update(Request $request, Affiliate $affiliate): RedirectResponse
