@@ -231,7 +231,7 @@ export default function PostEdit({ post, categories, tags, affiliates }: Props) 
         <AdminLayout title={isNew ? 'Nuevo artículo' : 'Editar artículo'}>
             <Head title={isNew ? 'Admin — Nuevo artículo' : `Admin — ${post?.title}`} />
 
-            <div className="max-w-5xl space-y-6">
+            <div className="max-w-[1400px] space-y-6">
                 {/* Actions bar */}
                 <div className="flex items-center justify-end gap-3">
                     {!isNew && (
@@ -268,9 +268,9 @@ export default function PostEdit({ post, categories, tags, affiliates }: Props) 
                     </button>
                 </div>
 
-                <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
+                <div className="grid grid-cols-1 gap-6 lg:grid-cols-[1fr_300px]">
                     {/* Main */}
-                    <div className="space-y-5 lg:col-span-2">
+                    <div className="space-y-5">
                         {/* Content tabs */}
                         <div className="glass overflow-hidden rounded-2xl">
                             {/* Tab switcher */}

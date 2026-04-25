@@ -244,9 +244,15 @@ function highlightTsx(code: string): string {
                 continue
             }
             if (c === '<') {
+                // Skip generics/comparisons: if the previous char is an
+                // identifier continuation (e.g. `useState<T>`, `arr<5`),
+                // this `<` is NOT a JSX tag.
+                const prev = i > 0 ? code[i - 1] : ''
+                const isIdentChar = /[A-Za-z0-9_$]/.test(prev)
                 const next = code[i + 1] ?? ''
                 const looksLikeTag =
-                    /[A-Za-z]/.test(next) || (next === '/' && /[A-Za-z]/.test(code[i + 2] ?? ''))
+                    !isIdentChar &&
+                    (/[A-Za-z]/.test(next) || (next === '/' && /[A-Za-z]/.test(code[i + 2] ?? '')))
                 if (looksLikeTag) {
                     const end = findJsxTagEnd(code, i)
                     if (end > i) {
@@ -297,7 +303,10 @@ function highlightTsx(code: string): string {
             }
         }
     }
-    flushJs(i)
+    // Only flush trailing JS if we're back in JS mode. If jsxDepth > 0 we're
+    // stuck in JSX (e.g. an unclosed tag) and the content has already been
+    // emitted as JSX text — re-flushing would duplicate everything.
+    if (jsxDepth === 0) flushJs(i)
     return out
 }
 
