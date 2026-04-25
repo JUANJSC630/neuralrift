@@ -25,7 +25,7 @@ function setLiked(ids: number[]) {
 }
 
 export default function LikeButton({ postId, initialCount, size = 'sm' }: Props) {
-    const { t, locale } = useLocale()
+    const { t } = useLocale()
     const [liked, setLikedState] = useState(() =>
         typeof window !== 'undefined' ? getLiked().includes(postId) : false,
     )

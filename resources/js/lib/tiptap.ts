@@ -180,58 +180,125 @@ function highlightJsxTag(tag: string): string {
     return `<span class="hljs-tag">${inner}</span>`
 }
 
+// Skip a JS string literal starting at `i` (where code[i] is the opening quote).
+// Returns the index AFTER the closing quote.
+function skipString(code: string, i: number): number {
+    const q = code[i]
+    const N = code.length
+    i++
+    while (i < N && code[i] !== q) {
+        if (code[i] === '\\') i++
+        i++
+    }
+    return i < N ? i + 1 : i
+}
+
+// Extract a balanced `{...}` expression starting at `i` (where code[i] === '{').
+// Returns [exprBody, indexAfterClosingBrace].
+function readBalancedBraces(code: string, i: number): [string, number] {
+    const N = code.length
+    const start = i
+    let depth = 1
+    i++
+    while (i < N && depth > 0) {
+        const c = code[i]
+        if (c === '"' || c === "'" || c === '`') {
+            i = skipString(code, i)
+            continue
+        }
+        if (c === '{') depth++
+        else if (c === '}') depth--
+        if (depth > 0) i++
+    }
+    if (i < N) i++
+    return [code.slice(start + 1, i - 1), i]
+}
+
 function highlightTsx(code: string): string {
     let out = ''
     let i = 0
     const N = code.length
     let jsStart = 0
+    let jsxDepth = 0
+
+    const flushJs = (end: number) => {
+        if (end > jsStart) out += highlightWithTs(code.slice(jsStart, end))
+    }
 
     while (i < N) {
-        const c = code[i]
-        // skip strings to avoid false JSX detection inside them
-        if (c === '"' || c === "'" || c === '`') {
-            const q = c
-            i++
-            while (i < N && code[i] !== q) {
-                if (code[i] === '\\') i++
-                i++
+        if (jsxDepth === 0) {
+            // JS context — skip strings and comments to avoid false JSX detection
+            const c = code[i]
+            if (c === '"' || c === "'" || c === '`') {
+                i = skipString(code, i)
+                continue
             }
-            if (i < N) i++
-            continue
-        }
-        // skip line and block comments
-        if (c === '/' && code[i + 1] === '/') {
-            while (i < N && code[i] !== '\n') i++
-            continue
-        }
-        if (c === '/' && code[i + 1] === '*') {
-            i += 2
-            while (i < N && !(code[i] === '*' && code[i + 1] === '/')) i++
-            if (i < N) i += 2
-            continue
-        }
-        // detect JSX tag start
-        if (c === '<') {
-            const next = code[i + 1] ?? ''
-            const looksLikeTag =
-                /[A-Za-z]/.test(next) ||
-                (next === '/' && /[A-Za-z]/.test(code[i + 2] ?? ''))
-            if (looksLikeTag) {
-                const end = findJsxTagEnd(code, i)
-                if (end > i) {
-                    if (i > jsStart) {
-                        out += highlightWithTs(code.slice(jsStart, i))
+            if (c === '/' && code[i + 1] === '/') {
+                while (i < N && code[i] !== '\n') i++
+                continue
+            }
+            if (c === '/' && code[i + 1] === '*') {
+                i += 2
+                while (i < N && !(code[i] === '*' && code[i + 1] === '/')) i++
+                if (i < N) i += 2
+                continue
+            }
+            if (c === '<') {
+                const next = code[i + 1] ?? ''
+                const looksLikeTag =
+                    /[A-Za-z]/.test(next) ||
+                    (next === '/' && /[A-Za-z]/.test(code[i + 2] ?? ''))
+                if (looksLikeTag) {
+                    const end = findJsxTagEnd(code, i)
+                    if (end > i) {
+                        flushJs(i)
+                        const tagText = code.slice(i, end)
+                        out += highlightJsxTag(tagText)
+                        const isClosing = tagText.startsWith('</')
+                        const isSelfClosing = tagText.endsWith('/>')
+                        if (!isClosing && !isSelfClosing) jsxDepth = 1
+                        jsStart = end
+                        i = end
+                        continue
                     }
-                    out += highlightJsxTag(code.slice(i, end))
-                    jsStart = end
-                    i = end
-                    continue
                 }
             }
+            i++
+        } else {
+            // JSX content — plain text until `<` (next tag) or `{` (expression)
+            const textStart = i
+            while (i < N && code[i] !== '<' && code[i] !== '{') i++
+            if (i > textStart) out += escapeHtml(code.slice(textStart, i))
+            if (i >= N) break
+
+            if (code[i] === '<') {
+                const next = code[i + 1] ?? ''
+                const isClose = next === '/' && /[A-Za-z]/.test(code[i + 2] ?? '')
+                const isOpen = /[A-Za-z]/.test(next)
+                if (isClose || isOpen) {
+                    const end = findJsxTagEnd(code, i)
+                    if (end > i) {
+                        const tagText = code.slice(i, end)
+                        out += highlightJsxTag(tagText)
+                        if (isClose) jsxDepth--
+                        else if (!tagText.endsWith('/>')) jsxDepth++
+                        i = end
+                        if (jsxDepth === 0) jsStart = end
+                        continue
+                    }
+                }
+                // Not a real tag (lone `<`) — emit as escaped text
+                out += '&lt;'
+                i++
+            } else {
+                // `{...}` JSX expression — highlight inner as TS
+                const [exprBody, after] = readBalancedBraces(code, i)
+                out += '{' + highlightWithTs(exprBody) + '}'
+                i = after
+            }
         }
-        i++
     }
-    if (jsStart < N) out += highlightWithTs(code.slice(jsStart))
+    flushJs(i)
     return out
 }
 
