@@ -1,5 +1,5 @@
 import { Head, Link } from '@inertiajs/react'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { motion } from 'framer-motion'
 import Navbar from '@/Components/Layout/Navbar'
 import Footer from '@/Components/Layout/Footer'
@@ -54,14 +54,18 @@ export default function BlogShow({
 
     const [featuredAffiliate, ...restAffiliates] = post.affiliates ?? []
 
-    // Client-side syntax highlighting stored in state so React re-renders
-    // (triggered by CommentSection/LikeButton Inertia activity) don't revert
-    // the highlighted DOM back to the raw `content` string.
-    const [displayContent, setDisplayContent] = useState(content)
+    // proseRef points to the DOM node that holds the SSR-rendered HTML.
+    // suppressHydrationWarning preserves that server HTML even when the
+    // client-side renderContent() value differs (e.g. renderToHTMLString
+    // behaving differently in the browser bundle for TSX with HTML tags).
+    // We read directly from the live DOM, highlight in-place, then commit
+    // the result to state so React re-renders (from CommentSection / LikeButton
+    // Inertia activity) always use the highlighted version.
+    const proseRef = useRef<HTMLDivElement>(null)
+    const [highlightedContent, setHighlightedContent] = useState<string | null>(null)
     useEffect(() => {
-        const div = document.createElement('div')
-        div.innerHTML = content
-        div.querySelectorAll<HTMLElement>('pre code').forEach(codeEl => {
+        if (!proseRef.current) return
+        proseRef.current.querySelectorAll<HTMLElement>('pre code').forEach(codeEl => {
             const code = codeEl.textContent ?? ''
             if (!code.trim()) return
             const lang =
@@ -70,7 +74,7 @@ export default function BlogShow({
                     ?.replace('language-', '') ?? ''
             codeEl.innerHTML = highlightCode(code, lang)
         })
-        setDisplayContent(div.innerHTML)
+        setHighlightedContent(proseRef.current.innerHTML)
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
@@ -304,9 +308,10 @@ export default function BlogShow({
 
                             {/* Post content */}
                             <div
+                                ref={proseRef}
                                 className="nr-prose"
                                 suppressHydrationWarning
-                                dangerouslySetInnerHTML={{ __html: displayContent }}
+                                dangerouslySetInnerHTML={{ __html: highlightedContent ?? content }}
                             />
 
                             {/* Like CTA */}
