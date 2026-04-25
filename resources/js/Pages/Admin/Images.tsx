@@ -42,6 +42,13 @@ export default function Images({ images }: Props) {
     const [deleting, setDeleting] = useState<string | null>(null)
     const [selected, setSelected] = useState<Set<string>>(new Set())
     const [preview, setPreview] = useState<ImageItem | null>(null)
+    const [toast, setToast] = useState(false)
+
+    const copyUrl = (url: string) => {
+        navigator.clipboard.writeText(url)
+        setToast(true)
+        setTimeout(() => setToast(false), 2000)
+    }
 
     const filtered = images.filter(img => {
         if (filter === 'used') return img.is_used
@@ -282,9 +289,7 @@ export default function Images({ images }: Props) {
                                         {/* Actions */}
                                         <div className="flex gap-1.5 pt-1">
                                             <button
-                                                onClick={() => {
-                                                    navigator.clipboard.writeText(img.url)
-                                                }}
+                                                onClick={() => copyUrl(img.url)}
                                                 className="flex-1 rounded-lg bg-white/5 py-1.5 text-[10px] text-nr-muted transition-colors hover:bg-white/10"
                                                 title="Copiar URL"
                                             >
@@ -306,6 +311,18 @@ export default function Images({ images }: Props) {
                         </div>
                     </div>
                 )}
+            </div>
+
+            {/* Copy toast */}
+            <div
+                className={`fixed bottom-6 right-6 z-[100] flex items-center gap-2 rounded-xl bg-nr-surface px-4 py-3 shadow-lg shadow-black/40 ring-1 ring-nr-accent/30 transition-all duration-300 ${
+                    toast
+                        ? 'translate-y-0 opacity-100'
+                        : 'pointer-events-none translate-y-4 opacity-0'
+                }`}
+            >
+                <span className="text-nr-green">✓</span>
+                <span className="text-sm text-nr-text">URL copiada</span>
             </div>
 
             {/* Preview modal */}
@@ -348,7 +365,7 @@ export default function Images({ images }: Props) {
                                     className="glass flex-1 rounded-lg border border-white/[0.08] px-3 py-2 font-mono text-xs text-nr-muted outline-none"
                                 />
                                 <button
-                                    onClick={() => navigator.clipboard.writeText(preview.url)}
+                                    onClick={() => copyUrl(preview.url)}
                                     className="glass rounded-lg px-3 py-2 text-xs text-nr-muted hover:text-nr-text"
                                 >
                                     Copiar
