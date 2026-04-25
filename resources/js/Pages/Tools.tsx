@@ -184,12 +184,12 @@ export default function Tools({ affiliates, categories, totalAll, filters }: Pro
                                 {loading && (
                                     <div className="flex items-center gap-3 text-sm text-nr-faint">
                                         <span className="h-4 w-4 animate-spin rounded-full border-2 border-nr-accent/30 border-t-nr-accent" />
-                                        Cargando más herramientas...
+                                        {t('tools.loading')}
                                     </div>
                                 )}
                                 {!loading && atEnd && totalItems > PER_PAGE && (
                                     <p className="font-mono text-xs text-nr-faint">
-                                        {totalItems} herramientas · fin del listado
+                                        {totalItems} {t('tools.items')} · {t('tools.end')}
                                     </p>
                                 )}
                             </div>
@@ -198,7 +198,7 @@ export default function Tools({ affiliates, categories, totalAll, filters }: Pro
                         <div className="py-24 text-center">
                             <div className="mb-4 text-4xl opacity-20">⚡</div>
                             <p className="text-sm text-nr-faint" role="status">
-                                No hay herramientas disponibles en esta categoría.
+                                {t('tools.empty')}
                             </p>
                         </div>
                     )}

@@ -146,6 +146,10 @@ const translations = {
     },
     'tools.all': { es: 'Todas', en: 'All' },
     'tools.cta': { es: 'Ver herramienta →', en: 'View tool →' },
+    'tools.loading': { es: 'Cargando más herramientas...', en: 'Loading more tools...' },
+    'tools.items': { es: 'herramientas', en: 'tools' },
+    'tools.end': { es: 'fin del listado', en: 'end of list' },
+    'tools.empty': { es: 'No hay herramientas disponibles en esta categoría.', en: 'No tools available in this category.' },
 
     // ── About page ───────────────────────────────────
     'about.greeting': { es: 'Hola, soy', en: "Hi, I'm" },
