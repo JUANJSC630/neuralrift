@@ -76,7 +76,11 @@ export default function AffiliatesIndex({ affiliates }: Props) {
     }
 
     const toggleActive = (aff: Affiliate) => {
-        router.post(`/admin/affiliates/${aff.id}`, { ...aff, active: !aff.active, _method: 'PUT' } as RequestPayload)
+        router.post(`/admin/affiliates/${aff.id}`, {
+            ...aff,
+            active: !aff.active,
+            _method: 'PUT',
+        } as RequestPayload)
     }
 
     const deleteAffiliate = (aff: Affiliate) => {
@@ -433,7 +437,8 @@ export default function AffiliatesIndex({ affiliates }: Props) {
                 confirmLabel="Eliminar"
                 variant="danger"
                 onConfirm={() => {
-                    if (pendingDelete) router.post(`/admin/affiliates/${pendingDelete.id}`, { _method: 'DELETE' })
+                    if (pendingDelete)
+                        router.post(`/admin/affiliates/${pendingDelete.id}`, { _method: 'DELETE' })
                     setPendingDelete(null)
                 }}
                 onCancel={() => setPendingDelete(null)}
