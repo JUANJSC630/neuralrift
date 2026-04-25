@@ -50,6 +50,7 @@ export default function AdminLayout({ children, title }: Props) {
     const [collapsed, setCollapsed] = useState(false)
     const [toasts, setToasts] = useState<Toast[]>([])
     const [activeJob, setActiveJob] = useState<ActiveJob | null>(null)
+    const [navCount, setNavCount] = useState(0)
     const notifPollingRef = useRef<ReturnType<typeof setInterval> | null>(null)
     const jobPollingRef = useRef<ReturnType<typeof setInterval> | null>(null)
 
@@ -85,9 +86,9 @@ export default function AdminLayout({ children, title }: Props) {
     /* ── Flash → toast ──────────────────────────────────── */
     const flashRef = useRef<string | null>(null)
     useEffect(() => {
-        // Reset on each navigation so identical consecutive messages always show
         return router.on('navigate', () => {
             flashRef.current = null
+            setNavCount(n => n + 1)
         })
     }, [])
     useEffect(() => {
@@ -99,7 +100,9 @@ export default function AdminLayout({ children, title }: Props) {
             flashRef.current = flash.error
             addToast({ id: `flash-${Date.now()}`, type: 'error', message: flash.error })
         }
-    }, [flash?.success, flash?.error, addToast])
+        // navCount en deps fuerza re-ejecución aunque flash.success sea el mismo string
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [flash?.success, flash?.error, navCount, addToast])
 
     /* ── Job status polling ─────────────────────────────── */
     useEffect(() => {

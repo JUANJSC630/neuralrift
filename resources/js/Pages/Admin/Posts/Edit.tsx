@@ -195,43 +195,24 @@ export default function PostEdit({ post, categories, tags, affiliates }: Props) 
     const handleSaveDraft = () => {
         const payload = { ...buildPayload(), status: 'draft' as const }
         if (isNew) {
-            router.post('/admin/posts', payload, {
-                onSuccess: () => triggerSaveToast('Borrador guardado'),
-            })
+            router.post('/admin/posts', payload)
         } else {
-            router.post(
-                `/admin/posts/${post!.id}`,
-                { ...payload, _method: 'PUT' },
-                { onSuccess: () => triggerSaveToast('Borrador guardado') },
-            )
+            router.post(`/admin/posts/${post!.id}`, { ...payload, _method: 'PUT' })
         }
     }
 
     const handlePublish = () => {
         const payload = { ...buildPayload(), status: 'published' as const }
         if (isNew) {
-            router.post('/admin/posts', payload, {
-                onSuccess: () => triggerSaveToast('Artículo publicado'),
-            })
+            router.post('/admin/posts', payload)
         } else {
-            router.post(
-                `/admin/posts/${post!.id}`,
-                { ...payload, _method: 'PUT' },
-                { onSuccess: () => triggerSaveToast('Artículo actualizado') },
-            )
+            router.post(`/admin/posts/${post!.id}`, { ...payload, _method: 'PUT' })
         }
     }
 
     const handleDuplicate = () => {
         if (!post) return
         router.post(`/admin/posts/${post.id}/duplicate`)
-    }
-
-    const [saveToast, setSaveToast] = useState<string | null>(null)
-
-    const triggerSaveToast = (msg: string) => {
-        setSaveToast(msg)
-        setTimeout(() => setSaveToast(null), 3000)
     }
 
     const [showNewsletterConfirm, setShowNewsletterConfirm] = useState(false)
@@ -677,18 +658,6 @@ export default function PostEdit({ post, categories, tags, affiliates }: Props) 
                         </div>
                     </div>
                 </div>
-            </div>
-
-            {/* Save toast */}
-            <div
-                className={`fixed bottom-6 right-6 z-[100] flex items-center gap-2 rounded-xl bg-nr-surface px-4 py-3 shadow-lg shadow-black/40 ring-1 ring-nr-accent/30 transition-all duration-300 ${
-                    saveToast
-                        ? 'translate-y-0 opacity-100'
-                        : 'pointer-events-none translate-y-4 opacity-0'
-                }`}
-            >
-                <span className="text-nr-green">✓</span>
-                <span className="text-sm text-nr-text">{saveToast}</span>
             </div>
 
             <ConfirmModal
