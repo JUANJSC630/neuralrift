@@ -175,30 +175,11 @@ export default function AffiliatesIndex({ affiliates }: Props) {
                                         </div>
 
                                         {/* Actions */}
-                                        <div className="flex flex-shrink-0 items-center gap-3">
-                                            {/* Active toggle */}
-                                            <button
-                                                onClick={() => toggleActive(aff)}
-                                                className={cn(
-                                                    'relative h-5 w-9 rounded-full transition-colors',
-                                                    aff.active ? 'bg-nr-green' : 'bg-white/10',
-                                                )}
-                                            >
-                                                <span
-                                                    className={cn(
-                                                        'absolute top-0.5 h-4 w-4 rounded-full bg-white shadow-sm',
-                                                        'transition-transform duration-200',
-                                                        aff.active
-                                                            ? 'translate-x-4'
-                                                            : 'translate-x-0.5',
-                                                    )}
-                                                />
-                                            </button>
-
-                                            <div className="flex gap-2 opacity-0 transition-opacity group-hover:opacity-100">
+                                        <div className="flex flex-shrink-0 items-center gap-2">
+                                            <div className="flex items-center gap-2 opacity-0 transition-opacity group-hover:opacity-100">
                                                 <button
                                                     onClick={() => startEdit(aff)}
-                                                    className="text-xs text-nr-muted transition-colors hover:text-nr-text"
+                                                    className="rounded px-2 py-1 text-xs text-nr-muted transition-colors hover:bg-white/[0.06] hover:text-nr-text"
                                                 >
                                                     Editar
                                                 </button>
@@ -206,17 +187,36 @@ export default function AffiliatesIndex({ affiliates }: Props) {
                                                     href={aff.url}
                                                     target="_blank"
                                                     rel="noopener"
-                                                    className="text-xs text-nr-cyan transition-colors hover:text-nr-cyan/80"
+                                                    className="rounded px-2 py-1 text-xs text-nr-cyan transition-colors hover:bg-nr-cyan/10"
                                                 >
                                                     Probar ↗
                                                 </a>
                                                 <button
                                                     onClick={() => deleteAffiliate(aff)}
-                                                    className="text-xs text-nr-faint transition-colors hover:text-nr-red"
+                                                    className="rounded px-2 py-1 text-xs text-nr-faint transition-colors hover:bg-nr-red/10 hover:text-nr-red"
                                                 >
                                                     ✕
                                                 </button>
+                                                <span className="h-4 w-px bg-white/10" />
                                             </div>
+
+                                            {/* Active toggle — siempre visible */}
+                                            <button
+                                                onClick={() => toggleActive(aff)}
+                                                title={aff.active ? 'Desactivar' : 'Activar'}
+                                                className={cn(
+                                                    'relative h-5 w-9 flex-shrink-0 overflow-hidden rounded-full transition-colors duration-200',
+                                                    aff.active ? 'bg-nr-green' : 'bg-white/20',
+                                                )}
+                                            >
+                                                <span
+                                                    className={cn(
+                                                        'absolute left-0.5 top-0.5 h-4 w-4 rounded-full bg-white shadow-sm',
+                                                        'transition-transform duration-200',
+                                                        aff.active ? 'translate-x-4' : 'translate-x-0',
+                                                    )}
+                                                />
+                                            </button>
                                         </div>
                                     </div>
                                 </div>
@@ -394,17 +394,15 @@ export default function AffiliatesIndex({ affiliates }: Props) {
                                                     type="button"
                                                     onClick={() => setData(key, !data[key])}
                                                     className={cn(
-                                                        'relative h-5 w-9 rounded-full transition-colors',
-                                                        data[key] ? 'bg-nr-accent' : 'bg-white/10',
+                                                        'relative h-5 w-9 overflow-hidden rounded-full transition-colors duration-200',
+                                                        data[key] ? 'bg-nr-accent' : 'bg-white/20',
                                                     )}
                                                 >
                                                     <span
                                                         className={cn(
-                                                            'absolute top-0.5 h-4 w-4 rounded-full bg-white',
+                                                            'absolute left-0.5 top-0.5 h-4 w-4 rounded-full bg-white',
                                                             'shadow-sm transition-transform duration-200',
-                                                            data[key]
-                                                                ? 'translate-x-4'
-                                                                : 'translate-x-0.5',
+                                                            data[key] ? 'translate-x-4' : 'translate-x-0',
                                                         )}
                                                     />
                                                 </button>
