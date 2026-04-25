@@ -1,5 +1,5 @@
 import { Head, Link } from '@inertiajs/react'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect } from 'react'
 import { motion } from 'framer-motion'
 import Navbar from '@/Components/Layout/Navbar'
 import Footer from '@/Components/Layout/Footer'
@@ -11,7 +11,7 @@ import TableOfContents from '@/Components/Blog/TableOfContents'
 import ShareButtons from '@/Components/Blog/ShareButtons'
 import CommentSection from '@/Components/Blog/CommentSection'
 import { formatDate, readTime } from '@/lib/utils'
-import { renderContent, highlightCode } from '@/lib/tiptap'
+import { renderContent } from '@/lib/tiptap'
 import { CATEGORY_COLORS, SITE } from '@/lib/constants'
 import { useLocale } from '@/hooks/useLocale'
 import LikeButton from '@/Components/Blog/LikeButton'
@@ -53,30 +53,6 @@ export default function BlogShow({
         typeof window !== 'undefined' ? window.location.href : `${SITE.url}/blog/${post.slug}`
 
     const [featuredAffiliate, ...restAffiliates] = post.affiliates ?? []
-
-    // proseRef points to the DOM node that holds the SSR-rendered HTML.
-    // suppressHydrationWarning preserves that server HTML even when the
-    // client-side renderContent() value differs (e.g. renderToHTMLString
-    // behaving differently in the browser bundle for TSX with HTML tags).
-    // We read directly from the live DOM, highlight in-place, then commit
-    // the result to state so React re-renders (from CommentSection / LikeButton
-    // Inertia activity) always use the highlighted version.
-    const proseRef = useRef<HTMLDivElement>(null)
-    const [highlightedContent, setHighlightedContent] = useState<string | null>(null)
-    useEffect(() => {
-        if (!proseRef.current) return
-        proseRef.current.querySelectorAll<HTMLElement>('pre code').forEach(codeEl => {
-            const code = codeEl.textContent ?? ''
-            if (!code.trim()) return
-            const lang =
-                Array.from(codeEl.classList)
-                    .find(c => c.startsWith('language-'))
-                    ?.replace('language-', '') ?? ''
-            codeEl.innerHTML = highlightCode(code, lang)
-        })
-        setHighlightedContent(proseRef.current.innerHTML)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
 
     // Track view via API
     useEffect(() => {
@@ -308,10 +284,8 @@ export default function BlogShow({
 
                             {/* Post content */}
                             <div
-                                ref={proseRef}
                                 className="nr-prose"
-                                suppressHydrationWarning
-                                dangerouslySetInnerHTML={{ __html: highlightedContent ?? content }}
+                                dangerouslySetInnerHTML={{ __html: content }}
                             />
 
                             {/* Like CTA */}
