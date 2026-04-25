@@ -11,18 +11,24 @@ use Inertia\Response;
 
 class AffiliateController extends Controller
 {
-    public function index(): Response
+    public function index(Request $request): Response
     {
-        $affiliates = Affiliate::active()
+        $query = Affiliate::active()
             ->orderBy('order')
-            ->orderByDesc('featured')
-            ->get();
+            ->orderByDesc('featured');
 
-        $grouped = $affiliates->groupBy('category');
+        if ($category = $request->input('category')) {
+            $query->where('category', $category);
+        }
 
         return Inertia::render('Tools', [
-            'affiliates' => $affiliates,
-            'grouped' => $grouped,
+            'affiliates' => $query->paginate(9)->withQueryString(),
+            'categories' => Affiliate::active()
+                ->whereNotNull('category')
+                ->distinct()
+                ->orderBy('category')
+                ->pluck('category'),
+            'filters' => $request->only('category'),
             'canonical' => url(app()->getLocale() === 'en' ? '/en/tools' : '/herramientas'),
         ]);
     }

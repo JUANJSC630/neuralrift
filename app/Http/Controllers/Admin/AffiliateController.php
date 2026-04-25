@@ -21,8 +21,8 @@ class AffiliateController extends Controller
         if ($search = $request->input('search')) {
             $query->where(function ($q) use ($search) {
                 $q->where('name', 'like', "%{$search}%")
-                  ->orWhere('category', 'like', "%{$search}%")
-                  ->orWhere('description', 'like', "%{$search}%");
+                    ->orWhere('category', 'like', "%{$search}%")
+                    ->orWhere('description', 'like', "%{$search}%");
             });
         }
 
@@ -36,10 +36,10 @@ class AffiliateController extends Controller
 
         return Inertia::render('Admin/Affiliates/Index', [
             'affiliates' => $query->paginate(15)->withQueryString(),
-            'filters'    => $request->only('search', 'status'),
-            'totals'     => [
-                'all'      => Affiliate::count(),
-                'active'   => Affiliate::where('active', true)->count(),
+            'filters' => $request->only('search', 'status'),
+            'totals' => [
+                'all' => Affiliate::count(),
+                'active' => Affiliate::where('active', true)->count(),
                 'inactive' => Affiliate::where('active', false)->count(),
                 'featured' => Affiliate::where('featured', true)->count(),
             ],

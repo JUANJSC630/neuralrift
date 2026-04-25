@@ -72,7 +72,6 @@ export default function AdminBrowse<T extends { id: number | string }>({
     return (
         <div className="flex gap-6">
             <div className="min-w-0 flex-1 space-y-5">
-
                 {/* KPIs */}
                 {kpis && kpis.length > 0 && (
                     <div
@@ -165,9 +164,7 @@ export default function AdminBrowse<T extends { id: number | string }>({
                             {emptyMessage}
                         </div>
                     ) : (
-                        data.data.map(item => (
-                            <div key={item.id}>{renderItem(item)}</div>
-                        ))
+                        data.data.map(item => <div key={item.id}>{renderItem(item)}</div>)
                     )}
                 </div>
 
