@@ -87,7 +87,11 @@ export default function AdminLayout({ children, title }: Props) {
         return router.on('success', event => {
             const props = (event.detail.page.props ?? {}) as PageProps
             if (props.flash?.success) {
-                addToast({ id: `flash-${Date.now()}`, type: 'success', message: props.flash.success })
+                addToast({
+                    id: `flash-${Date.now()}`,
+                    type: 'success',
+                    message: props.flash.success,
+                })
             }
             if (props.flash?.error) {
                 addToast({ id: `flash-${Date.now()}`, type: 'error', message: props.flash.error })
