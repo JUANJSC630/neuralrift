@@ -121,7 +121,7 @@ export default function TiptapEditor({
     const readTime = Math.max(1, Math.round(words / 200))
 
     return (
-        <div className="glass overflow-hidden rounded-xl border border-white/[0.08]">
+        <div className="rounded-xl border border-white/[0.08] bg-white/[0.04]">
             <style>{`
                 .prose-nr .ProseMirror { outline: none; min-height: 320px; padding: 1rem; }
                 .prose-nr .ProseMirror > * + * { margin-top: 0.75em; }
@@ -144,8 +144,8 @@ export default function TiptapEditor({
                 .prose-nr .ProseMirror p.is-editor-empty:first-child::before { content: attr(data-placeholder); color: #374151; pointer-events: none; float: left; height: 0; }
             `}</style>
 
-            {/* Toolbar */}
-            <div className="flex flex-wrap items-center gap-0.5 border-b border-white/[0.06] px-3 py-2">
+            {/* Toolbar — sticky to the top of <main>'s scroll context */}
+            <div className="sticky top-0 z-20 flex flex-wrap items-center gap-0.5 rounded-t-xl border-b border-nr-accent/20 bg-nr-surface px-3 py-2 shadow-lg shadow-black/50">
                 <ToolbarBtn
                     onClick={() => editor.chain().focus().toggleBold().run()}
                     active={editor.isActive('bold')}

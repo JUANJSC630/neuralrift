@@ -272,7 +272,7 @@ export default function PostEdit({ post, categories, tags, affiliates }: Props) 
                     {/* Main */}
                     <div className="space-y-5">
                         {/* Content tabs */}
-                        <div className="glass overflow-hidden rounded-2xl">
+                        <div className="rounded-2xl border border-white/[0.08] bg-white/[0.04]">
                             {/* Tab switcher */}
                             {data.lang === 'both' && (
                                 <div className="flex border-b border-white/[0.06]">
