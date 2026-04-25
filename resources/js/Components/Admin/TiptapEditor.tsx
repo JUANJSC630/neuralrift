@@ -99,6 +99,8 @@ export default function TiptapEditor({
         },
     })
 
+    const [formatting, setFormatting] = useState(false)
+
     if (!editor) return null
 
     const addImage = () => {
@@ -116,8 +118,6 @@ export default function TiptapEditor({
             editor.chain().focus().setLink({ href: url }).run()
         }
     }
-
-    const [formatting, setFormatting] = useState(false)
 
     const FORMATTABLE = new Set(['javascript', 'jsx', 'typescript', 'tsx', 'css', 'xml', 'json'])
 
