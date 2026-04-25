@@ -71,7 +71,7 @@ export default function BlogShow({
             btn.style.cssText = [
                 'position: absolute',
                 'top: 0.5rem',
-                'left: 0.9rem',
+                'right: 0.9rem',
                 'padding: 2px 8px',
                 'font-size: 11px',
                 "font-family: 'JetBrains Mono', monospace",
