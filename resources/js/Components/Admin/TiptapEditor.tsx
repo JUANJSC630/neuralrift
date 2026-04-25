@@ -1,4 +1,5 @@
 import { useEditor, EditorContent } from '@tiptap/react'
+import { useState } from 'react'
 import StarterKit from '@tiptap/starter-kit'
 import Image from '@tiptap/extension-image'
 import CodeBlockLowlight from '@tiptap/extension-code-block-lowlight'
@@ -116,6 +117,80 @@ export default function TiptapEditor({
         }
     }
 
+    const [formatting, setFormatting] = useState(false)
+
+    const FORMATTABLE = new Set(['javascript', 'jsx', 'typescript', 'tsx', 'css', 'xml', 'json'])
+
+    const formatCode = async () => {
+        if (!editor.isActive('codeBlock')) return
+        const lang = (editor.getAttributes('codeBlock').language as string) ?? ''
+        if (!FORMATTABLE.has(lang)) return
+
+        const { state } = editor
+        const { $from } = state.selection
+        let nodeRef: { textContent: string; nodeSize: number } | null = null
+        let nodePos = -1
+        for (let d = $from.depth; d > 0; d--) {
+            const n = $from.node(d)
+            if (n.type.name === 'codeBlock') {
+                nodeRef = n
+                nodePos = $from.before(d)
+                break
+            }
+        }
+        if (!nodeRef || nodePos < 0) return
+
+        setFormatting(true)
+        try {
+            type FormatFn = (src: string, opts: Record<string, unknown>) => Promise<string>
+            const { format } = (await import('prettier/standalone')) as { format: FormatFn }
+
+            let plugins: unknown[]
+            if (lang === 'javascript' || lang === 'jsx' || lang === 'json') {
+                const [babel, estree] = await Promise.all([
+                    import('prettier/plugins/babel'),
+                    import('prettier/plugins/estree'),
+                ])
+                plugins = [babel, estree]
+            } else if (lang === 'typescript' || lang === 'tsx') {
+                const [ts, estree] = await Promise.all([
+                    import('prettier/plugins/typescript'),
+                    import('prettier/plugins/estree'),
+                ])
+                plugins = [ts, estree]
+            } else if (lang === 'css') {
+                plugins = [await import('prettier/plugins/postcss')]
+            } else {
+                plugins = [await import('prettier/plugins/html')]
+            }
+
+            const formatted = await format(nodeRef.textContent, {
+                parser: lang === 'xml' ? 'html' : lang === 'jsx' ? 'babel' : lang,
+                plugins,
+                printWidth: 100,
+                tabWidth: 4,
+                singleQuote: true,
+                semi: false,
+            })
+
+            const trimmed = formatted.endsWith('\n') ? formatted.slice(0, -1) : formatted
+            const innerStart = nodePos + 1
+            const innerEnd = nodePos + nodeRef.nodeSize - 1
+
+            editor
+                .chain()
+                .command(({ tr, state: s }) => {
+                    tr.replaceWith(innerStart, innerEnd, s.schema.text(trimmed))
+                    return true
+                })
+                .run()
+        } catch {
+            // syntax error en el código — no hacer nada
+        } finally {
+            setFormatting(false)
+        }
+    }
+
     const words = editor.storage.characterCount?.words() ?? 0
     const chars = editor.storage.characterCount?.characters() ?? 0
     const readTime = Math.max(1, Math.round(words / 200))
@@ -225,25 +300,50 @@ export default function TiptapEditor({
                     title="Bloque de código"
                 >{`{ }`}</ToolbarBtn>
                 {editor.isActive('codeBlock') && (
-                    <select
-                        value={editor.getAttributes('codeBlock').language ?? ''}
-                        onChange={e =>
-                            editor
-                                .chain()
-                                .focus()
-                                .updateAttributes('codeBlock', { language: e.target.value })
-                                .run()
-                        }
-                        className="ml-1 rounded bg-white/[0.06] px-1.5 py-0.5 font-mono text-[11px] text-nr-faint outline-none focus:text-nr-muted"
-                        title="Idioma del bloque"
-                    >
-                        <option value="">auto</option>
-                        {CODE_LANGUAGES.map(l => (
-                            <option key={l.value} value={l.value}>
-                                {l.label}
-                            </option>
-                        ))}
-                    </select>
+                    <>
+                        <select
+                            value={editor.getAttributes('codeBlock').language ?? ''}
+                            onChange={e =>
+                                editor
+                                    .chain()
+                                    .focus()
+                                    .updateAttributes('codeBlock', { language: e.target.value })
+                                    .run()
+                            }
+                            className="ml-1 rounded bg-white/[0.06] px-1.5 py-0.5 font-mono text-[11px] text-nr-faint outline-none focus:text-nr-muted"
+                            title="Idioma del bloque"
+                        >
+                            <option value="">auto</option>
+                            {CODE_LANGUAGES.map(l => (
+                                <option key={l.value} value={l.value}>
+                                    {l.label}
+                                </option>
+                            ))}
+                        </select>
+                        <button
+                            type="button"
+                            onClick={formatCode}
+                            disabled={
+                                formatting ||
+                                !FORMATTABLE.has(
+                                    (editor.getAttributes('codeBlock').language as string) ?? '',
+                                )
+                            }
+                            title="Formatear con Prettier"
+                            className={`ml-0.5 rounded px-2 py-1 font-mono text-[11px] transition-colors ${
+                                formatting
+                                    ? 'text-nr-accent/60'
+                                    : FORMATTABLE.has(
+                                            (editor.getAttributes('codeBlock')
+                                                .language as string) ?? '',
+                                        )
+                                      ? 'text-nr-faint hover:bg-white/[0.06] hover:text-nr-accent'
+                                      : 'cursor-not-allowed text-nr-faint/30'
+                            }`}
+                        >
+                            {formatting ? '…' : '⌥↵ fmt'}
+                        </button>
+                    </>
                 )}
 
                 <span className="mx-1 h-4 w-px bg-white/10" />
