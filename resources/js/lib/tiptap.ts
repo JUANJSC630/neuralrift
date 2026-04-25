@@ -28,13 +28,49 @@ function hastToHtml(node: HastNode): string {
     return (node.children ?? []).map(hastToHtml).join('')
 }
 
+// For tsx/jsx, the typescript grammar drops JSX tags as plain text whenever
+// there's a `style={{...}}` (or any nested `{ }`) that breaks its expression
+// parser. We compensate by running a second pass with the xml grammar over
+// every plain-text "gap" the typescript pass left behind, merging the xml
+// hast nodes in place. That keeps TS keywords/strings colored AND highlights
+// JSX tags/attributes/strings.
+function mergeJsxIntoText(node: HastNode): HastNode | HastNode[] {
+    if (node.type === 'text') {
+        const value = node.value ?? ''
+        // Only re-process if there's something that looks like a JSX/HTML tag.
+        if (!/<\/?[A-Za-z]/.test(value)) return node
+        const xmlTree = lowlight.highlight('xml', value) as HastNode
+        return xmlTree.children ?? []
+    }
+    if (node.type === 'element') {
+        // Already-highlighted span — don't touch its inner text.
+        return node
+    }
+    const children = (node.children ?? []).flatMap(c => {
+        const r = mergeJsxIntoText(c)
+        return Array.isArray(r) ? r : [r]
+    })
+    return { ...node, children }
+}
+
 export function highlightCode(code: string, language: string): string {
     try {
-        const tree =
-            language && lowlight.registered(language)
-                ? lowlight.highlight(language, code)
-                : lowlight.highlightAuto(code)
-        return hastToHtml(tree as HastNode)
+        const lang = language?.toLowerCase()
+        const isJsx = lang === 'tsx' || lang === 'jsx'
+
+        let tree: HastNode
+        if (isJsx) {
+            const tsTree = lowlight.highlight('typescript', code) as HastNode
+            const merged = mergeJsxIntoText(tsTree)
+            tree = Array.isArray(merged)
+                ? { type: 'root', children: merged }
+                : merged
+        } else if (language && lowlight.registered(language)) {
+            tree = lowlight.highlight(language, code) as HastNode
+        } else {
+            tree = lowlight.highlightAuto(code) as HastNode
+        }
+        return hastToHtml(tree)
     } catch {
         return escapeHtml(code)
     }
