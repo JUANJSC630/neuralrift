@@ -1,5 +1,5 @@
 import { Head, router } from '@inertiajs/react'
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, useCallback } from 'react'
 import { motion } from 'framer-motion'
 import Navbar from '@/Components/Layout/Navbar'
 import Footer from '@/Components/Layout/Footer'
@@ -13,57 +13,95 @@ const PER_PAGE = 9
 interface Props {
     affiliates: PaginatedData<Affiliate>
     categories: string[]
+    totalAll: number
     filters: { category?: string }
 }
 
-export default function Tools({ affiliates, categories, filters }: Props) {
+export default function Tools({ affiliates, categories, totalAll, filters }: Props) {
     const { t } = useLocale()
+
+    // All pagination state is local — Inertia props only used for initial load & category changes
     const [items, setItems] = useState<Affiliate[]>(affiliates.data)
+    const [currentPage, setCurrentPage] = useState(affiliates.current_page)
+    const [lastPage, setLastPage] = useState(affiliates.last_page)
+    const [totalItems, setTotalItems] = useState(affiliates.total)
     const [loading, setLoading] = useState(false)
+
     const sentinelRef = useRef<HTMLDivElement>(null)
+    // Tracks the highest page already requested — prevents duplicates with fast scrolling
+    const fetchingPageRef = useRef(affiliates.current_page)
+    // Always-current category value for use inside fetch callbacks
+    const categoryRef = useRef(filters.category)
 
-    const currentPage = affiliates.current_page
-    const lastPage = affiliates.last_page
-    const activeCategory = filters.category
-
-    // Accumulate pages via router event — setState in a callback avoids the sync-setState warning
+    // Sync state when Inertia navigates (category filter change) — setState in callback, not body
     useEffect(() => {
         return router.on('success', event => {
-            const page = (event.detail.page.props as { affiliates?: PaginatedData<Affiliate> })
-                .affiliates
+            const page = (
+                event.detail.page.props as {
+                    affiliates?: PaginatedData<Affiliate>
+                    filters?: { category?: string }
+                }
+            ).affiliates
             if (!page) return
+            const newFilters = (event.detail.page.props as { filters?: { category?: string } })
+                .filters
+            categoryRef.current = newFilters?.category
+            fetchingPageRef.current = page.current_page
+            setItems(page.data)
+            setCurrentPage(page.current_page)
+            setLastPage(page.last_page)
+            setTotalItems(page.total)
             setLoading(false)
-            if (page.current_page === 1) {
-                setItems(page.data)
-            } else {
-                setItems(prev => [...prev, ...page.data])
-            }
         })
     }, [])
 
-    // Infinite scroll — re-created whenever loading or page state changes
+    // Fetch next page via plain JSON — URL does NOT change
+    const fetchMore = useCallback(async (page: number, category?: string) => {
+        const dataUrl = window.location.pathname.replace(/\/$/, '') + '/data'
+        const params = new URLSearchParams({ page: String(page) })
+        if (category) params.set('category', category)
+
+        try {
+            const res = await fetch(`${dataUrl}?${params}`, {
+                headers: { Accept: 'application/json', 'X-Requested-With': 'XMLHttpRequest' },
+            })
+            if (!res.ok) throw new Error(`${res.status}`)
+            const data: PaginatedData<Affiliate> = await res.json()
+            fetchingPageRef.current = data.current_page
+            setItems(prev => [...prev, ...data.data])
+            setCurrentPage(data.current_page)
+            setLastPage(data.last_page)
+            setLoading(false)
+        } catch {
+            // On error allow retrying the same page
+            fetchingPageRef.current = page - 1
+            setLoading(false)
+        }
+    }, [])
+
+    // Infinite scroll observer — only re-created when currentPage or lastPage changes
     useEffect(() => {
         const sentinel = sentinelRef.current
         if (!sentinel || currentPage >= lastPage) return
 
+        fetchingPageRef.current = currentPage
+
         const observer = new IntersectionObserver(
             entries => {
-                if (!entries[0].isIntersecting || loading) return
+                if (!entries[0].isIntersecting) return
+                const nextPage = currentPage + 1
+                if (nextPage <= fetchingPageRef.current) return
+                fetchingPageRef.current = nextPage
                 setLoading(true)
-                router.get(
-                    window.location.pathname,
-                    activeCategory
-                        ? { category: activeCategory, page: currentPage + 1 }
-                        : { page: currentPage + 1 },
-                    { preserveState: true, only: ['affiliates'], preserveScroll: true },
-                )
+                fetchMore(nextPage, categoryRef.current)
             },
-            { rootMargin: '300px' },
+            { rootMargin: '600px' },
         )
         observer.observe(sentinel)
         return () => observer.disconnect()
-    }, [loading, currentPage, lastPage, activeCategory])
+    }, [currentPage, lastPage, fetchMore])
 
+    // Category filter — intentionally changes URL so it's shareable/bookmarkable
     const setCategory = (cat: string | null) => {
         router.get(window.location.pathname, cat ? { category: cat } : {}, {
             preserveState: true,
@@ -72,6 +110,7 @@ export default function Tools({ affiliates, categories, filters }: Props) {
         })
     }
 
+    const activeCategory = filters.category
     const atEnd = currentPage >= lastPage
 
     return (
@@ -106,7 +145,7 @@ export default function Tools({ affiliates, categories, filters }: Props) {
                                         : 'glass text-nr-faint hover:text-nr-muted'
                                 }`}
                             >
-                                {t('tools.all')} ({affiliates.total})
+                                {t('tools.all')} {totalAll}
                             </button>
                             {categories.map(cat => (
                                 <button
@@ -140,7 +179,7 @@ export default function Tools({ affiliates, categories, filters }: Props) {
                                 ))}
                             </div>
 
-                            {/* Sentinel */}
+                            {/* Sentinel + status */}
                             <div ref={sentinelRef} className="mt-14 flex justify-center">
                                 {loading && (
                                     <div className="flex items-center gap-3 text-sm text-nr-faint">
@@ -148,9 +187,9 @@ export default function Tools({ affiliates, categories, filters }: Props) {
                                         Cargando más herramientas...
                                     </div>
                                 )}
-                                {!loading && atEnd && affiliates.total > PER_PAGE && (
+                                {!loading && atEnd && totalItems > PER_PAGE && (
                                     <p className="font-mono text-xs text-nr-faint">
-                                        {affiliates.total} herramientas · fin del listado
+                                        {totalItems} herramientas · fin del listado
                                     </p>
                                 )}
                             </div>

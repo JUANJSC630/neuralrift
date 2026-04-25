@@ -46,6 +46,7 @@ Route::get('/sobre-mi', function () {
     ]);
 })->name('about');
 Route::get('/herramientas', [AffiliateController::class, 'index'])->name('tools');
+Route::get('/herramientas/data', [AffiliateController::class, 'data'])->name('tools.data')->middleware('throttle:120,1');
 Route::get('/herramientas/{slug}/click', [AffiliateController::class, 'click'])->name('tools.click')->middleware('throttle:30,1');
 
 Route::prefix('blog')->name('blog.')->group(function () {
@@ -80,6 +81,7 @@ Route::prefix('en')->name('en.')->group(function () {
         ]);
     })->name('about');
     Route::get('/tools', [AffiliateController::class, 'index'])->name('tools');
+    Route::get('/tools/data', [AffiliateController::class, 'data'])->name('tools.data')->middleware('throttle:120,1');
 
     Route::prefix('blog')->name('blog.')->group(function () {
         Route::get('/', [PostController::class, 'index'])->name('index');
