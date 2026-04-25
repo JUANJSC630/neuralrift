@@ -221,7 +221,7 @@ export default function Newsletter({ subscribers, totals, filters }: Props) {
                 confirmLabel="Eliminar"
                 variant="danger"
                 onConfirm={() => {
-                    if (pendingDelete) router.delete(`/admin/newsletter/${pendingDelete.id}`)
+                    if (pendingDelete) router.post(`/admin/newsletter/${pendingDelete.id}`, { _method: 'DELETE' })
                     setPendingDelete(null)
                 }}
                 onCancel={() => setPendingDelete(null)}

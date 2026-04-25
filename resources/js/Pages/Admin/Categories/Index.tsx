@@ -335,7 +335,7 @@ export default function CategoriesIndex({ categories }: Props) {
                 confirmLabel="Eliminar"
                 variant="danger"
                 onConfirm={() => {
-                    if (pendingDelete) router.delete(`/admin/categories/${pendingDelete.id}`)
+                    if (pendingDelete) router.post(`/admin/categories/${pendingDelete.id}`, { _method: 'DELETE' })
                     setPendingDelete(null)
                 }}
                 onCancel={() => setPendingDelete(null)}

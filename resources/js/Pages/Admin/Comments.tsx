@@ -69,7 +69,7 @@ export default function Comments({ comments, filters, counts }: Props) {
 
     const confirmDelete = () => {
         if (!deleteTarget) return
-        router.delete(`/admin/comments/${deleteTarget.id}`, { preserveScroll: true })
+        router.post(`/admin/comments/${deleteTarget.id}`, { _method: 'DELETE' }, { preserveScroll: true })
         setDeleteTarget(null)
     }
 

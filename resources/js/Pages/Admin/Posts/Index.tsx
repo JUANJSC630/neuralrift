@@ -267,7 +267,7 @@ export default function PostsIndex({ posts, categories, filters }: Props) {
                 confirmLabel="Eliminar"
                 variant="danger"
                 onConfirm={() => {
-                    if (pendingDeleteId) router.delete(`/admin/posts/${pendingDeleteId}`)
+                    if (pendingDeleteId) router.post(`/admin/posts/${pendingDeleteId}`, { _method: 'DELETE' })
                     setPendingDeleteId(null)
                 }}
                 onCancel={() => setPendingDeleteId(null)}

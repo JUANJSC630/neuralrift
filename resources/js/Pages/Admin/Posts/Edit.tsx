@@ -197,7 +197,7 @@ export default function PostEdit({ post, categories, tags, affiliates }: Props) 
         if (isNew) {
             router.post('/admin/posts', payload)
         } else {
-            router.put(`/admin/posts/${post!.id}`, payload)
+            router.post(`/admin/posts/${post!.id}`, { ...payload, _method: 'PUT' })
         }
     }
 
@@ -206,7 +206,7 @@ export default function PostEdit({ post, categories, tags, affiliates }: Props) 
         if (isNew) {
             router.post('/admin/posts', payload)
         } else {
-            router.put(`/admin/posts/${post!.id}`, payload)
+            router.post(`/admin/posts/${post!.id}`, { ...payload, _method: 'PUT' })
         }
     }
 
