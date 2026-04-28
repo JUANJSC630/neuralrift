@@ -16,7 +16,7 @@ interface Totals {
 
 interface Props {
     affiliates: PaginatedData<Affiliate & { clicks_count: number }>
-    filters: { search?: string; status?: string }
+    filters: { search?: string; status?: string; sort?: string }
     totals: Totals
 }
 
@@ -115,6 +115,13 @@ export default function AffiliatesIndex({ affiliates, filters, totals }: Props) 
                         { value: 'active', label: 'Activos' },
                         { value: 'inactive', label: 'Inactivos' },
                         { value: 'featured', label: 'Destacados' },
+                    ]}
+                    sortOptions={[
+                        { value: '', label: 'Orden por defecto' },
+                        { value: 'name_asc', label: 'Nombre A → Z' },
+                        { value: 'name_desc', label: 'Nombre Z → A' },
+                        { value: 'date_desc', label: 'Más reciente' },
+                        { value: 'date_asc', label: 'Más antiguo' },
                     ]}
                     actions={
                         <button

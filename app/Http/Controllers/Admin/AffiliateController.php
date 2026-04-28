@@ -13,10 +13,15 @@ class AffiliateController extends Controller
 {
     public function index(Request $request): Response
     {
-        $query = Affiliate::withCount('clicks')
-            ->orderByDesc('featured')
-            ->orderBy('order')
-            ->orderBy('name');
+        $query = Affiliate::withCount('clicks');
+
+        match ($request->input('sort')) {
+            'name_asc'  => $query->orderBy('name'),
+            'name_desc' => $query->orderByDesc('name'),
+            'date_asc'  => $query->orderBy('created_at'),
+            'date_desc' => $query->orderByDesc('created_at'),
+            default     => $query->orderByDesc('created_at'),
+        };
 
         if ($search = $request->input('search')) {
             $query->where(function ($q) use ($search) {
@@ -36,7 +41,7 @@ class AffiliateController extends Controller
 
         return Inertia::render('Admin/Affiliates/Index', [
             'affiliates' => $query->paginate(15)->withQueryString(),
-            'filters' => $request->only('search', 'status'),
+            'filters' => $request->only('search', 'status', 'sort'),
             'totals' => [
                 'all' => Affiliate::count(),
                 'active' => Affiliate::where('active', true)->count(),

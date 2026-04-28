@@ -29,6 +29,8 @@ interface Props<T> {
     filterOptions?: FilterOption[]
     /** Which filters key the button group controls */
     filterKey?: string
+    /** Sort select options */
+    sortOptions?: FilterOption[]
     /** Placeholder for search input */
     searchPlaceholder?: string
     /** Empty-state message */
@@ -47,6 +49,7 @@ export default function AdminBrowse<T extends { id: number | string }>({
     kpis,
     filterOptions,
     filterKey = 'status',
+    sortOptions,
     searchPlaceholder = 'Buscar...',
     emptyMessage = 'No hay resultados.',
     actions,
@@ -67,7 +70,7 @@ export default function AdminBrowse<T extends { id: number | string }>({
         applyFilter('search', searchInput)
     }
 
-    const hasActiveFilters = !!(filters.search || filters[filterKey])
+    const hasActiveFilters = !!(filters.search || filters[filterKey] || filters.sort)
 
     return (
         <div className="flex gap-6">
@@ -131,6 +134,25 @@ export default function AdminBrowse<T extends { id: number | string }>({
                                 </button>
                             ))}
                         </div>
+                    )}
+
+                    {/* Sort */}
+                    {sortOptions && sortOptions.length > 0 && (
+                        <select
+                            value={filters.sort ?? ''}
+                            onChange={e => applyFilter('sort', e.target.value)}
+                            className="glass rounded-xl px-3 py-2 text-xs text-nr-muted outline-none focus:border-nr-accent/40 transition-colors cursor-pointer"
+                        >
+                            {sortOptions.map(opt => (
+                                <option
+                                    key={opt.value}
+                                    value={opt.value}
+                                    className="bg-nr-surface text-nr-text"
+                                >
+                                    {opt.label}
+                                </option>
+                            ))}
+                        </select>
                     )}
 
                     {/* Clear */}
