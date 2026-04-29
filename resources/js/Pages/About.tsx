@@ -1,5 +1,5 @@
 import { Head } from '@inertiajs/react'
-import { motion } from 'framer-motion'
+import { motion, useReducedMotion } from 'framer-motion'
 import Navbar from '@/Components/Layout/Navbar'
 import Footer from '@/Components/Layout/Footer'
 import MeshBackground from '@/Components/Layout/MeshBackground'
@@ -36,6 +36,7 @@ export default function About({
     skills?: string[] | null
 }) {
     const { t } = useLocale()
+    const prefersReducedMotion = useReducedMotion()
 
     const skills = skillsProp ?? DEFAULT_SKILLS
 
@@ -66,7 +67,7 @@ export default function About({
                         <div className="flex flex-col items-center gap-12 md:flex-row">
                             {/* Avatar */}
                             <motion.div
-                                initial={{ opacity: 0, scale: 0.9 }}
+                                initial={{ opacity: 0, scale: prefersReducedMotion ? 1 : 0.9 }}
                                 animate={{ opacity: 1, scale: 1 }}
                                 transition={{ duration: 0.4 }}
                                 className="flex-shrink-0"
@@ -75,6 +76,8 @@ export default function About({
                                     <img
                                         src="/logo.png"
                                         alt="NeuralRift"
+                                        loading="eager"
+                                        decoding="async"
                                         className="h-40 w-40 rounded-3xl object-contain"
                                         width={160}
                                         height={160}
@@ -85,8 +88,8 @@ export default function About({
 
                             {/* Text */}
                             <motion.div
-                                initial={{ opacity: 0, x: -20 }}
-                                animate={{ opacity: 1, x: 0 }}
+                                initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 12 }}
+                                animate={{ opacity: 1, y: 0 }}
                                 transition={{ duration: 0.4, delay: 0.1 }}
                             >
                                 <span className="mb-3 block font-mono text-xs uppercase tracking-widest text-nr-accent">
@@ -110,8 +113,8 @@ export default function About({
                                             key={s.label}
                                             href={s.href}
                                             target="_blank"
-                                            rel="noopener"
-                                            className="glass rounded-xl px-4 py-2 text-xs font-medium text-nr-muted transition-all duration-200 hover:border-white/20 hover:text-nr-text"
+                                            rel="noopener noreferrer"
+                                            className="glass inline-flex min-h-[44px] items-center rounded-full px-5 text-xs font-medium text-nr-muted transition-all duration-200 hover:border-white/20 hover:text-nr-text"
                                         >
                                             {s.label} ↗
                                         </a>
@@ -124,27 +127,30 @@ export default function About({
 
                 <div className="mx-auto max-w-4xl space-y-16 px-6 py-16 md:px-12">
                     {/* Stats */}
-                    <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                        className="grid grid-cols-2 gap-4 md:grid-cols-4"
-                    >
-                        {STATS.map(stat => (
-                            <div key={stat.label} className="glass rounded-2xl p-5 text-center">
+                    <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
+                        {STATS.map((stat, i) => (
+                            <motion.div
+                                key={stat.label}
+                                initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 20 }}
+                                whileInView={{ opacity: 1, y: 0 }}
+                                viewport={{ once: true }}
+                                transition={{ duration: 0.4, delay: prefersReducedMotion ? 0 : i * 0.08 }}
+                                className="glass rounded-2xl p-5 text-center"
+                            >
                                 <div className="text-gradient mb-1 font-display text-3xl font-black">
                                     {stat.value}
                                 </div>
                                 <div className="text-xs text-nr-faint">{stat.label}</div>
-                            </div>
+                            </motion.div>
                         ))}
-                    </motion.div>
+                    </div>
 
                     {/* Story */}
                     <motion.div
-                        initial={{ opacity: 0, y: 20 }}
+                        initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
+                        transition={{ duration: 0.4 }}
                     >
                         <h2 className="mb-6 font-display text-2xl font-bold text-nr-text">
                             {t('about.why_title')}
@@ -158,9 +164,10 @@ export default function About({
 
                     {/* Skills */}
                     <motion.div
-                        initial={{ opacity: 0, y: 20 }}
+                        initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
+                        transition={{ duration: 0.4 }}
                     >
                         <h2 className="mb-6 font-display text-2xl font-bold text-nr-text">
                             {t('about.skills_title')}
@@ -169,11 +176,11 @@ export default function About({
                             {skills.map((skill, i) => (
                                 <motion.span
                                     key={skill}
-                                    initial={{ opacity: 0, scale: 0.9 }}
+                                    initial={{ opacity: 0, scale: prefersReducedMotion ? 1 : 0.9 }}
                                     whileInView={{ opacity: 1, scale: 1 }}
                                     viewport={{ once: true }}
-                                    transition={{ delay: i * 0.05 }}
-                                    className="glass rounded-xl px-4 py-2 text-sm text-nr-muted transition-all duration-200 hover:border-nr-accent/30 hover:text-nr-accent"
+                                    transition={{ duration: 0.3, delay: prefersReducedMotion ? 0 : i * 0.05 }}
+                                    className="glass inline-flex min-h-[44px] items-center rounded-full px-5 text-sm text-nr-muted transition-all duration-200 hover:border-nr-accent/30 hover:text-nr-accent"
                                 >
                                     {skill}
                                 </motion.span>
@@ -183,9 +190,10 @@ export default function About({
 
                     {/* Contact */}
                     <motion.div
-                        initial={{ opacity: 0, y: 20 }}
+                        initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
+                        transition={{ duration: 0.4 }}
                         className="glass rounded-2xl p-8 text-center"
                     >
                         <h2 className="mb-3 font-display text-2xl font-bold text-nr-text">
@@ -196,9 +204,9 @@ export default function About({
                         </p>
                         <a
                             href={`mailto:${SITE.email}`}
-                            className="glow-accent inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-nr-accent to-nr-accent-dark px-6 py-3 text-sm font-semibold text-white transition-all duration-200 will-change-transform hover:-translate-y-0.5"
+                            className="glow-accent inline-flex min-h-[44px] items-center gap-2 rounded-full bg-gradient-to-r from-nr-accent to-nr-accent-dark px-8 text-sm font-semibold text-white transition-all duration-200 will-change-transform hover:-translate-y-0.5"
                         >
-                            ✉ {SITE.email}
+                            {SITE.email}
                         </a>
                     </motion.div>
 
