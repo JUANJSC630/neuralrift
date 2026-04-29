@@ -36,7 +36,6 @@ export default function Privacy() {
                         }}
                     />
                     <div className="relative z-10 mx-auto max-w-3xl px-6 py-16 md:px-12">
-                        {/* Breadcrumb */}
                         <nav className="mb-6 flex items-center gap-2 font-mono text-xs text-nr-faint">
                             <Link
                                 href={localePath('/')}
@@ -69,109 +68,232 @@ export default function Privacy() {
                 {/* Content */}
                 <div className="mx-auto max-w-3xl px-6 py-14 md:px-12">
                     <div className="space-y-10 text-sm leading-relaxed text-nr-muted">
-                        <Section title="1. Información que recopilamos">
+                        <Section
+                            title={
+                                isEn
+                                    ? '1. Information We Collect'
+                                    : '1. Información que recopilamos'
+                            }
+                        >
                             <p>
-                                En <strong className="text-nr-text">NeuralRift</strong> recopilamos
-                                únicamente la información necesaria para ofrecerte el servicio:
+                                {isEn ? (
+                                    <>
+                                        At <strong className="text-nr-text">NeuralRift</strong> we
+                                        only collect the information necessary to provide you with
+                                        the service:
+                                    </>
+                                ) : (
+                                    <>
+                                        En <strong className="text-nr-text">NeuralRift</strong>{' '}
+                                        recopilamos únicamente la información necesaria para
+                                        ofrecerte el servicio:
+                                    </>
+                                )}
                             </p>
                             <ul className="mt-4 space-y-2 pl-4">
                                 <Item>
-                                    <strong className="text-nr-text">
-                                        Suscripción al newsletter:
-                                    </strong>{' '}
-                                    solo tu dirección de correo electrónico, que usamos para
-                                    enviarte el contenido al que te suscribiste.
+                                    {isEn ? (
+                                        <>
+                                            <strong className="text-nr-text">
+                                                Newsletter subscription:
+                                            </strong>{' '}
+                                            only your email address, which we use to send you the
+                                            content you subscribed to.
+                                        </>
+                                    ) : (
+                                        <>
+                                            <strong className="text-nr-text">
+                                                Suscripción al newsletter:
+                                            </strong>{' '}
+                                            solo tu dirección de correo electrónico, que usamos para
+                                            enviarte el contenido al que te suscribiste.
+                                        </>
+                                    )}
                                 </Item>
                                 <Item>
-                                    <strong className="text-nr-text">Datos de uso anónimos:</strong>{' '}
-                                    páginas visitadas y tiempo de lectura, sin asociarlos a ningún
-                                    dato personal identificable.
+                                    {isEn ? (
+                                        <>
+                                            <strong className="text-nr-text">
+                                                Anonymous usage data:
+                                            </strong>{' '}
+                                            pages visited and reading time, without linking them to
+                                            any personally identifiable data.
+                                        </>
+                                    ) : (
+                                        <>
+                                            <strong className="text-nr-text">
+                                                Datos de uso anónimos:
+                                            </strong>{' '}
+                                            páginas visitadas y tiempo de lectura, sin asociarlos a
+                                            ningún dato personal identificable.
+                                        </>
+                                    )}
                                 </Item>
                                 <Item>
-                                    <strong className="text-nr-text">Cookies técnicas:</strong>{' '}
-                                    necesarias para el correcto funcionamiento del sitio (sesión,
-                                    preferencias de idioma).
+                                    {isEn ? (
+                                        <>
+                                            <strong className="text-nr-text">
+                                                Technical cookies:
+                                            </strong>{' '}
+                                            necessary for the correct functioning of the site
+                                            (session, language preferences).
+                                        </>
+                                    ) : (
+                                        <>
+                                            <strong className="text-nr-text">
+                                                Cookies técnicas:
+                                            </strong>{' '}
+                                            necesarias para el correcto funcionamiento del sitio
+                                            (sesión, preferencias de idioma).
+                                        </>
+                                    )}
                                 </Item>
                             </ul>
                         </Section>
 
-                        <Section title="2. Cómo usamos tu información">
+                        <Section
+                            title={
+                                isEn
+                                    ? '2. How We Use Your Information'
+                                    : '2. Cómo usamos tu información'
+                            }
+                        >
                             <ul className="space-y-2 pl-4">
                                 <Item>
-                                    Enviarte el newsletter al que te suscribiste voluntariamente.
+                                    {isEn
+                                        ? 'Send you the newsletter you voluntarily subscribed to.'
+                                        : 'Enviarte el newsletter al que te suscribiste voluntariamente.'}
                                 </Item>
-                                <Item>Mejorar el contenido y la experiencia del sitio.</Item>
                                 <Item>
-                                    Analizar qué artículos son más útiles para los lectores.
+                                    {isEn
+                                        ? 'Improve the content and experience of the site.'
+                                        : 'Mejorar el contenido y la experiencia del sitio.'}
+                                </Item>
+                                <Item>
+                                    {isEn
+                                        ? 'Analyze which articles are most useful to readers.'
+                                        : 'Analizar qué artículos son más útiles para los lectores.'}
                                 </Item>
                             </ul>
                             <p className="mt-4">
-                                Nunca vendemos, alquilamos ni compartimos tu información personal
-                                con terceros con fines comerciales.
+                                {isEn
+                                    ? 'We never sell, rent or share your personal information with third parties for commercial purposes.'
+                                    : 'Nunca vendemos, alquilamos ni compartimos tu información personal con terceros con fines comerciales.'}
                             </p>
                         </Section>
 
-                        <Section title="3. Links de afiliado">
+                        <Section
+                            title={isEn ? '3. Affiliate Links' : '3. Links de afiliado'}
+                        >
                             <p>
-                                NeuralRift contiene enlaces de afiliado a productos y servicios que
-                                recomiendo. Si realizas una compra a través de estos enlaces, puedo
-                                recibir una comisión sin costo adicional para ti. Esto no influye en
-                                mis opiniones ni recomendaciones.
+                                {isEn
+                                    ? 'NeuralRift contains affiliate links to products and services I recommend. If you make a purchase through these links, I may receive a commission at no additional cost to you. This does not influence my opinions or recommendations.'
+                                    : 'NeuralRift contiene enlaces de afiliado a productos y servicios que recomiendo. Si realizas una compra a través de estos enlaces, puedo recibir una comisión sin costo adicional para ti. Esto no influye en mis opiniones ni recomendaciones.'}
                             </p>
                         </Section>
 
-                        <Section title="4. Cookies">
+                        <Section title={isEn ? '4. Cookies' : '4. Cookies'}>
                             <p>
-                                Usamos cookies estrictamente necesarias para el funcionamiento del
-                                sitio. No usamos cookies de seguimiento de terceros ni publicidad
-                                comportamental. Consulta nuestra{' '}
-                                <Link
-                                    href={isEn ? '/en/cookies' : '/cookies'}
-                                    className="text-nr-accent transition-colors hover:text-nr-accent/80"
-                                >
-                                    Política de Cookies
-                                </Link>{' '}
-                                para más detalles.
+                                {isEn ? (
+                                    <>
+                                        We use strictly necessary cookies for the site to function.
+                                        We do not use third-party tracking cookies or behavioral
+                                        advertising. See our{' '}
+                                        <Link
+                                            href={localePath('/cookies')}
+                                            className="text-nr-accent transition-colors hover:text-nr-accent/80"
+                                        >
+                                            Cookie Policy
+                                        </Link>{' '}
+                                        for more details.
+                                    </>
+                                ) : (
+                                    <>
+                                        Usamos cookies estrictamente necesarias para el
+                                        funcionamiento del sitio. No usamos cookies de seguimiento
+                                        de terceros ni publicidad comportamental. Consulta nuestra{' '}
+                                        <Link
+                                            href={localePath('/cookies')}
+                                            className="text-nr-accent transition-colors hover:text-nr-accent/80"
+                                        >
+                                            Política de Cookies
+                                        </Link>{' '}
+                                        para más detalles.
+                                    </>
+                                )}
                             </p>
                         </Section>
 
-                        <Section title="5. Retención de datos">
+                        <Section
+                            title={isEn ? '5. Data Retention' : '5. Retención de datos'}
+                        >
                             <p>
-                                Conservamos tu dirección de correo mientras estés suscrito al
-                                newsletter. Puedes darte de baja en cualquier momento usando el
-                                enlace al final de cualquier correo que te enviemos. Tras la baja,
-                                eliminamos tu dirección en un plazo máximo de 30 días.
+                                {isEn
+                                    ? 'We retain your email address while you are subscribed to the newsletter. You can unsubscribe at any time using the link at the bottom of any email we send you. After unsubscribing, we delete your address within a maximum of 30 days.'
+                                    : 'Conservamos tu dirección de correo mientras estés suscrito al newsletter. Puedes darte de baja en cualquier momento usando el enlace al final de cualquier correo que te enviemos. Tras la baja, eliminamos tu dirección en un plazo máximo de 30 días.'}
                             </p>
                         </Section>
 
-                        <Section title="6. Tus derechos">
+                        <Section title={isEn ? '6. Your Rights' : '6. Tus derechos'}>
                             <ul className="space-y-2 pl-4">
-                                <Item>Acceder a los datos que tenemos sobre ti.</Item>
-                                <Item>Solicitar la corrección o eliminación de tus datos.</Item>
-                                <Item>Oponerte al tratamiento de tus datos.</Item>
+                                <Item>
+                                    {isEn
+                                        ? 'Access the data we hold about you.'
+                                        : 'Acceder a los datos que tenemos sobre ti.'}
+                                </Item>
+                                <Item>
+                                    {isEn
+                                        ? 'Request the correction or deletion of your data.'
+                                        : 'Solicitar la corrección o eliminación de tus datos.'}
+                                </Item>
+                                <Item>
+                                    {isEn
+                                        ? 'Object to the processing of your data.'
+                                        : 'Oponerte al tratamiento de tus datos.'}
+                                </Item>
                             </ul>
                             <p className="mt-4">
-                                Para ejercer cualquiera de estos derechos, escríbenos a{' '}
-                                <a
-                                    href={`mailto:${SITE.email}`}
-                                    className="text-nr-accent transition-colors hover:text-nr-accent/80"
-                                >
-                                    {SITE.email}
-                                </a>
-                                .
+                                {isEn ? (
+                                    <>
+                                        To exercise any of these rights, write to us at{' '}
+                                        <a
+                                            href={`mailto:${SITE.email}`}
+                                            className="text-nr-accent transition-colors hover:text-nr-accent/80"
+                                        >
+                                            {SITE.email}
+                                        </a>
+                                        .
+                                    </>
+                                ) : (
+                                    <>
+                                        Para ejercer cualquiera de estos derechos, escríbenos a{' '}
+                                        <a
+                                            href={`mailto:${SITE.email}`}
+                                            className="text-nr-accent transition-colors hover:text-nr-accent/80"
+                                        >
+                                            {SITE.email}
+                                        </a>
+                                        .
+                                    </>
+                                )}
                             </p>
                         </Section>
 
-                        <Section title="7. Cambios en esta política">
+                        <Section
+                            title={
+                                isEn
+                                    ? '7. Changes to This Policy'
+                                    : '7. Cambios en esta política'
+                            }
+                        >
                             <p>
-                                Podemos actualizar esta política ocasionalmente. Te notificaremos
-                                sobre cambios significativos por correo si eres suscriptor. La fecha
-                                de última actualización siempre aparece en la cabecera.
+                                {isEn
+                                    ? 'We may update this policy occasionally. We will notify you of significant changes by email if you are a subscriber. The last updated date always appears in the header.'
+                                    : 'Podemos actualizar esta política ocasionalmente. Te notificaremos sobre cambios significativos por correo si eres suscriptor. La fecha de última actualización siempre aparece en la cabecera.'}
                             </p>
                         </Section>
                     </div>
 
-                    {/* Back link */}
                     <div className="mt-14 border-t border-white/[0.06] pt-8">
                         <Link
                             href={localePath('/')}

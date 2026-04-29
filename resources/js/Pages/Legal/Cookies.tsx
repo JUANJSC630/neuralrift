@@ -63,7 +63,6 @@ export default function Cookies() {
                         }}
                     />
                     <div className="relative z-10 mx-auto max-w-3xl px-6 py-16 md:px-12">
-                        {/* Breadcrumb */}
                         <nav className="mb-6 flex items-center gap-2 font-mono text-xs text-nr-faint">
                             <Link
                                 href={localePath('/')}
@@ -96,25 +95,38 @@ export default function Cookies() {
                 {/* Content */}
                 <div className="mx-auto max-w-3xl px-6 py-14 md:px-12">
                     <div className="space-y-10 text-sm leading-relaxed text-nr-muted">
-                        <Section title="¿Qué son las cookies?">
+                        <Section title={isEn ? 'What are cookies?' : '¿Qué son las cookies?'}>
                             <p>
-                                Las cookies son pequeños archivos de texto que los sitios web
-                                almacenan en tu navegador. Permiten que el sitio recuerde tus
-                                preferencias y mejore tu experiencia de uso.
+                                {isEn
+                                    ? 'Cookies are small text files that websites store in your browser. They allow the site to remember your preferences and improve your browsing experience.'
+                                    : 'Las cookies son pequeños archivos de texto que los sitios web almacenan en tu navegador. Permiten que el sitio recuerde tus preferencias y mejore tu experiencia de uso.'}
                             </p>
                         </Section>
 
-                        <Section title="Cookies que usamos">
+                        <Section title={isEn ? 'Cookies we use' : 'Cookies que usamos'}>
                             <p className="mb-6">
-                                NeuralRift usa exclusivamente cookies técnicas y de preferencia,
-                                estrictamente necesarias para el funcionamiento del sitio.{' '}
-                                <strong className="text-nr-text">
-                                    No usamos cookies de publicidad, rastreo ni analítica de
-                                    terceros.
-                                </strong>
+                                {isEn ? (
+                                    <>
+                                        NeuralRift uses exclusively technical and preference cookies,
+                                        strictly necessary for the site to function.{' '}
+                                        <strong className="text-nr-text">
+                                            We do not use advertising, tracking, or third-party
+                                            analytics cookies.
+                                        </strong>
+                                    </>
+                                ) : (
+                                    <>
+                                        NeuralRift usa exclusivamente cookies técnicas y de
+                                        preferencia, estrictamente necesarias para el funcionamiento
+                                        del sitio.{' '}
+                                        <strong className="text-nr-text">
+                                            No usamos cookies de publicidad, rastreo ni analítica de
+                                            terceros.
+                                        </strong>
+                                    </>
+                                )}
                             </p>
 
-                            {/* Table */}
                             <div className="overflow-x-auto">
                                 <table className="w-full border-collapse text-xs">
                                     <thead>
@@ -123,13 +135,13 @@ export default function Cookies() {
                                                 Cookie
                                             </th>
                                             <th className="py-3 pr-4 text-left font-semibold uppercase tracking-wider text-nr-faint">
-                                                Tipo
+                                                {isEn ? 'Type' : 'Tipo'}
                                             </th>
                                             <th className="py-3 pr-4 text-left font-semibold uppercase tracking-wider text-nr-faint">
-                                                Propósito
+                                                {isEn ? 'Purpose' : 'Propósito'}
                                             </th>
                                             <th className="py-3 text-left font-semibold uppercase tracking-wider text-nr-faint">
-                                                Duración
+                                                {isEn ? 'Duration' : 'Duración'}
                                             </th>
                                         </tr>
                                     </thead>
@@ -156,11 +168,15 @@ export default function Cookies() {
                             </div>
                         </Section>
 
-                        <Section title="Cómo controlar las cookies">
+                        <Section
+                            title={
+                                isEn ? 'How to control cookies' : 'Cómo controlar las cookies'
+                            }
+                        >
                             <p>
-                                Puedes controlar y eliminar las cookies desde la configuración de tu
-                                navegador. Ten en cuenta que deshabilitar ciertas cookies puede
-                                afectar la funcionalidad del sitio.
+                                {isEn
+                                    ? 'You can control and delete cookies from your browser settings. Please note that disabling certain cookies may affect the functionality of the site.'
+                                    : 'Puedes controlar y eliminar las cookies desde la configuración de tu navegador. Ten en cuenta que deshabilitar ciertas cookies puede afectar la funcionalidad del sitio.'}
                             </p>
                             <ul className="mt-4 space-y-2 pl-4">
                                 <Item>
@@ -196,28 +212,49 @@ export default function Cookies() {
                             </ul>
                         </Section>
 
-                        <Section title="Cambios en esta política">
+                        <Section
+                            title={
+                                isEn ? 'Changes to this policy' : 'Cambios en esta política'
+                            }
+                        >
                             <p>
-                                Podemos actualizar esta política cuando sea necesario. La fecha de
-                                última actualización siempre aparece en la cabecera de esta página.
+                                {isEn
+                                    ? 'We may update this policy when necessary. The last updated date always appears in the header of this page.'
+                                    : 'Podemos actualizar esta política cuando sea necesario. La fecha de última actualización siempre aparece en la cabecera de esta página.'}
                             </p>
                         </Section>
 
-                        <Section title="Contacto">
+                        <Section title={isEn ? 'Contact' : 'Contacto'}>
                             <p>
-                                Si tienes preguntas sobre nuestra política de cookies, escríbenos a{' '}
-                                <a
-                                    href={`mailto:${SITE.email}`}
-                                    className="text-nr-accent transition-colors hover:text-nr-accent/80"
-                                >
-                                    {SITE.email}
-                                </a>
-                                .
+                                {isEn ? (
+                                    <>
+                                        If you have questions about our cookie policy, write to us
+                                        at{' '}
+                                        <a
+                                            href={`mailto:${SITE.email}`}
+                                            className="text-nr-accent transition-colors hover:text-nr-accent/80"
+                                        >
+                                            {SITE.email}
+                                        </a>
+                                        .
+                                    </>
+                                ) : (
+                                    <>
+                                        Si tienes preguntas sobre nuestra política de cookies,
+                                        escríbenos a{' '}
+                                        <a
+                                            href={`mailto:${SITE.email}`}
+                                            className="text-nr-accent transition-colors hover:text-nr-accent/80"
+                                        >
+                                            {SITE.email}
+                                        </a>
+                                        .
+                                    </>
+                                )}
                             </p>
                         </Section>
                     </div>
 
-                    {/* Back link */}
                     <div className="mt-14 border-t border-white/[0.06] pt-8">
                         <Link
                             href={localePath('/')}
