@@ -203,10 +203,6 @@ export default function Tools({ affiliates, categories, totalAll, filters }: Pro
                         </div>
                     )}
 
-                    {/* Disclaimer */}
-                    <p className="mx-auto mt-16 max-w-lg text-center text-xs leading-relaxed text-nr-faint">
-                        {t('footer.affiliate_disclosure')}
-                    </p>
                 </section>
             </main>
 

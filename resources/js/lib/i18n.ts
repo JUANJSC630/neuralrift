@@ -24,8 +24,8 @@ const translations = {
     'footer.cookies': { es: 'Cookies', en: 'Cookies' },
     'footer.affiliates': { es: 'Afiliados', en: 'Affiliates' },
     'footer.affiliate_disclosure': {
-        es: 'Este blog contiene links de afiliado. Si compras a través de ellos recibo una comisión sin costo adicional para ti.',
-        en: 'This blog contains affiliate links. If you purchase through them I earn a commission at no extra cost to you.',
+        es: 'Algunas herramientas incluyen links de soporte. Si compras a través de ellos recibimos una pequeña comisión sin costo adicional para ti.',
+        en: 'Some tools include support links. If you purchase through them we earn a small commission at no extra cost to you.',
     },
     'footer.tagline': {
         es: 'Guías en profundidad, reviews honestas y estrategias para navegar la revolución de la IA. Sin ruido, sin hype.',
@@ -47,11 +47,11 @@ const translations = {
     'home.recent_subtitle': { es: 'Lo último del mundo de la IA', en: 'Latest from the AI world' },
     'home.view_all': { es: 'Ver todos →', en: 'View all →' },
     'home.view_all_articles': { es: 'Ver todos los artículos →', en: 'View all articles →' },
-    'home.tools_label': { es: 'Herramientas que uso', en: 'Tools I use' },
-    'home.tools_title': { es: 'Las mejores herramientas IA', en: 'The best AI tools' },
+    'home.tools_label': { es: 'Lo que uso a diario', en: 'What I use daily' },
+    'home.tools_title': { es: 'Mi stack de herramientas IA', en: 'My AI tools stack' },
     'home.tools_subtitle': {
-        es: 'Solo recomiendo herramientas que uso personalmente. Algunos links son de afiliado.',
-        en: 'I only recommend tools I personally use. Some links are affiliate links.',
+        es: 'Las herramientas que tengo abiertas todos los días. Sin patrocinios, sin relleno.',
+        en: 'The tools I have open every single day. No sponsorships, no filler.',
     },
 
     // ── Rotating words (Home hero) ───────────────────
@@ -60,6 +60,16 @@ const translations = {
     'home.rotating.2': { es: 'Automatización', en: 'Automation' },
     'home.rotating.3': { es: 'Freelancing Digital', en: 'Digital Freelancing' },
     'home.rotating.4': { es: 'Herramientas Tech', en: 'Tech Tools' },
+    'home.rotating.5': { es: 'Agentes IA', en: 'AI Agents' },
+    'home.rotating.6': { es: 'Prompting', en: 'Prompting' },
+    'home.rotating.7': { es: 'Creación de Contenido', en: 'Content Creation' },
+    'home.rotating.8': { es: 'Modelos de Lenguaje', en: 'Language Models' },
+    'home.rotating.9': { es: 'Programación con IA', en: 'AI-Assisted Coding' },
+    'home.rotating.10': { es: 'Trabajo Remoto', en: 'Remote Work' },
+    'home.rotating.11': { es: 'Productividad', en: 'Productivity' },
+    'home.rotating.12': { es: 'APIs e Integraciones', en: 'APIs & Integrations' },
+    'home.rotating.13': { es: 'Startups Digitales', en: 'Digital Startups' },
+    'home.rotating.14': { es: 'Flujos con IA', en: 'AI Workflows' },
 
     // ── Blog listing ─────────────────────────────────
     'blog.all_articles': { es: 'Todos los artículos', en: 'All articles' },
@@ -141,11 +151,11 @@ const translations = {
     },
 
     // ── Tools page ───────────────────────────────────
-    'tools.label': { es: 'Herramientas recomendadas', en: 'Recommended tools' },
-    'tools.title': { es: 'Las mejores herramientas IA', en: 'The best AI tools' },
+    'tools.label': { es: 'Lo que uso a diario', en: 'What I use daily' },
+    'tools.title': { es: 'Mi stack de herramientas IA', en: 'My AI tools stack' },
     'tools.subtitle': {
-        es: 'Solo recomiendo herramientas que uso o he probado personalmente. Algunos links son de afiliado.',
-        en: 'I only recommend tools I use or have personally tested. Some links are affiliate links.',
+        es: 'Las herramientas que tengo abiertas todos los días. Sin patrocinios, sin relleno.',
+        en: 'The tools I have open every single day. No sponsorships, no filler.',
     },
     'tools.all': { es: 'Todas', en: 'All' },
     'tools.cta': { es: 'Ver herramienta →', en: 'View tool →' },

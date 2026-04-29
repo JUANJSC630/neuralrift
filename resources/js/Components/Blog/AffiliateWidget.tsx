@@ -42,15 +42,6 @@ export default function AffiliateWidget({ affiliate }: { affiliate: Affiliate })
                 </p>
             )}
 
-            {/* Comisión */}
-            {affiliate.commission && (
-                <div className="mb-4 flex items-center gap-1.5">
-                    <span className="font-mono text-xs font-semibold text-nr-green">
-                        ✓ {affiliate.commission}
-                    </span>
-                </div>
-            )}
-
             {/* Rating */}
             {affiliate.rating && (
                 <div className="mb-4 flex items-center gap-1">

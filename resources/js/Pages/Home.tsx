@@ -49,6 +49,16 @@ export default function Home({ featured, recent, affiliates, canonical }: Props)
         t('home.rotating.2'),
         t('home.rotating.3'),
         t('home.rotating.4'),
+        t('home.rotating.5'),
+        t('home.rotating.6'),
+        t('home.rotating.7'),
+        t('home.rotating.8'),
+        t('home.rotating.9'),
+        t('home.rotating.10'),
+        t('home.rotating.11'),
+        t('home.rotating.12'),
+        t('home.rotating.13'),
+        t('home.rotating.14'),
     ]
 
     useEffect(() => {
@@ -164,27 +174,23 @@ export default function Home({ featured, recent, affiliates, canonical }: Props)
                             transition={{ duration: 0.5, delay: 0.15 }}
                             className="mb-6 font-display text-5xl font-black leading-[1.06] tracking-tight text-nr-text md:text-7xl lg:text-[82px]"
                         >
-                            {t('home.headline_prefix')}{' '}
+                            <span className="block">{t('home.headline_prefix')}</span>
                             <motion.span
                                 key={wordIndex}
                                 initial={{ opacity: 0, y: 8 }}
                                 animate={{ opacity: 1, y: 0 }}
                                 exit={{ opacity: 0, y: -8 }}
                                 transition={{ duration: 0.4 }}
-                                className="text-nr-accent"
+                                className="block whitespace-nowrap text-nr-accent"
                                 aria-hidden="true"
                             >
                                 {words[wordIndex]}
+                                <span className="animate-blink font-thin opacity-80">|</span>
                             </motion.span>
-                            {/* sr-only live region — static element so screen readers pick up changes */}
                             <span className="sr-only" aria-live="polite" aria-atomic="true">
                                 {words[wordIndex]}
                             </span>
-                            <span className="animate-blink font-thin text-nr-accent opacity-80">
-                                |
-                            </span>
-                            <br />
-                            {t('home.headline_suffix')}
+                            <span className="block">{t('home.headline_suffix')}</span>
                         </motion.h1>
 
                         {/* Subheadline */}
