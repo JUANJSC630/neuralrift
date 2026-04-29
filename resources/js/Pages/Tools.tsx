@@ -185,9 +185,9 @@ export default function Tools({ affiliates, categories, totalAll, filters }: Pro
                                         >
                                             <div className="mb-3 flex items-start justify-between">
                                                 <div className="flex items-center gap-3">
-                                                    <div className="h-10 w-10 flex-shrink-0 animate-pulse rounded-xl bg-white/8" />
+                                                    <div className="bg-white/8 h-10 w-10 flex-shrink-0 animate-pulse rounded-xl" />
                                                     <div className="space-y-2">
-                                                        <div className="h-3.5 w-28 animate-pulse rounded-md bg-white/8" />
+                                                        <div className="bg-white/8 h-3.5 w-28 animate-pulse rounded-md" />
                                                         <div className="h-2.5 w-20 animate-pulse rounded-md bg-white/5" />
                                                     </div>
                                                 </div>

@@ -134,7 +134,10 @@ export default function About({
                                 initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 20 }}
                                 whileInView={{ opacity: 1, y: 0 }}
                                 viewport={{ once: true }}
-                                transition={{ duration: 0.4, delay: prefersReducedMotion ? 0 : i * 0.08 }}
+                                transition={{
+                                    duration: 0.4,
+                                    delay: prefersReducedMotion ? 0 : i * 0.08,
+                                }}
                                 className="glass rounded-2xl p-5 text-center"
                             >
                                 <div className="text-gradient mb-1 font-display text-3xl font-black">
@@ -179,7 +182,10 @@ export default function About({
                                     initial={{ opacity: 0, scale: prefersReducedMotion ? 1 : 0.9 }}
                                     whileInView={{ opacity: 1, scale: 1 }}
                                     viewport={{ once: true }}
-                                    transition={{ duration: 0.3, delay: prefersReducedMotion ? 0 : i * 0.05 }}
+                                    transition={{
+                                        duration: 0.3,
+                                        delay: prefersReducedMotion ? 0 : i * 0.05,
+                                    }}
                                     className="glass inline-flex min-h-[44px] items-center rounded-full px-5 text-sm text-nr-muted transition-all duration-200 hover:border-nr-accent/30 hover:text-nr-accent"
                                 >
                                     {skill}

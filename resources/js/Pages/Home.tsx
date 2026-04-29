@@ -22,21 +22,21 @@ interface Props {
 
 // x/y = position, size = radius, dur = cycle duration (s), dy/dx = max drift (px)
 const NODES = [
-    { x: '11%', y: '22%', size: 6,   color: '#7C6AF7', delay: 0,   dur: 5.0, dy: -12, dx:  4 },
-    { x: '80%', y: '12%', size: 3,   color: '#06B6D4', delay: 0.4, dur: 3.5, dy:  -6, dx: -3 },
-    { x: '90%', y: '65%', size: 4,   color: '#7C6AF7', delay: 0.8, dur: 4.5, dy: -10, dx: -4 },
-    { x: '7%',  y: '75%', size: 3,   color: '#06B6D4', delay: 1.2, dur: 3.0, dy:  -6, dx:  2 },
-    { x: '54%', y: '85%', size: 5,   color: '#7C6AF7', delay: 0.6, dur: 5.5, dy: -10, dx:  0 },
-    { x: '70%', y: '38%', size: 3,   color: '#06B6D4', delay: 1.0, dur: 3.8, dy:  -6, dx:  3 },
-    { x: '33%', y: '55%', size: 4,   color: '#7C6AF7', delay: 0.2, dur: 4.2, dy:  -9, dx: -2 },
-    { x: '44%', y: '18%', size: 3,   color: '#06B6D4', delay: 1.4, dur: 5.0, dy:  -6, dx:  4 },
+    { x: '11%', y: '22%', size: 6, color: '#7C6AF7', delay: 0, dur: 5.0, dy: -12, dx: 4 },
+    { x: '80%', y: '12%', size: 3, color: '#06B6D4', delay: 0.4, dur: 3.5, dy: -6, dx: -3 },
+    { x: '90%', y: '65%', size: 4, color: '#7C6AF7', delay: 0.8, dur: 4.5, dy: -10, dx: -4 },
+    { x: '7%', y: '75%', size: 3, color: '#06B6D4', delay: 1.2, dur: 3.0, dy: -6, dx: 2 },
+    { x: '54%', y: '85%', size: 5, color: '#7C6AF7', delay: 0.6, dur: 5.5, dy: -10, dx: 0 },
+    { x: '70%', y: '38%', size: 3, color: '#06B6D4', delay: 1.0, dur: 3.8, dy: -6, dx: 3 },
+    { x: '33%', y: '55%', size: 4, color: '#7C6AF7', delay: 0.2, dur: 4.2, dy: -9, dx: -2 },
+    { x: '44%', y: '18%', size: 3, color: '#06B6D4', delay: 1.4, dur: 5.0, dy: -6, dx: 4 },
     // fill stars — smaller, dimmer, independent rhythm
-    { x: '22%', y: '42%', size: 2,   color: '#7C6AF7', delay: 0.7, dur: 3.5, dy:  -5, dx: -2 },
-    { x: '60%', y: '60%', size: 2.5, color: '#06B6D4', delay: 1.6, dur: 4.2, dy:  -6, dx:  2 },
-    { x: '16%', y: '8%',  size: 2,   color: '#7C6AF7', delay: 0.3, dur: 6.0, dy:  -4, dx:  1 },
-    { x: '84%', y: '44%', size: 2,   color: '#7C6AF7', delay: 1.8, dur: 3.8, dy:  -5, dx: -3 },
-    { x: '48%', y: '40%', size: 2.5, color: '#06B6D4', delay: 0.9, dur: 4.5, dy:  -5, dx:  2 },
-    { x: '26%', y: '72%', size: 2,   color: '#06B6D4', delay: 2.0, dur: 5.5, dy:  -4, dx: -1 },
+    { x: '22%', y: '42%', size: 2, color: '#7C6AF7', delay: 0.7, dur: 3.5, dy: -5, dx: -2 },
+    { x: '60%', y: '60%', size: 2.5, color: '#06B6D4', delay: 1.6, dur: 4.2, dy: -6, dx: 2 },
+    { x: '16%', y: '8%', size: 2, color: '#7C6AF7', delay: 0.3, dur: 6.0, dy: -4, dx: 1 },
+    { x: '84%', y: '44%', size: 2, color: '#7C6AF7', delay: 1.8, dur: 3.8, dy: -5, dx: -3 },
+    { x: '48%', y: '40%', size: 2.5, color: '#06B6D4', delay: 0.9, dur: 4.5, dy: -5, dx: 2 },
+    { x: '26%', y: '72%', size: 2, color: '#06B6D4', delay: 2.0, dur: 5.5, dy: -4, dx: -1 },
 ]
 
 const SVG_LINES = [
@@ -167,16 +167,25 @@ export default function Home({ featured, recent, affiliates, canonical }: Props)
                                     prefersReducedMotion
                                         ? { opacity: 0.45 }
                                         : {
-                                            opacity: [0.25, Math.min(0.9, 0.45 + node.size * 0.07), 0.25],
-                                            scale: [1, 1 + node.size * 0.025, 1],
-                                            y: [0, node.dy, 0],
-                                            x: [0, node.dx, 0],
+                                              opacity: [
+                                                  0.25,
+                                                  Math.min(0.9, 0.45 + node.size * 0.07),
+                                                  0.25,
+                                              ],
+                                              scale: [1, 1 + node.size * 0.025, 1],
+                                              y: [0, node.dy, 0],
+                                              x: [0, node.dx, 0],
                                           }
                                 }
                                 transition={
                                     prefersReducedMotion
                                         ? { duration: 0.3, delay: node.delay * 0.2 }
-                                        : { duration: node.dur, delay: node.delay, repeat: Infinity, ease: 'easeInOut' }
+                                        : {
+                                              duration: node.dur,
+                                              delay: node.delay,
+                                              repeat: Infinity,
+                                              ease: 'easeInOut',
+                                          }
                                 }
                             />
                         ))}

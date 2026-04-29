@@ -39,7 +39,7 @@ export default function AffiliateWidget({ affiliate }: { affiliate: Affiliate })
                                 <span className="text-xs text-nr-faint">{affiliate.category}</span>
                             )}
                             {affiliate.category && websiteDomain && (
-                                <span className="text-nr-faint/40 text-xs">·</span>
+                                <span className="text-xs text-nr-faint/40">·</span>
                             )}
                             {websiteDomain && (
                                 <span className="font-mono text-[10px] text-nr-faint/60">
@@ -81,9 +81,9 @@ export default function AffiliateWidget({ affiliate }: { affiliate: Affiliate })
             )}
 
             {/* CTA */}
-            {hasUrl ? (
+            {hasUrl || affiliate.website ? (
                 <a
-                    href={`/herramientas/${affiliate.slug}/click`}
+                    href={hasUrl ? `/herramientas/${affiliate.slug}/click` : affiliate.website!}
                     target="_blank"
                     rel="noopener noreferrer nofollow"
                     aria-label={`Ver ${affiliate.name}`}
