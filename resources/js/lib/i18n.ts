@@ -47,11 +47,11 @@ const translations = {
     'home.recent_subtitle': { es: 'Lo último del mundo de la IA', en: 'Latest from the AI world' },
     'home.view_all': { es: 'Ver todos →', en: 'View all →' },
     'home.view_all_articles': { es: 'Ver todos los artículos →', en: 'View all articles →' },
-    'home.tools_label': { es: 'Lo que uso a diario', en: 'What I use daily' },
-    'home.tools_title': { es: 'Mi stack de herramientas IA', en: 'My AI tools stack' },
+    'home.tools_label': { es: 'Directorio de herramientas', en: 'Tools directory' },
+    'home.tools_title': { es: 'Las mejores herramientas IA', en: 'The best AI tools' },
     'home.tools_subtitle': {
-        es: 'Las herramientas que tengo abiertas todos los días. Sin patrocinios, sin relleno.',
-        en: 'The tools I have open every single day. No sponsorships, no filler.',
+        es: 'Selección curada de herramientas para trabajar con IA. Solo lo que vale la pena.',
+        en: 'Curated selection of tools to work with AI. Only what is worth it.',
     },
 
     // ── Rotating words (Home hero) ───────────────────
@@ -151,11 +151,11 @@ const translations = {
     },
 
     // ── Tools page ───────────────────────────────────
-    'tools.label': { es: 'Lo que uso a diario', en: 'What I use daily' },
-    'tools.title': { es: 'Mi stack de herramientas IA', en: 'My AI tools stack' },
+    'tools.label': { es: 'Directorio de herramientas', en: 'Tools directory' },
+    'tools.title': { es: 'Las mejores herramientas IA', en: 'The best AI tools' },
     'tools.subtitle': {
-        es: 'Las herramientas que tengo abiertas todos los días. Sin patrocinios, sin relleno.',
-        en: 'The tools I have open every single day. No sponsorships, no filler.',
+        es: 'Selección curada de herramientas para trabajar con IA. Solo lo que vale la pena.',
+        en: 'Curated selection of tools to work with AI. Only what is worth it.',
     },
     'tools.all': { es: 'Todas', en: 'All' },
     'tools.cta': { es: 'Ver herramienta →', en: 'View tool →' },
