@@ -60,7 +60,7 @@ class AffiliateController extends Controller
     {
         $validated = $request->validate([
             'name' => 'required|string|max:100',
-            'url' => 'required|url',
+            'url' => 'nullable|url',
             'website' => 'nullable|url',
             'description' => 'nullable|string',
             'description_en' => 'nullable|string',
@@ -97,7 +97,7 @@ class AffiliateController extends Controller
     {
         $validated = $request->validate([
             'name' => 'required|string|max:100',
-            'url' => 'required|url',
+            'url' => 'nullable|url',
             'website' => 'nullable|url',
             'description' => 'nullable|string',
             'commission' => 'nullable|string|max:100',

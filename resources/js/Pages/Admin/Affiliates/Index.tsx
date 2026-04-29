@@ -262,14 +262,13 @@ export default function AffiliatesIndex({ affiliates, filters, totals }: Props) 
                                     </div>
                                     <div>
                                         <label className="mb-1.5 block font-mono text-[10px] uppercase tracking-wider text-nr-faint">
-                                            Link de afiliado *
+                                            Link de afiliado
                                         </label>
                                         <input
                                             value={data.url}
                                             type="url"
                                             onChange={e => setData('url', e.target.value)}
                                             className={inputCls}
-                                            required
                                             placeholder="https://writesonic.com?ref=..."
                                         />
                                     </div>
