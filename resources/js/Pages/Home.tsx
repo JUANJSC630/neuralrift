@@ -20,24 +20,40 @@ interface Props {
     canonical?: string
 }
 
+// x/y = position, size = radius, dur = cycle duration (s), dy/dx = max drift (px)
 const NODES = [
-    { x: '11%', y: '22%', size: 6, color: '#7C6AF7', delay: 0 },
-    { x: '80%', y: '12%', size: 3, color: '#06B6D4', delay: 0.4 },
-    { x: '90%', y: '65%', size: 4, color: '#7C6AF7', delay: 0.8 },
-    { x: '7%', y: '75%', size: 3, color: '#06B6D4', delay: 1.2 },
-    { x: '54%', y: '85%', size: 5, color: '#7C6AF7', delay: 0.6 },
-    { x: '70%', y: '38%', size: 3, color: '#06B6D4', delay: 1.0 },
-    { x: '33%', y: '55%', size: 4, color: '#7C6AF7', delay: 0.2 },
-    { x: '44%', y: '18%', size: 3, color: '#06B6D4', delay: 1.4 },
+    { x: '11%', y: '22%', size: 6,   color: '#7C6AF7', delay: 0,   dur: 5.0, dy: -12, dx:  4 },
+    { x: '80%', y: '12%', size: 3,   color: '#06B6D4', delay: 0.4, dur: 3.5, dy:  -6, dx: -3 },
+    { x: '90%', y: '65%', size: 4,   color: '#7C6AF7', delay: 0.8, dur: 4.5, dy: -10, dx: -4 },
+    { x: '7%',  y: '75%', size: 3,   color: '#06B6D4', delay: 1.2, dur: 3.0, dy:  -6, dx:  2 },
+    { x: '54%', y: '85%', size: 5,   color: '#7C6AF7', delay: 0.6, dur: 5.5, dy: -10, dx:  0 },
+    { x: '70%', y: '38%', size: 3,   color: '#06B6D4', delay: 1.0, dur: 3.8, dy:  -6, dx:  3 },
+    { x: '33%', y: '55%', size: 4,   color: '#7C6AF7', delay: 0.2, dur: 4.2, dy:  -9, dx: -2 },
+    { x: '44%', y: '18%', size: 3,   color: '#06B6D4', delay: 1.4, dur: 5.0, dy:  -6, dx:  4 },
+    // fill stars — smaller, dimmer, independent rhythm
+    { x: '22%', y: '42%', size: 2,   color: '#7C6AF7', delay: 0.7, dur: 3.5, dy:  -5, dx: -2 },
+    { x: '60%', y: '60%', size: 2.5, color: '#06B6D4', delay: 1.6, dur: 4.2, dy:  -6, dx:  2 },
+    { x: '16%', y: '8%',  size: 2,   color: '#7C6AF7', delay: 0.3, dur: 6.0, dy:  -4, dx:  1 },
+    { x: '84%', y: '44%', size: 2,   color: '#7C6AF7', delay: 1.8, dur: 3.8, dy:  -5, dx: -3 },
+    { x: '48%', y: '40%', size: 2.5, color: '#06B6D4', delay: 0.9, dur: 4.5, dy:  -5, dx:  2 },
+    { x: '26%', y: '72%', size: 2,   color: '#06B6D4', delay: 2.0, dur: 5.5, dy:  -4, dx: -1 },
 ]
 
 const SVG_LINES = [
+    // original constellation skeleton
     ['11%', '22%', '33%', '55%'],
     ['33%', '55%', '54%', '85%'],
     ['80%', '12%', '70%', '38%'],
     ['70%', '38%', '90%', '65%'],
     ['44%', '18%', '70%', '38%'],
     ['33%', '55%', '70%', '38%'],
+    // new branches through fill stars
+    ['11%', '22%', '44%', '18%'],
+    ['44%', '18%', '80%', '12%'],
+    ['60%', '60%', '70%', '38%'],
+    ['60%', '60%', '54%', '85%'],
+    ['22%', '42%', '33%', '55%'],
+    ['26%', '72%', '54%', '85%'],
 ]
 
 export default function Home({ featured, recent, affiliates, canonical }: Props) {
@@ -106,25 +122,33 @@ export default function Home({ featured, recent, affiliates, canonical }: Props)
 
                     {/* Constellation nodes */}
                     <div className="pointer-events-none absolute inset-0" aria-hidden="true">
-                        {/* SVG connector lines — desktop only */}
-                        <svg
-                            className="absolute inset-0 hidden h-full w-full md:block"
-                            style={{ opacity: 0.1 }}
-                        >
+                        {/* SVG connector lines — each breathes at its own pace */}
+                        <svg className="absolute inset-0 hidden h-full w-full md:block">
                             {SVG_LINES.map(([x1, y1, x2, y2], i) => (
-                                <line
+                                <motion.line
                                     key={i}
                                     x1={x1}
                                     y1={y1}
                                     x2={x2}
                                     y2={y2}
-                                    stroke="#7C6AF7"
-                                    strokeWidth="1"
+                                    stroke={i % 3 === 0 ? '#06B6D4' : '#7C6AF7'}
+                                    strokeWidth={i < 6 ? '0.8' : '0.5'}
+                                    animate={
+                                        prefersReducedMotion
+                                            ? { opacity: 0.07 }
+                                            : { opacity: [0.03, 0.18, 0.03] }
+                                    }
+                                    transition={{
+                                        duration: 7 + (i % 5) * 1.4,
+                                        delay: i * 0.55,
+                                        repeat: Infinity,
+                                        ease: 'easeInOut',
+                                    }}
                                 />
                             ))}
                         </svg>
 
-                        {/* Floating nodes */}
+                        {/* Floating stars — each drifts and twinkles independently */}
                         {NODES.map((node, i) => (
                             <motion.div
                                 key={i}
@@ -141,13 +165,18 @@ export default function Home({ featured, recent, affiliates, canonical }: Props)
                                 initial={{ opacity: 0, scale: prefersReducedMotion ? 1 : 0 }}
                                 animate={
                                     prefersReducedMotion
-                                        ? { opacity: 0.5 }
-                                        : { opacity: [0.4, 0.9, 0.4], scale: [1, 1.2, 1], y: [0, -8, 0] }
+                                        ? { opacity: 0.45 }
+                                        : {
+                                            opacity: [0.25, Math.min(0.9, 0.45 + node.size * 0.07), 0.25],
+                                            scale: [1, 1 + node.size * 0.025, 1],
+                                            y: [0, node.dy, 0],
+                                            x: [0, node.dx, 0],
+                                          }
                                 }
                                 transition={
                                     prefersReducedMotion
                                         ? { duration: 0.3, delay: node.delay * 0.2 }
-                                        : { duration: 4, delay: node.delay, repeat: Infinity, ease: 'easeInOut' }
+                                        : { duration: node.dur, delay: node.delay, repeat: Infinity, ease: 'easeInOut' }
                                 }
                             />
                         ))}
