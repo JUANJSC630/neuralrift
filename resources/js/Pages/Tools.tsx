@@ -33,27 +33,23 @@ export default function Tools({ affiliates, categories, totalAll, filters }: Pro
     // Always-current category value for use inside fetch callbacks
     const categoryRef = useRef(filters.category)
 
-    // Sync state when Inertia navigates (category filter change) — setState in callback, not body
+    // Sync state when Inertia updates affiliates (category navigation)
+    // Pattern: "adjusting state when a prop changes" — avoids setState-in-effect
+    const [prevAffiliates, setPrevAffiliates] = useState(affiliates)
+    if (affiliates !== prevAffiliates) {
+        setPrevAffiliates(affiliates)
+        setItems(affiliates.data)
+        setCurrentPage(affiliates.current_page)
+        setLastPage(affiliates.last_page)
+        setTotalItems(affiliates.total)
+        setLoading(false)
+    }
+
+    // Refs cannot be mutated during render — sync separately after commit
     useEffect(() => {
-        return router.on('success', event => {
-            const page = (
-                event.detail.page.props as {
-                    affiliates?: PaginatedData<Affiliate>
-                    filters?: { category?: string }
-                }
-            ).affiliates
-            if (!page) return
-            const newFilters = (event.detail.page.props as { filters?: { category?: string } })
-                .filters
-            categoryRef.current = newFilters?.category
-            fetchingPageRef.current = page.current_page
-            setItems(page.data)
-            setCurrentPage(page.current_page)
-            setLastPage(page.last_page)
-            setTotalItems(page.total)
-            setLoading(false)
-        })
-    }, [])
+        categoryRef.current = filters.category
+        fetchingPageRef.current = affiliates.current_page
+    }, [affiliates, filters.category])
 
     // Fetch next page via plain JSON — URL does NOT change
     const fetchMore = useCallback(async (page: number, category?: string) => {
