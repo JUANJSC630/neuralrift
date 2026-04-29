@@ -177,16 +177,32 @@ export default function Tools({ affiliates, categories, totalAll, filters }: Pro
                                         <AffiliateWidget affiliate={affiliate} />
                                     </motion.div>
                                 ))}
+                                {loading &&
+                                    Array.from({ length: 3 }).map((_, i) => (
+                                        <div
+                                            key={`skeleton-${i}`}
+                                            className="glass flex h-full flex-col rounded-2xl p-5"
+                                        >
+                                            <div className="mb-3 flex items-start justify-between">
+                                                <div className="flex items-center gap-3">
+                                                    <div className="h-10 w-10 flex-shrink-0 animate-pulse rounded-xl bg-white/8" />
+                                                    <div className="space-y-2">
+                                                        <div className="h-3.5 w-28 animate-pulse rounded-md bg-white/8" />
+                                                        <div className="h-2.5 w-20 animate-pulse rounded-md bg-white/5" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div className="mb-4 space-y-2">
+                                                <div className="h-2.5 w-full animate-pulse rounded-md bg-white/5" />
+                                                <div className="h-2.5 w-4/5 animate-pulse rounded-md bg-white/5" />
+                                            </div>
+                                            <div className="mt-auto h-11 animate-pulse rounded-xl bg-white/5" />
+                                        </div>
+                                    ))}
                             </div>
 
                             {/* Sentinel + status */}
                             <div ref={sentinelRef} className="mt-14 flex justify-center">
-                                {loading && (
-                                    <div className="flex items-center gap-3 text-sm text-nr-faint">
-                                        <span className="h-4 w-4 animate-spin rounded-full border-2 border-nr-accent/30 border-t-nr-accent" />
-                                        {t('tools.loading')}
-                                    </div>
-                                )}
                                 {!loading && atEnd && totalItems > PER_PAGE && (
                                     <p className="font-mono text-xs text-nr-faint">
                                         {totalItems} {t('tools.items')} · {t('tools.end')}

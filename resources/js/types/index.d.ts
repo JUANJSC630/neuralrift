@@ -64,7 +64,7 @@ export interface Affiliate {
     name: string
     slug: string
     logo?: string
-    url: string
+    url: string | null
     website?: string
     description?: string
     commission?: string

@@ -48,7 +48,7 @@ export default function AffiliatesIndex({ affiliates, filters, totals }: Props) 
         setEditing(aff)
         setData({
             name: aff.name,
-            url: aff.url,
+            url: aff.url ?? '',
             website: aff.website ?? '',
             description: aff.description ?? '',
             commission: aff.commission ?? '',
@@ -192,14 +192,16 @@ export default function AffiliatesIndex({ affiliates, filters, totals }: Props) 
                                         >
                                             Editar
                                         </button>
-                                        <a
-                                            href={aff.url}
-                                            target="_blank"
-                                            rel="noopener"
-                                            className="rounded px-2 py-1 text-xs text-nr-cyan transition-colors hover:bg-nr-cyan/10"
-                                        >
-                                            Probar ↗
-                                        </a>
+                                        {aff.url && (
+                                            <a
+                                                href={aff.url}
+                                                target="_blank"
+                                                rel="noopener"
+                                                className="rounded px-2 py-1 text-xs text-nr-cyan transition-colors hover:bg-nr-cyan/10"
+                                            >
+                                                Probar ↗
+                                            </a>
+                                        )}
                                         <button
                                             onClick={() => setPendingDelete(aff)}
                                             className="rounded px-2 py-1 text-xs text-nr-faint transition-colors hover:bg-nr-red/10 hover:text-nr-red"

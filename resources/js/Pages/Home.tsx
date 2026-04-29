@@ -1,5 +1,5 @@
 import { Head, Link } from '@inertiajs/react'
-import { motion } from 'framer-motion'
+import { motion, useReducedMotion } from 'framer-motion'
 import { useState, useEffect } from 'react'
 import Navbar from '@/Components/Layout/Navbar'
 import Footer from '@/Components/Layout/Footer'
@@ -42,6 +42,7 @@ const SVG_LINES = [
 
 export default function Home({ featured, recent, affiliates, canonical }: Props) {
     const [wordIndex, setWordIndex] = useState(0)
+    const prefersReducedMotion = useReducedMotion()
     const { locale, t, localePath } = useLocale()
     const words = [
         t('home.rotating.0'),
@@ -62,11 +63,12 @@ export default function Home({ featured, recent, affiliates, canonical }: Props)
     ]
 
     useEffect(() => {
+        if (prefersReducedMotion) return
         const interval = setInterval(() => {
             setWordIndex(i => (i + 1) % words.length)
         }, 2800)
         return () => clearInterval(interval)
-    }, [words.length])
+    }, [words.length, prefersReducedMotion])
 
     return (
         <>
@@ -136,18 +138,17 @@ export default function Home({ featured, recent, affiliates, canonical }: Props)
                                     boxShadow: `0 0 ${node.size * 4}px ${node.color}80`,
                                     transform: 'translate(-50%, -50%)',
                                 }}
-                                initial={{ opacity: 0, scale: 0 }}
-                                animate={{
-                                    opacity: [0.4, 0.9, 0.4],
-                                    scale: [1, 1.2, 1],
-                                    y: [0, -8, 0],
-                                }}
-                                transition={{
-                                    duration: 4,
-                                    delay: node.delay,
-                                    repeat: Infinity,
-                                    ease: 'easeInOut',
-                                }}
+                                initial={{ opacity: 0, scale: prefersReducedMotion ? 1 : 0 }}
+                                animate={
+                                    prefersReducedMotion
+                                        ? { opacity: 0.5 }
+                                        : { opacity: [0.4, 0.9, 0.4], scale: [1, 1.2, 1], y: [0, -8, 0] }
+                                }
+                                transition={
+                                    prefersReducedMotion
+                                        ? { duration: 0.3, delay: node.delay * 0.2 }
+                                        : { duration: 4, delay: node.delay, repeat: Infinity, ease: 'easeInOut' }
+                                }
                             />
                         ))}
                     </div>
@@ -155,7 +156,7 @@ export default function Home({ featured, recent, affiliates, canonical }: Props)
                     {/* Contenido hero */}
                     <div className="relative z-10 mx-auto max-w-4xl px-6 text-center">
                         {/* Badge */}
-                        <motion.div
+                        {/* <motion.div
                             initial={{ opacity: 0, y: 14 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.5, delay: 0.05 }}
@@ -165,7 +166,7 @@ export default function Home({ featured, recent, affiliates, canonical }: Props)
                             <span className="text-xs font-semibold uppercase tracking-widest text-nr-gold">
                                 {t('home.badge')}
                             </span>
-                        </motion.div>
+                        </motion.div> */}
 
                         {/* Headline */}
                         <motion.h1
@@ -177,10 +178,10 @@ export default function Home({ featured, recent, affiliates, canonical }: Props)
                             <span className="block">{t('home.headline_prefix')}</span>
                             <motion.span
                                 key={wordIndex}
-                                initial={{ opacity: 0, y: 8 }}
+                                initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 8 }}
                                 animate={{ opacity: 1, y: 0 }}
-                                exit={{ opacity: 0, y: -8 }}
-                                transition={{ duration: 0.4 }}
+                                exit={{ opacity: 0, y: prefersReducedMotion ? 0 : -8 }}
+                                transition={{ duration: prefersReducedMotion ? 0.2 : 0.4 }}
                                 className="block whitespace-nowrap text-nr-accent"
                                 aria-hidden="true"
                             >
@@ -226,6 +227,7 @@ export default function Home({ featured, recent, affiliates, canonical }: Props)
 
                         {/* Scroll indicator */}
                         <motion.div
+                            aria-hidden="true"
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
                             transition={{ delay: 1, duration: 0.5 }}
@@ -248,8 +250,17 @@ export default function Home({ featured, recent, affiliates, canonical }: Props)
 
                 {/* ── POSTS RECIENTES ─────────────────────── */}
                 <section className="mx-auto max-w-7xl px-6 pb-16 md:px-12">
-                    <div className="mb-10 flex items-center justify-between">
+                    <motion.div
+                        initial={{ opacity: 0, y: 12 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.4 }}
+                        className="mb-10 flex items-center justify-between"
+                    >
                         <div>
+                            <span className="mb-2 block font-mono text-xs uppercase tracking-widest text-nr-accent">
+                                {t('home.recent_label')}
+                            </span>
                             <h2 className="font-display text-3xl font-bold leading-tight text-nr-text">
                                 {t('home.recent_title')}
                             </h2>
@@ -259,11 +270,11 @@ export default function Home({ featured, recent, affiliates, canonical }: Props)
                         </div>
                         <Link
                             href={localePath('/blog')}
-                            className="text-sm font-medium text-nr-accent transition-colors hover:text-nr-accent/80"
+                            className="glass hidden items-center rounded-full px-5 py-2.5 text-sm font-medium text-nr-accent transition-all hover:bg-white/[0.08] md:inline-flex"
                         >
                             {t('home.view_all')}
                         </Link>
-                    </div>
+                    </motion.div>
 
                     <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
                         {recent.map((post, i) => (
@@ -294,7 +305,13 @@ export default function Home({ featured, recent, affiliates, canonical }: Props)
                 {affiliates.length > 0 && (
                     <section className="border-b border-t border-nr-accent/[0.18] border-white/[0.05] bg-nr-bg3 py-20">
                         <div className="mx-auto max-w-7xl px-6 md:px-12">
-                            <div className="mb-12 text-center">
+                            <motion.div
+                                initial={{ opacity: 0, y: 12 }}
+                                whileInView={{ opacity: 1, y: 0 }}
+                                viewport={{ once: true }}
+                                transition={{ duration: 0.4 }}
+                                className="mb-12 text-center"
+                            >
                                 <span className="mb-3 block font-mono text-xs uppercase tracking-widest text-nr-accent">
                                     {t('home.tools_label')}
                                 </span>
@@ -304,7 +321,7 @@ export default function Home({ featured, recent, affiliates, canonical }: Props)
                                 <p className="mx-auto mt-2 max-w-lg text-sm text-nr-muted">
                                     {t('home.tools_subtitle')}
                                 </p>
-                            </div>
+                            </motion.div>
 
                             <div className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
                                 {affiliates.map((affiliate, i) => (
