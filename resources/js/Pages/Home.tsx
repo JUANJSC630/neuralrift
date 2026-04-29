@@ -202,7 +202,7 @@ export default function Home({ featured, recent, affiliates, canonical }: Props)
                             initial={{ opacity: 0, y: 14 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.5, delay: 0.15 }}
-                            className="mb-6 font-display text-5xl font-black leading-[1.06] tracking-tight text-nr-text md:text-7xl lg:text-[82px]"
+                            className="mb-6 font-display text-4xl font-black leading-[1.06] tracking-tight text-nr-text sm:text-5xl md:text-7xl lg:text-[82px]"
                         >
                             <span className="block">{t('home.headline_prefix')}</span>
                             <motion.span
