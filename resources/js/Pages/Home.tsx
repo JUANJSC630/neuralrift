@@ -101,7 +101,7 @@ export default function Home({ featured, recent, affiliates, canonical }: Props)
 
             <main id="main-content">
                 {/* ── HERO ─────────────────────────────────── */}
-                <section className="relative flex min-h-[680px] items-center justify-center overflow-hidden bg-nr-bg pt-[70px]">
+                <section className="relative flex min-h-[680px] items-center justify-center overflow-hidden bg-nr-bg pt-[200px]">
                     <MeshBackground />
 
                     {/* Constellation nodes */}
