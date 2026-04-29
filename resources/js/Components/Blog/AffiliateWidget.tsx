@@ -83,7 +83,7 @@ export default function AffiliateWidget({ affiliate }: { affiliate: Affiliate })
             {/* CTA */}
             {hasUrl || affiliate.website ? (
                 <a
-                    href={hasUrl ? `/herramientas/${affiliate.slug}/click` : affiliate.website!}
+                    href={affiliate.website ?? `/herramientas/${affiliate.slug}/click`}
                     target="_blank"
                     rel="noopener noreferrer nofollow"
                     aria-label={`Ver ${affiliate.name}`}
