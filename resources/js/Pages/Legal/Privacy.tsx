@@ -182,9 +182,7 @@ export default function Privacy() {
                             </p>
                         </Section>
 
-                        <Section
-                            title={isEn ? '3. Affiliate Links' : '3. Links de afiliado'}
-                        >
+                        <Section title={isEn ? '3. Affiliate Links' : '3. Links de afiliado'}>
                             <p>
                                 {isEn
                                     ? 'NeuralRift contains affiliate links to products and services I recommend. If you make a purchase through these links, I may receive a commission at no additional cost to you. This does not influence my opinions or recommendations.'
@@ -224,9 +222,7 @@ export default function Privacy() {
                             </p>
                         </Section>
 
-                        <Section
-                            title={isEn ? '5. Data Retention' : '5. Retención de datos'}
-                        >
+                        <Section title={isEn ? '5. Data Retention' : '5. Retención de datos'}>
                             <p>
                                 {isEn
                                     ? 'We retain your email address while you are subscribed to the newsletter. You can unsubscribe at any time using the link at the bottom of any email we send you. After unsubscribing, we delete your address within a maximum of 30 days.'
@@ -281,9 +277,7 @@ export default function Privacy() {
 
                         <Section
                             title={
-                                isEn
-                                    ? '7. Changes to This Policy'
-                                    : '7. Cambios en esta política'
+                                isEn ? '7. Changes to This Policy' : '7. Cambios en esta política'
                             }
                         >
                             <p>

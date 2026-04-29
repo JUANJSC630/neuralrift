@@ -108,9 +108,7 @@ export default function AffiliatesPolicy() {
 
                         <Section
                             title={
-                                isEn
-                                    ? 'How we select tools'
-                                    : 'Cómo seleccionamos las herramientas'
+                                isEn ? 'How we select tools' : 'Cómo seleccionamos las herramientas'
                             }
                         >
                             <p>
@@ -233,9 +231,7 @@ export default function AffiliatesPolicy() {
                             </p>
                         </Section>
 
-                        <Section
-                            title={isEn ? 'Your purchase decision' : 'Tu decisión de compra'}
-                        >
+                        <Section title={isEn ? 'Your purchase decision' : 'Tu decisión de compra'}>
                             <p>
                                 {isEn
                                     ? "My reviews and information are designed to help you make the best decision for your situation, not to maximize commissions. If a tool has equally good free alternatives for your use case, I'll tell you."

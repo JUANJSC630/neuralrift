@@ -107,8 +107,8 @@ export default function Cookies() {
                             <p className="mb-6">
                                 {isEn ? (
                                     <>
-                                        NeuralRift uses exclusively technical and preference cookies,
-                                        strictly necessary for the site to function.{' '}
+                                        NeuralRift uses exclusively technical and preference
+                                        cookies, strictly necessary for the site to function.{' '}
                                         <strong className="text-nr-text">
                                             We do not use advertising, tracking, or third-party
                                             analytics cookies.
@@ -169,9 +169,7 @@ export default function Cookies() {
                         </Section>
 
                         <Section
-                            title={
-                                isEn ? 'How to control cookies' : 'Cómo controlar las cookies'
-                            }
+                            title={isEn ? 'How to control cookies' : 'Cómo controlar las cookies'}
                         >
                             <p>
                                 {isEn
@@ -213,9 +211,7 @@ export default function Cookies() {
                         </Section>
 
                         <Section
-                            title={
-                                isEn ? 'Changes to this policy' : 'Cambios en esta política'
-                            }
+                            title={isEn ? 'Changes to this policy' : 'Cambios en esta política'}
                         >
                             <p>
                                 {isEn

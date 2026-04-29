@@ -141,7 +141,7 @@ export default function AdminBrowse<T extends { id: number | string }>({
                         <select
                             value={filters.sort ?? ''}
                             onChange={e => applyFilter('sort', e.target.value)}
-                            className="glass rounded-xl px-3 py-2 text-xs text-nr-muted outline-none focus:border-nr-accent/40 transition-colors cursor-pointer"
+                            className="glass cursor-pointer rounded-xl px-3 py-2 text-xs text-nr-muted outline-none transition-colors focus:border-nr-accent/40"
                         >
                             {sortOptions.map(opt => (
                                 <option

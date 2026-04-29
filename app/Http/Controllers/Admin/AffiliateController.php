@@ -16,11 +16,11 @@ class AffiliateController extends Controller
         $query = Affiliate::withCount('clicks');
 
         match ($request->input('sort')) {
-            'name_asc'  => $query->orderBy('name'),
+            'name_asc' => $query->orderBy('name'),
             'name_desc' => $query->orderByDesc('name'),
-            'date_asc'  => $query->orderBy('created_at'),
+            'date_asc' => $query->orderBy('created_at'),
             'date_desc' => $query->orderByDesc('created_at'),
-            default     => $query->orderByDesc('created_at'),
+            default => $query->orderByDesc('created_at'),
         };
 
         if ($search = $request->input('search')) {

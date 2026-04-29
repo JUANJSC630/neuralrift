@@ -1,11 +1,11 @@
 import { Link } from '@inertiajs/react'
-import { SITE } from '@/lib/constants'
+// import { SITE } from '@/lib/constants'
 import { useLocale } from '@/hooks/useLocale'
 import { getNavLinks, getLegalLinks } from '@/lib/i18n'
 
-const SOCIAL_LINKS = [
-    { label: 'Twitter/X', href: `https://twitter.com/${SITE.twitter.replace('@', '')}` },
-]
+// const SOCIAL_LINKS = [
+//     { label: 'Twitter/X', href: `https://twitter.com/${SITE.twitter.replace('@', '')}` },
+// ]
 
 export default function Footer() {
     const { locale, t } = useLocale()
@@ -35,7 +35,7 @@ export default function Footer() {
                             {t('footer.tagline')}
                         </p>
                         {/* Social */}
-                        <div className="mt-6 flex gap-3">
+                        {/* <div className="mt-6 flex gap-3">
                             {SOCIAL_LINKS.map(s => (
                                 <a
                                     key={s.label}
@@ -47,7 +47,7 @@ export default function Footer() {
                                     {s.label}
                                 </a>
                             ))}
-                        </div>
+                        </div> */}
                     </div>
 
                     {/* Links */}

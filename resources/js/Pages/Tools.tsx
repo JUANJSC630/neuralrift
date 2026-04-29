@@ -202,7 +202,6 @@ export default function Tools({ affiliates, categories, totalAll, filters }: Pro
                             </p>
                         </div>
                     )}
-
                 </section>
             </main>
 
